@@ -6,6 +6,6 @@ namespace CatchEmAll.Providers
 {
   public interface IProductSearch
   {
-    Task<IQueryable<Product>> FindProductsAsync();
+    Task<IQueryable<Product>> FindProductsAsync(ProductSearchArguments arguments);
   }
 }

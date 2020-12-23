@@ -1,3 +1,4 @@
+using CatchEmAll.Models;
 using CatchEmAll.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -15,10 +16,10 @@ namespace CatchEmAll.Controllers
       this.productService = productService;
     }
 
-    [HttpGet]
-    public async Task<IActionResult> GetProducts()
+    [HttpPost]
+    public async Task<IActionResult> GetProducts([FromBody] ProductSearchArguments arguments)
     {
-      var products = await this.productService.GetProductsAsync();
+      var products = await this.productService.GetProductsAsync(arguments);
       return this.Ok(products);
     }
   }

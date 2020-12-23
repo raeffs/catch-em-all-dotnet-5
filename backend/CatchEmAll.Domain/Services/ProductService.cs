@@ -14,9 +14,9 @@ namespace CatchEmAll.Services
       this.productSearch = productSearch;
     }
 
-    public Task<IQueryable<Product>> GetProductsAsync()
+    public Task<IQueryable<Product>> GetProductsAsync(ProductSearchArguments arguments)
     {
-      return this.productSearch.FindProductsAsync();
+      return this.productSearch.FindProductsAsync(arguments);
     }
   }
 }

@@ -6,6 +6,6 @@ namespace CatchEmAll.Services
 {
   public interface IProductService
   {
-    Task<IQueryable<Product>> GetProductsAsync();
+    Task<IQueryable<Product>> GetProductsAsync(ProductSearchArguments arguments);
   }
 }

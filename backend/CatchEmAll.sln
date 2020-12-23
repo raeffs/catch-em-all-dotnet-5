@@ -3,15 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CatchEmAll", "CatchEmAll\CatchEmAll.csproj", "{BD441580-1041-4FCB-BA7B-944DE37B47AB}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CatchEmAll.Domain", "CatchEmAll.Domain\CatchEmAll.Domain.csproj", "{AA95D952-D0BE-4E29-BDF3-DF5E01BFB490}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CatchEmAll.DataAccess", "CatchEmAll.DataAccess\CatchEmAll.DataAccess.csproj", "{42557450-C845-4B01-82B2-53A68B933392}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CatchEmAll.DataAccess", "CatchEmAll.DataAccess\CatchEmAll.DataAccess.csproj", "{42557450-C845-4B01-82B2-53A68B933392}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CatchEmAll.Ricardo", "CatchEmAll.Ricardo\CatchEmAll.Ricardo.csproj", "{152E048F-37ED-4CEA-A01A-92BC397E631D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CatchEmAll.Ricardo", "CatchEmAll.Ricardo\CatchEmAll.Ricardo.csproj", "{152E048F-37ED-4CEA-A01A-92BC397E631D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CatchEmAll.WebApi", "CatchEmAll.WebApi\CatchEmAll.WebApi.csproj", "{C2CC4B56-9BFA-451F-AFC0-650F46BCB395}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CatchEmAll.WebApi", "CatchEmAll.WebApi\CatchEmAll.WebApi.csproj", "{C2CC4B56-9BFA-451F-AFC0-650F46BCB395}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,10 +17,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{BD441580-1041-4FCB-BA7B-944DE37B47AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BD441580-1041-4FCB-BA7B-944DE37B47AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BD441580-1041-4FCB-BA7B-944DE37B47AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BD441580-1041-4FCB-BA7B-944DE37B47AB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AA95D952-D0BE-4E29-BDF3-DF5E01BFB490}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{AA95D952-D0BE-4E29-BDF3-DF5E01BFB490}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AA95D952-D0BE-4E29-BDF3-DF5E01BFB490}.Release|Any CPU.ActiveCfg = Release|Any CPU
