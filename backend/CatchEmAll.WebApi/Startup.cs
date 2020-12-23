@@ -11,6 +11,11 @@ namespace CatchEmAll.WebApi
     {
       services.AddControllers();
 
+      services.AddSwaggerGen(config =>
+      {
+        config.SwaggerDoc("default", new Microsoft.OpenApi.Models.OpenApiInfo { });
+      });
+
       services
         .AddDomain()
         .AddRicardo();
@@ -22,6 +27,12 @@ namespace CatchEmAll.WebApi
       {
         app.UseDeveloperExceptionPage();
       }
+
+      app.UseSwagger();
+      app.UseSwaggerUI(config =>
+      {
+        config.SwaggerEndpoint("/swagger/default/swagger.json", "default");
+      });
 
       app.UseRouting();
 
