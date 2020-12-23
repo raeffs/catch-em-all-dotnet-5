@@ -1,4 +1,4 @@
-using CatchEmAll.Providers;
+using CatchEmAll.Services;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Threading.Tasks;
@@ -10,11 +10,12 @@ namespace CatchEmAll
     static async Task Main()
     {
       var services = new ServiceCollection()
+        .AddDomain()
         .AddRicardo()
         .BuildServiceProvider();
 
-      var productSearch = services.GetRequiredService<IProductSearch>();
-      var products = await productSearch.FindProductsAsync();
+      var service = services.GetRequiredService<IProductService>();
+      var products = await service.GetProductsAsync();
 
       foreach (var product in products)
       {
