@@ -10,7 +10,13 @@ namespace CatchEmAll
     {
     }
 
-    public DbSet<Product> Products { get; set; } = null!;
     public DbSet<Query> Queries { get; set; } = null!;
+    public DbSet<Auction> Auctions { get; set; } = null!;
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+      modelBuilder.Entity<Query>()
+        .OwnsOne(x => x.Criteria);
+    }
   }
 }

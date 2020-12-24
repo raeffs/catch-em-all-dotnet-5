@@ -7,5 +7,6 @@ namespace CatchEmAll.Repositories
   {
     Task<int> CreateAsync(Query query);
     Task<Query> GetAsync(int id);
+    Task UpdateQuery(Query query);
   }
 }

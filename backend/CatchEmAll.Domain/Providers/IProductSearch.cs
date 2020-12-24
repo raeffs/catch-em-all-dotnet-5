@@ -1,11 +1,11 @@
 using CatchEmAll.Models;
-using System.Linq;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace CatchEmAll.Providers
 {
   public interface IProductSearch
   {
-    Task<IQueryable<Product>> FindProductsAsync(ProductSearchArguments arguments);
+    Task<ICollection<Auction>> FindProductsAsync(SearchCriteria criteria);
   }
 }

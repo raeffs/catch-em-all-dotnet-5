@@ -1,5 +1,6 @@
 using CatchEmAll.Models;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text.Json;
@@ -9,20 +10,20 @@ namespace CatchEmAll.Providers
 {
   internal class ProductSearch : IProductSearch
   {
-    public async Task<IQueryable<Product>> FindProductsAsync(ProductSearchArguments arguments)
+    public async Task<ICollection<Auction>> FindProductsAsync(SearchCriteria criteria)
     {
-      var url = string.Format("https://www.ricardo.ch/de/s/{0}?sort=newest", Uri.EscapeDataString(arguments.SearchTerm));
+      var url = string.Format("https://www.ricardo.ch/de/s/{0}?sort=newest", Uri.EscapeDataString(criteria.WithAllTheseWords));
       var data = await this.FetchAndParsePage<SearchPageDataJson>(url);
       var entries = data?.InitialState?.Srp?.Results;
 
       if (entries == null)
       {
-        return Array.Empty<Product>().AsQueryable();
+        return Array.Empty<Auction>();
       }
 
-      var products = entries.Select(x => new Product
+      var products = entries.Select(x => new Auction
       {
-        Id = x.Id,
+        // Id = x.Id,
         Name = x.Title ?? string.Empty,
         Created = x.CreationDate,
         Ends = x.EndDate,
@@ -30,7 +31,7 @@ namespace CatchEmAll.Providers
         BidPrice = x.BidPrice
       });
 
-      return products.AsQueryable();
+      return products.ToList();
     }
 
     private async Task<T?> FetchAndParsePage<T>(string url)

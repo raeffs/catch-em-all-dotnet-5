@@ -7,5 +7,6 @@ namespace CatchEmAll.Services
   {
     Task<int> CreateQueryAsync(CreateQueryOptions options);
     Task<Query> GetQueryAsync(int id);
+    Task RefreshAsync(int id);
   }
 }

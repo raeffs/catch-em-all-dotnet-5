@@ -20,6 +20,7 @@ namespace CatchEmAll.Controllers
     public async Task<IActionResult> CreateQuery([FromBody] CreateQueryOptions options)
     {
       var id = await this.service.CreateQueryAsync(options);
+      await this.service.RefreshAsync(id);
       var query = await this.service.GetQueryAsync(id);
       return this.Ok(query);
     }
