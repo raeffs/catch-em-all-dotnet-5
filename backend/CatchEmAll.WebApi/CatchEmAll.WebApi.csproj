@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CatchEmAll.DataAccess\CatchEmAll.DataAccess.csproj" />
     <ProjectReference Include="..\CatchEmAll.Domain\CatchEmAll.Domain.csproj" />
     <ProjectReference Include="..\CatchEmAll.Ricardo\CatchEmAll.Ricardo.csproj" />
   </ItemGroup>

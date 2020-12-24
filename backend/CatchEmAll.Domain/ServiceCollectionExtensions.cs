@@ -8,7 +8,7 @@ namespace CatchEmAll
     public static IServiceCollection AddDomain(this IServiceCollection services)
     {
       return services
-        .AddTransient<IProductService, ProductService>();
+        .AddTransient<IQueryService, QueryService>();
     }
   }
 }

@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -7,6 +8,13 @@ namespace CatchEmAll.WebApi
 {
   public class Startup
   {
+    public Startup(IConfiguration configuration)
+    {
+      Configuration = configuration;
+    }
+
+    public IConfiguration Configuration { get; }
+
     public void ConfigureServices(IServiceCollection services)
     {
       services.AddControllers();
@@ -17,6 +25,7 @@ namespace CatchEmAll.WebApi
       });
 
       services
+        .AddDataAccess(this.Configuration.GetConnectionString("DataContext"))
         .AddDomain()
         .AddRicardo();
     }
@@ -40,6 +49,8 @@ namespace CatchEmAll.WebApi
       {
         endpoints.MapControllers();
       });
+
+      app.ApplicationServices.CreateDatabase();
     }
   }
 }
