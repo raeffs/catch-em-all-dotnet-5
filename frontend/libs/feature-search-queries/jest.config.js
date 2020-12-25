@@ -1,5 +1,5 @@
 module.exports = {
-  displayName: 'data-access',
+  displayName: 'feature-search-queries',
   preset: '../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
   globals: {
@@ -14,7 +14,7 @@ module.exports = {
       },
     },
   },
-  coverageDirectory: '../../coverage/libs/data-access',
+  coverageDirectory: '../../coverage/libs/feature-search-queries',
   snapshotSerializers: [
     'jest-preset-angular/build/AngularNoNgAttributesSnapshotSerializer.js',
     'jest-preset-angular/build/AngularSnapshotSerializer.js',

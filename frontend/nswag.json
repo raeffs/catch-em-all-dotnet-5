@@ -67,7 +67,7 @@
       "enumNameGeneratorType": null,
       "serviceHost": null,
       "serviceSchemes": null,
-      "output": "libs/data-access/src/lib/generated.ts",
+      "output": "libs/domain-data-access/src/lib/generated.ts",
       "newLineBehavior": "LF"
     }
   }

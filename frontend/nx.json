@@ -30,7 +30,10 @@
       "tags": [],
       "implicitDependencies": ["catch-em-all"]
     },
-    "data-access": {
+    "feature-search-queries": {
+      "tags": []
+    },
+    "domain-data-access": {
       "tags": []
     }
   }

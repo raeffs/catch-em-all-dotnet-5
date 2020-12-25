@@ -1,0 +1,4 @@
+<form [formGroup]="model" (ngSubmit)="createSearchQuery()">
+  <input type="text" [formControlName]="'searchTerm'" placeholder="What are you looking for?" />
+  <button [disabled]="model.pristine || model.invalid" type="submit">Submit</button>
+</form>

@@ -13,12 +13,10 @@
             "outputPath": "dist/apps/catch-em-all",
             "index": "apps/catch-em-all/src/index.html",
             "main": "apps/catch-em-all/src/main.ts",
+            "polyfills": "apps/catch-em-all/src/polyfills.ts",
             "tsConfig": "apps/catch-em-all/tsconfig.app.json",
             "aot": true,
-            "assets": [
-              "apps/catch-em-all/src/favicon.ico",
-              "apps/catch-em-all/src/assets"
-            ],
+            "assets": ["apps/catch-em-all/src/favicon.ico", "apps/catch-em-all/src/assets"],
             "styles": ["apps/catch-em-all/src/styles.css"],
             "scripts": []
           },
@@ -72,10 +70,7 @@
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": [
-              "apps/catch-em-all/src/**/*.ts",
-              "apps/catch-em-all/src/**/*.html"
-            ]
+            "lintFilePatterns": ["apps/catch-em-all/src/**/*.ts", "apps/catch-em-all/src/**/*.html"]
           }
         },
         "test": {
@@ -114,26 +109,69 @@
         }
       }
     },
-    "data-access": {
+    "feature-search-queries": {
       "projectType": "library",
-      "root": "libs/data-access",
-      "sourceRoot": "libs/data-access/src",
+      "root": "libs/feature-search-queries",
+      "sourceRoot": "libs/feature-search-queries/src",
       "prefix": "cea",
       "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "tsConfig": "libs/feature-search-queries/tsconfig.lib.json",
+            "project": "libs/feature-search-queries/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/feature-search-queries/tsconfig.lib.prod.json"
+            }
+          }
+        },
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": [
-              "libs/data-access/src/**/*.ts",
-              "libs/data-access/src/**/*.html"
-            ]
+            "lintFilePatterns": ["libs/feature-search-queries/src/**/*.ts", "libs/feature-search-queries/src/**/*.html"]
           }
         },
         "test": {
           "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/data-access"],
+          "outputs": ["coverage/libs/feature-search-queries"],
           "options": {
-            "jestConfig": "libs/data-access/jest.config.js",
+            "jestConfig": "libs/feature-search-queries/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "domain-data-access": {
+      "projectType": "library",
+      "root": "libs/domain-data-access",
+      "sourceRoot": "libs/domain-data-access/src",
+      "prefix": "cea",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "tsConfig": "libs/domain-data-access/tsconfig.lib.json",
+            "project": "libs/domain-data-access/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/domain-data-access/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/domain-data-access/src/**/*.ts", "libs/domain-data-access/src/**/*.html"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/domain-data-access"],
+          "options": {
+            "jestConfig": "libs/domain-data-access/jest.config.js",
             "passWithNoTests": true
           }
         }
@@ -160,7 +198,8 @@
       "e2eTestRunner": "cypress"
     },
     "@nrwl/angular:library": {
-      "unitTestRunner": "jest"
+      "unitTestRunner": "jest",
+      "strict": true
     },
     "@nrwl/angular:component": {
       "style": "css"

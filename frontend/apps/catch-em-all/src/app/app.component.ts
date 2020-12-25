@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
-import { SearchQueryService } from '@cea/data-access';
+import { SearchQueryService } from '@cea/domain-data-access';
 
 @Component({
   selector: 'cea-root',
