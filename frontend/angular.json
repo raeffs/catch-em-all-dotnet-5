@@ -13,7 +13,6 @@
             "outputPath": "dist/apps/catch-em-all",
             "index": "apps/catch-em-all/src/index.html",
             "main": "apps/catch-em-all/src/main.ts",
-            "polyfills": "apps/catch-em-all/src/polyfills.ts",
             "tsConfig": "apps/catch-em-all/tsconfig.app.json",
             "aot": true,
             "assets": [

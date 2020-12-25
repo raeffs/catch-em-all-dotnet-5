@@ -3,3 +3,6 @@ obj
 .vs
 *.csproj.user
 appsettings.*.json
+
+node_modules
+dist
