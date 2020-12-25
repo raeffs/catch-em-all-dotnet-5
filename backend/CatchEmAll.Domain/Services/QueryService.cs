@@ -1,42 +1,71 @@
 using CatchEmAll.Models;
 using CatchEmAll.Providers;
-using CatchEmAll.Repositories;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace CatchEmAll.Services
 {
   internal class QueryService : IQueryService
   {
-    private readonly IQueryRepository data;
+    private readonly IDataContext data;
     private readonly IProductSearch search;
 
-    public QueryService(IQueryRepository data, IProductSearch search)
+    public QueryService(IDataContext data, IProductSearch search)
     {
       this.data = data;
       this.search = search;
     }
 
-    public Task<int> CreateQueryAsync(CreateQueryOptions options)
+    public async Task<int> CreateQueryAsync(CreateQueryOptions options)
     {
-      return this.data.CreateAsync(new Query
+      var query = new Query
       {
         Criteria = new SearchCriteria
         {
           WithAllTheseWords = options.SearchTerm
         }
-      });
+      };
+      this.data.Queries.Add(query);
+      await this.data.SaveChangesAsync();
+      return query.Id;
     }
 
     public async Task RefreshAsync(int id)
     {
-      var query = await this.GetQueryAsync(id);
+      var query = await this.data.Queries.AsTracking().SingleOrDefaultAsync(x => x.Id == id);
       var auctions = await this.search.FindProductsAsync(query.Criteria);
-      await this.data.UpdateQuery(query with { Auctions = auctions });
+      foreach (var auction in auctions)
+      {
+        query.Auctions.Add(auction);
+      }
+      await this.data.SaveChangesAsync();
     }
 
-    public Task<Query> GetQueryAsync(int id)
+    public Task<SearchQuerySummary> GetSearchQuerySummaryAsync(int id)
     {
-      return this.data.GetAsync(id);
+      return this.data.Queries
+        .Where(x => x.Id == id)
+        .Select(x => new SearchQuerySummary
+        {
+          Id = x.Id,
+          Name = x.Name,
+          Criteria = x.Criteria,
+          NumberOfAuctions = x.Auctions.Count
+        })
+        .SingleOrDefaultAsync();
+    }
+
+    public IQueryable<SearchQuerySummary> GetSummaries()
+    {
+      return this.data.Queries
+        .Select(x => new SearchQuerySummary
+        {
+          Id = x.Id,
+          Name = x.Name,
+          Criteria = x.Criteria,
+          NumberOfAuctions = x.Auctions.Count
+        });
     }
   }
 }

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Service } from '@cea/data-access';
+import { QueryService } from '@cea/data-access';
 
 @Component({
   selector: 'cea-root',
@@ -10,11 +10,11 @@ export class AppComponent {
   term: string;
   response: unknown;
 
-  constructor(private readonly service: Service) {}
+  constructor(private readonly service: QueryService) {}
 
   send(): void {
     this.service
-      .queries({ searchTerm: this.term })
+      .createQuery({ searchTerm: this.term })
       .subscribe((result) => (this.response = result));
   }
 }

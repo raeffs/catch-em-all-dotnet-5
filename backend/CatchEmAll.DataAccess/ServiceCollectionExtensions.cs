@@ -1,4 +1,4 @@
-using CatchEmAll.Repositories;
+using CatchEmAll.Providers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -10,7 +10,7 @@ namespace CatchEmAll
     public static IServiceCollection AddDataAccess(this IServiceCollection services, string connectionString)
     {
       return services
-        .AddTransient<IQueryRepository, QueryRepository>()
+        .AddTransient<IDataContext, DataContext>()
         .AddDbContext<DataContext>(options =>
         {
           options

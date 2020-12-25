@@ -1,4 +1,5 @@
 using CatchEmAll.Models;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace CatchEmAll.Services
@@ -6,7 +7,9 @@ namespace CatchEmAll.Services
   public interface IQueryService
   {
     Task<int> CreateQueryAsync(CreateQueryOptions options);
-    Task<Query> GetQueryAsync(int id);
+    Task<SearchQuerySummary> GetSearchQuerySummaryAsync(int id);
     Task RefreshAsync(int id);
+
+    IQueryable<SearchQuerySummary> GetSummaries();
   }
 }

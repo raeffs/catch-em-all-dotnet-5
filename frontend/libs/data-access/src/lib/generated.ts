@@ -11,7 +11,7 @@ import { Observable } from 'rxjs';
 @Injectable({
     providedIn: 'root'
 })
-export class Service {
+export class QueryService {
     private readonly http: HttpClient;
 
     constructor(http: HttpClient) {
@@ -21,15 +21,50 @@ export class Service {
     /**
      * @return Success
      */
-    public queries(body: CreateQueryOptions): Observable<void> {
+    public getAllQueries(): Observable<SearchQuerySummary[]> {
+        let url = '/api/queries';
+        url = url.replace(/[?&]$/, '');
+
+        return this.http.get<SearchQuerySummary[]>(url);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    public createQuery(body?: CreateQueryOptions | undefined): Observable<SearchQuerySummary> {
         let url = '/api/queries';
         url = url.replace(/[?&]$/, '');
 
         const _body = body;
 
-        return this.http.post<void>(url, _body);
+        return this.http.post<SearchQuerySummary>(url, _body);
     }
 
+    /**
+     * @return Success
+     */
+    public getQuery(id: number): Observable<SearchQuerySummary> {
+        let url = '/api/queries/{id}';
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url = url.replace("{id}", encodeURIComponent("" + id));
+        url = url.replace(/[?&]$/, '');
+
+        return this.http.get<SearchQuerySummary>(url);
+    }
+
+}
+
+export interface SearchCriteria {
+    withAllTheseWords?: string | null;
+}
+
+export interface SearchQuerySummary {
+    id?: number;
+    name?: string | null;
+    criteria?: SearchCriteria;
+    numberOfAuctions?: number;
 }
 
 export interface CreateQueryOptions {
