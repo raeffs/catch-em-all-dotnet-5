@@ -11,7 +11,7 @@ namespace CatchEmAll.Providers
     {
     }
 
-    public DbSet<Query> Queries { get; set; } = null!;
+    public DbSet<SearchQuery> Queries { get; set; } = null!;
     public DbSet<Auction> Auctions { get; set; } = null!;
 
     public Task SaveChangesAsync()
@@ -21,7 +21,7 @@ namespace CatchEmAll.Providers
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-      modelBuilder.Entity<Query>()
+      modelBuilder.Entity<SearchQuery>()
         .OwnsOne(x => x.Criteria);
     }
   }

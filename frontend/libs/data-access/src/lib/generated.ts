@@ -11,7 +11,7 @@ import { Observable } from 'rxjs';
 @Injectable({
     providedIn: 'root'
 })
-export class QueryService {
+export class SearchQueryService {
     private readonly http: HttpClient;
 
     constructor(http: HttpClient) {
@@ -21,8 +21,8 @@ export class QueryService {
     /**
      * @return Success
      */
-    public getAllQueries(): Observable<SearchQuerySummary[]> {
-        let url = '/api/queries';
+    public getAllSearchQueries(): Observable<SearchQuerySummary[]> {
+        let url = '/api/search-queries';
         url = url.replace(/[?&]$/, '');
 
         return this.http.get<SearchQuerySummary[]>(url);
@@ -32,41 +32,65 @@ export class QueryService {
      * @param body (optional) 
      * @return Success
      */
-    public createQuery(body?: CreateQueryOptions | undefined): Observable<SearchQuerySummary> {
-        let url = '/api/queries';
+    public createSearchQuery(body?: CreateSearchQueryOptions | undefined): Observable<SearchQueryDetail> {
+        let url = '/api/search-queries';
         url = url.replace(/[?&]$/, '');
 
         const _body = body;
 
-        return this.http.post<SearchQuerySummary>(url, _body);
+        return this.http.post<SearchQueryDetail>(url, _body);
     }
 
     /**
      * @return Success
      */
-    public getQuery(id: number): Observable<SearchQuerySummary> {
-        let url = '/api/queries/{id}';
+    public getSearchQuery(id: string): Observable<SearchQueryDetail> {
+        let url = '/api/search-queries/{id}';
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url = url.replace("{id}", encodeURIComponent("" + id));
         url = url.replace(/[?&]$/, '');
 
-        return this.http.get<SearchQuerySummary>(url);
+        return this.http.get<SearchQueryDetail>(url);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    public updateSearchQuery(id: string, body?: SearchQueryDetail | undefined): Observable<SearchQueryDetail> {
+        let url = '/api/search-queries/{id}';
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url = url.replace("{id}", encodeURIComponent("" + id));
+        url = url.replace(/[?&]$/, '');
+
+        const _body = body;
+
+        return this.http.put<SearchQueryDetail>(url, _body);
     }
 
 }
 
-export interface SearchCriteria {
-    withAllTheseWords?: string | null;
-}
-
 export interface SearchQuerySummary {
-    id?: number;
+    id?: string;
     name?: string | null;
-    criteria?: SearchCriteria;
     numberOfAuctions?: number;
 }
 
-export interface CreateQueryOptions {
+export interface CreateSearchQueryOptions {
     searchTerm?: string | null;
+}
+
+export interface SearchCriteria {
+    withAllTheseWords?: string | null;
+    withOneOfTheseWords?: string | null;
+    withExactlyTheseWords?: string | null;
+    withNoneOfTheseWords?: string | null;
+}
+
+export interface SearchQueryDetail {
+    id?: string;
+    name?: string | null;
+    criteria?: SearchCriteria;
 }

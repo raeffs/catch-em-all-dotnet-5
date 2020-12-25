@@ -1,25 +1,26 @@
 using CatchEmAll.Models;
 using CatchEmAll.Providers;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace CatchEmAll.Services
 {
-  internal class QueryService : IQueryService
+  internal class SearchQueryService : ISearchQueryService
   {
     private readonly IDataContext data;
     private readonly IProductSearch search;
 
-    public QueryService(IDataContext data, IProductSearch search)
+    public SearchQueryService(IDataContext data, IProductSearch search)
     {
       this.data = data;
       this.search = search;
     }
 
-    public async Task<int> CreateQueryAsync(CreateQueryOptions options)
+    public async Task<Guid> CreateQueryAsync(CreateSearchQueryOptions options)
     {
-      var query = new Query
+      var query = new SearchQuery
       {
         Criteria = new SearchCriteria
         {
@@ -31,7 +32,7 @@ namespace CatchEmAll.Services
       return query.Id;
     }
 
-    public async Task RefreshAsync(int id)
+    public async Task RefreshAsync(Guid id)
     {
       var query = await this.data.Queries.AsTracking().SingleOrDefaultAsync(x => x.Id == id);
       var auctions = await this.search.FindProductsAsync(query.Criteria);
@@ -42,16 +43,15 @@ namespace CatchEmAll.Services
       await this.data.SaveChangesAsync();
     }
 
-    public Task<SearchQuerySummary> GetSearchQuerySummaryAsync(int id)
+    public Task<SearchQueryDetail> GetDetailAsync(Guid id)
     {
       return this.data.Queries
         .Where(x => x.Id == id)
-        .Select(x => new SearchQuerySummary
+        .Select(x => new SearchQueryDetail
         {
           Id = x.Id,
           Name = x.Name,
           Criteria = x.Criteria,
-          NumberOfAuctions = x.Auctions.Count
         })
         .SingleOrDefaultAsync();
     }
@@ -63,9 +63,18 @@ namespace CatchEmAll.Services
         {
           Id = x.Id,
           Name = x.Name,
-          Criteria = x.Criteria,
           NumberOfAuctions = x.Auctions.Count
         });
+    }
+
+    public async Task UpdateAsync(Guid id, SearchQueryDetail model)
+    {
+      var query = await this.data.Queries.AsTracking().SingleOrDefaultAsync(x => x.Id == id) ?? new SearchQuery();
+
+      query.Name = model.Name;
+      query.Criteria = model.Criteria;
+
+      await this.data.SaveChangesAsync();
     }
   }
 }

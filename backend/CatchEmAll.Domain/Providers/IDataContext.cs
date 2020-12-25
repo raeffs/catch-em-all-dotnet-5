@@ -6,7 +6,7 @@ namespace CatchEmAll.Providers
 {
   public interface IDataContext
   {
-    DbSet<Query> Queries { get; }
+    DbSet<SearchQuery> Queries { get; }
 
     Task SaveChangesAsync();
   }

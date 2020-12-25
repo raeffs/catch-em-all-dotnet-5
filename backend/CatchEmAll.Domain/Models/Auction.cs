@@ -2,9 +2,9 @@ using System;
 
 namespace CatchEmAll.Models
 {
-  public record Auction
+  public record Auction : IHasIdentifier
   {
-    public int Id { get; init; }
+    public Guid Id { get; init; }
     public string Name { get; init; } = string.Empty;
     public DateTimeOffset Created { get; init; }
     public DateTimeOffset Ends { get; init; }
