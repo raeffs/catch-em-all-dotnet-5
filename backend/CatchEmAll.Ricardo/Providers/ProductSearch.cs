@@ -24,11 +24,17 @@ namespace CatchEmAll.Providers
       var products = entries.Select(x => new Auction
       {
         // Id = x.Id,
-        Name = x.Title ?? string.Empty,
-        Created = x.CreationDate,
-        Ends = x.EndDate,
-        PurchasePrice = x.BuyNowPrice,
-        BidPrice = x.BidPrice
+        Info = new AuctionInfo
+        {
+          Name = x.Title ?? string.Empty,
+          Created = x.CreationDate,
+          Ends = x.EndDate,
+        },
+        Price = new AuctionPrice
+        {
+          PurchasePrice = x.BuyNowPrice,
+          BidPrice = x.BidPrice,
+        }
       });
 
       return products.ToList();

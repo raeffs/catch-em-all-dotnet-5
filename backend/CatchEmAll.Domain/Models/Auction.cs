@@ -5,13 +5,7 @@ namespace CatchEmAll.Models
   public record Auction : IHasIdentifier
   {
     public Guid Id { get; init; }
-    public string Name { get; init; } = string.Empty;
-    public DateTimeOffset Created { get; init; }
-    public DateTimeOffset Ends { get; init; }
-    public bool IsClosed { get; init; }
-    public bool IsSold { get; init; }
-    public decimal? BidPrice { get; init; }
-    public decimal? PurchasePrice { get; init; }
-    public decimal? FinalPrice { get; init; }
+    public AuctionInfo Info { get; init; } = new AuctionInfo();
+    public AuctionPrice Price { get; init; } = new AuctionPrice();
   }
 }

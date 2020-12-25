@@ -23,6 +23,12 @@ namespace CatchEmAll.Providers
     {
       modelBuilder.Entity<SearchQuery>()
         .OwnsOne(x => x.Criteria);
+
+      modelBuilder.Entity<Auction>()
+        .OwnsOne(x => x.Info);
+
+      modelBuilder.Entity<Auction>()
+        .OwnsOne(x => x.Price);
     }
   }
 }

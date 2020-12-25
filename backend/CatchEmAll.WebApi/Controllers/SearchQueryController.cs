@@ -12,18 +12,18 @@ namespace CatchEmAll.Controllers
   [ApiController]
   public class SearchQueryController : ControllerBase
   {
-    private readonly ISearchQueryService service;
+    private readonly ISearchQueryService queries;
 
-    public SearchQueryController(ISearchQueryService service)
+    public SearchQueryController(ISearchQueryService queries)
     {
-      this.service = service;
+      this.queries = queries;
     }
 
     [HttpGet(Name = "GetAllSearchQueries")]
     [Produces(typeof(IEnumerable<SearchQuerySummary>))]
     public async Task<IActionResult> Get()
     {
-      var queries = await this.service.GetSummaries().ToListAsync();
+      var queries = await this.queries.GetSummaries().ToListAsync();
       return this.Ok(queries);
     }
 
@@ -31,7 +31,7 @@ namespace CatchEmAll.Controllers
     [Produces(typeof(SearchQueryDetail))]
     public async Task<IActionResult> Get(Guid id)
     {
-      var query = await this.service.GetDetailAsync(id);
+      var query = await this.queries.GetDetailAsync(id);
 
       if (query is null)
       {
@@ -45,7 +45,7 @@ namespace CatchEmAll.Controllers
     [Produces(typeof(SearchQueryDetail))]
     public async Task<IActionResult> Update(Guid id, SearchQueryDetail model)
     {
-      await this.service.UpdateAsync(id, model);
+      await this.queries.UpdateAsync(id, model);
       return await this.Get(id);
     }
 
@@ -54,9 +54,9 @@ namespace CatchEmAll.Controllers
     [Produces(typeof(SearchQueryDetail))]
     public async Task<IActionResult> Create([FromBody] CreateSearchQueryOptions options)
     {
-      var id = await this.service.CreateQueryAsync(options);
-      await this.service.RefreshAsync(id);
-      var query = await this.service.GetDetailAsync(id);
+      var id = await this.queries.CreateQueryAsync(options);
+      await this.queries.RefreshAsync(id);
+      var query = await this.queries.GetDetailAsync(id);
       return this.Ok(query);
     }
   }

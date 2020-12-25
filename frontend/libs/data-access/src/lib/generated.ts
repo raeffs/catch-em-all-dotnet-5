@@ -11,6 +11,28 @@ import { Observable } from 'rxjs';
 @Injectable({
     providedIn: 'root'
 })
+export class AuctionService {
+    private readonly http: HttpClient;
+
+    constructor(http: HttpClient) {
+        this.http = http;
+    }
+
+    /**
+     * @return Success
+     */
+    public getAllAuctions(): Observable<AuctionSummary[]> {
+        let url = '/api/auctions';
+        url = url.replace(/[?&]$/, '');
+
+        return this.http.get<AuctionSummary[]>(url);
+    }
+
+}
+
+@Injectable({
+    providedIn: 'root'
+})
 export class SearchQueryService {
     private readonly http: HttpClient;
 
@@ -70,6 +92,10 @@ export class SearchQueryService {
         return this.http.put<SearchQueryDetail>(url, _body);
     }
 
+}
+
+export interface AuctionSummary {
+    id?: string;
 }
 
 export interface SearchQuerySummary {
