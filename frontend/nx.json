@@ -1,0 +1,37 @@
+{
+  "npmScope": "cea",
+  "affected": {
+    "defaultBase": "main"
+  },
+  "implicitDependencies": {
+    "angular.json": "*",
+    "package.json": {
+      "dependencies": "*",
+      "devDependencies": "*"
+    },
+    "tsconfig.base.json": "*",
+    "tslint.json": "*",
+    ".eslintrc.json": "*",
+    "nx.json": "*"
+  },
+  "tasksRunnerOptions": {
+    "default": {
+      "runner": "@nrwl/workspace/tasks-runners/default",
+      "options": {
+        "cacheableOperations": ["build", "lint", "test", "e2e"]
+      }
+    }
+  },
+  "projects": {
+    "catch-em-all": {
+      "tags": []
+    },
+    "catch-em-all-e2e": {
+      "tags": [],
+      "implicitDependencies": ["catch-em-all"]
+    },
+    "data-access": {
+      "tags": []
+    }
+  }
+}

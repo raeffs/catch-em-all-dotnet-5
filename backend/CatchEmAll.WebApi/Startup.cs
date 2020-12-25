@@ -17,11 +17,22 @@ namespace CatchEmAll.WebApi
 
     public void ConfigureServices(IServiceCollection services)
     {
+      services.AddCors(o => o.AddPolicy("DefaultPolicy", builder =>
+      {
+        builder.AllowAnyOrigin()
+               .AllowAnyMethod()
+               .AllowAnyHeader();
+      }));
+
       services.AddControllers();
 
       services.AddSwaggerGen(config =>
       {
-        config.SwaggerDoc("default", new Microsoft.OpenApi.Models.OpenApiInfo { });
+        config.SwaggerDoc("default", new Microsoft.OpenApi.Models.OpenApiInfo
+        {
+          Title = "default",
+          Version = "v1"
+        });
       });
 
       services
@@ -36,6 +47,8 @@ namespace CatchEmAll.WebApi
       {
         app.UseDeveloperExceptionPage();
       }
+
+      app.UseCors("DefaultPolicy");
 
       app.UseSwagger();
       app.UseSwaggerUI(config =>

@@ -1,0 +1,171 @@
+{
+  "version": 1,
+  "projects": {
+    "catch-em-all": {
+      "projectType": "application",
+      "root": "apps/catch-em-all",
+      "sourceRoot": "apps/catch-em-all/src",
+      "prefix": "cea",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/apps/catch-em-all",
+            "index": "apps/catch-em-all/src/index.html",
+            "main": "apps/catch-em-all/src/main.ts",
+            "polyfills": "apps/catch-em-all/src/polyfills.ts",
+            "tsConfig": "apps/catch-em-all/tsconfig.app.json",
+            "aot": true,
+            "assets": [
+              "apps/catch-em-all/src/favicon.ico",
+              "apps/catch-em-all/src/assets"
+            ],
+            "styles": ["apps/catch-em-all/src/styles.css"],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/catch-em-all/src/environments/environment.ts",
+                  "with": "apps/catch-em-all/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "catch-em-all:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "catch-em-all:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "catch-em-all:build"
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "apps/catch-em-all/src/**/*.ts",
+              "apps/catch-em-all/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/catch-em-all"],
+          "options": {
+            "jestConfig": "apps/catch-em-all/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "catch-em-all-e2e": {
+      "root": "apps/catch-em-all-e2e",
+      "sourceRoot": "apps/catch-em-all-e2e/src",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/catch-em-all-e2e/cypress.json",
+            "tsConfig": "apps/catch-em-all-e2e/tsconfig.e2e.json",
+            "devServerTarget": "catch-em-all:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "catch-em-all:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["apps/catch-em-all-e2e/**/*.{js,ts}"]
+          }
+        }
+      }
+    },
+    "data-access": {
+      "projectType": "library",
+      "root": "libs/data-access",
+      "sourceRoot": "libs/data-access/src",
+      "prefix": "cea",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/data-access/src/**/*.ts",
+              "libs/data-access/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/data-access"],
+          "options": {
+            "jestConfig": "libs/data-access/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    }
+  },
+  "cli": {
+    "defaultCollection": "@nrwl/angular"
+  },
+  "schematics": {
+    "@nrwl/angular": {
+      "application": {
+        "linter": "eslint"
+      },
+      "library": {
+        "linter": "eslint"
+      },
+      "storybook-configuration": {
+        "linter": "eslint"
+      }
+    },
+    "@nrwl/angular:application": {
+      "unitTestRunner": "jest",
+      "e2eTestRunner": "cypress"
+    },
+    "@nrwl/angular:library": {
+      "unitTestRunner": "jest"
+    },
+    "@nrwl/angular:component": {
+      "style": "css"
+    }
+  },
+  "defaultProject": "catch-em-all"
+}

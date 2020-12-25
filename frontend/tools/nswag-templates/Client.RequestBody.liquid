@@ -1,0 +1,9 @@
+{% if operation.HasFormParameters -%}
+throw new Error('Not supported yet!'); // todo
+{% else -%}
+{%     if operation.HasContent -%}
+const _body = {{ operation.ContentParameter.VariableName }};
+{%     else -%}
+const _body = null;
+{%     endif -%}
+{% endif -%}

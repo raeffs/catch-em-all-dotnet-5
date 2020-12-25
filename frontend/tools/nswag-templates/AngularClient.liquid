@@ -1,0 +1,51 @@
+{% if HasOperations -%}
+
+@Injectable({
+    providedIn: 'root'
+})
+export class {{ Class }} {
+    private readonly http: HttpClient;
+
+    constructor(http: HttpClient) {
+        this.http = http;
+    }
+
+{% for operation in Operations -%}
+
+    {% template Client.Method.Documentation %}
+    public {{ operation.ActualOperationName }}({% for parameter in operation.Parameters %}{{ parameter.VariableName }}{% if parameter.IsOptional %}?{% endif %}: {{ parameter.Type }}{{ parameter.TypePostfix }}{% if parameter.IsLast == false%}, {% endif %}{% endfor %}): Observable<{{ operation.ResultType }}> {
+        {% template Client.RequestUrl %}
+
+{%     if operation.HasBody -%}
+        {% template Client.RequestBody %}
+{%     endif -%}
+
+{%     if operation.HasHeaderParameters -%}
+        const headers = new HttpHeaders({
+{%     for parameter in operation.HeaderParameters -%}
+          "{{ parameter.Name }}": {{ parameter.VariableName }} !== undefined && {{ parameter.VariableName }} !== null ? "" + {{ parameter.VariableName }} : "",
+{%     endfor -%}
+        });
+{%     endif -%}
+
+{%     if operation.IsFile -%}
+        return this.http.request("{{ operation.HttpMethodLower }}", url, {
+          observe: "response",
+          responseType: "blob",{% if operation.HasHeaderParameters %}
+          headers,{% endif %}{% if operation.HasBody %}
+          _body,{% endif %}
+        }).pipe(
+          convertToFileResponse()
+        );
+{%     else -%}
+{%         if operation.HttpMethodLower == "get" or operation.HttpMethodLower == "delete" -%}
+        return this.http.{{ operation.HttpMethodLower }}<{{ operation.ResultType }}>(url{% if operation.HasHeaderParameters %}, { headers }{% endif %});
+{%         else -%}
+        return this.http.{{ operation.HttpMethodLower }}<{{ operation.ResultType }}>(url, {% if operation.HasBody %}_body{% else %}null{% endif %}{% if operation.HasHeaderParameters %}, { headers }{% endif %});
+{%         endif -%}
+{%     endif -%}
+    }
+
+{% endfor -%}
+}
+{% endif -%}
