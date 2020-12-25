@@ -16,7 +16,14 @@
             "polyfills": "apps/catch-em-all/src/polyfills.ts",
             "tsConfig": "apps/catch-em-all/tsconfig.app.json",
             "aot": true,
-            "assets": ["apps/catch-em-all/src/favicon.ico", "apps/catch-em-all/src/assets"],
+            "assets": [
+              "apps/catch-em-all/src/favicon.ico",
+              {
+                "glob": "**/*",
+                "input": "apps/catch-em-all/src/assets",
+                "output": "/"
+              }
+            ],
             "styles": ["apps/catch-em-all/src/styles.css"],
             "scripts": []
           },
@@ -172,6 +179,74 @@
           "outputs": ["coverage/libs/domain-data-access"],
           "options": {
             "jestConfig": "libs/domain-data-access/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "ui-controls": {
+      "projectType": "library",
+      "root": "libs/ui-controls",
+      "sourceRoot": "libs/ui-controls/src",
+      "prefix": "cea",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "tsConfig": "libs/ui-controls/tsconfig.lib.json",
+            "project": "libs/ui-controls/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/ui-controls/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/ui-controls/src/**/*.ts", "libs/ui-controls/src/**/*.html"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/ui-controls"],
+          "options": {
+            "jestConfig": "libs/ui-controls/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "app-shell": {
+      "projectType": "library",
+      "root": "libs/app-shell",
+      "sourceRoot": "libs/app-shell/src",
+      "prefix": "cea",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "tsConfig": "libs/app-shell/tsconfig.lib.json",
+            "project": "libs/app-shell/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/app-shell/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/app-shell/src/**/*.ts", "libs/app-shell/src/**/*.html"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/app-shell"],
+          "options": {
+            "jestConfig": "libs/app-shell/jest.config.js",
             "passWithNoTests": true
           }
         }

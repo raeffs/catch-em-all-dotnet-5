@@ -1,5 +1,50 @@
+@font-face {
+  font-family: 'fsm';
+  src: url('/fonts/fsm/fsm-r.woff2') format('woff2'), url('/fonts/fsm/fsm-r.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: fallback;
+}
+
+@font-face {
+  font-family: 'fsm';
+  src: url('/fonts/fsm/fsm-b.woff2') format('woff2'), url('/fonts/fsm/fsm-b.woff') format('woff');
+  font-weight: 700;
+  font-style: normal;
+  font-display: fallback;
+}
+
+@font-face {
+  font-family: 'fsm';
+  src: url('/fonts/fsm/fsm-i.woff2') format('woff2'), url('/fonts/fsm/fsm-i.woff') format('woff');
+  font-weight: 400;
+  font-style: italic;
+  font-display: fallback;
+}
+
+@font-face {
+  font-family: 'fsm';
+  src: url('/fonts/fsm/fsm-bi.woff2') format('woff2'), url('/fonts/fsm/fsm-bi.woff') format('woff');
+  font-weight: 700;
+  font-style: italic;
+  font-display: fallback;
+}
+
+* {
+  box-sizing: border-box;
+  outline: none;
+}
+
+html {
+  font-family: 'fsm', 'Consolas', 'monaco', monospace;
+  font-feature-settings: 'ss01';
+  line-height: 1.8;
+  font-size: 15px;
+  -webkit-text-size-adjust: 100%;
+}
+
 body {
   margin: 0;
   width: 100vw;
-  min-height: 100vh;
+  overflow: hidden;
 }

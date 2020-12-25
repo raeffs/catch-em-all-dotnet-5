@@ -10,6 +10,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
+import { AppShellModule } from '@cea/app-shell';
 import { Observable } from 'rxjs';
 import { AppComponent } from './app.component';
 
@@ -31,6 +32,7 @@ export class TestInterceptor implements HttpInterceptor {
         loadChildren: () => import('@cea/feature-search-queries').then(x => x.FeatureSearchQueriesModule),
       },
     ]),
+    AppShellModule,
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: TestInterceptor, multi: true }],
   bootstrap: [AppComponent],

@@ -16,7 +16,9 @@
     "baseUrl": ".",
     "paths": {
       "@cea/feature-search-queries": ["libs/feature-search-queries/src/index.ts"],
-      "@cea/domain-data-access": ["libs/domain-data-access/src/index.ts"]
+      "@cea/domain-data-access": ["libs/domain-data-access/src/index.ts"],
+      "@cea/ui-controls": ["libs/ui-controls/src/index.ts"],
+      "@cea/app-shell": ["libs/app-shell/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

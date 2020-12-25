@@ -35,6 +35,12 @@
     },
     "domain-data-access": {
       "tags": []
+    },
+    "ui-controls": {
+      "tags": []
+    },
+    "app-shell": {
+      "tags": []
     }
   }
 }
