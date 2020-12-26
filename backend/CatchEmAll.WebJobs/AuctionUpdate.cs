@@ -7,16 +7,16 @@ namespace CatchEmAll.WebJobs
 {
   public class AuctionUpdate
   {
-    private readonly IAuctionService auctions;
+    private readonly IAuctionUpdateService service;
 
-    public AuctionUpdate(IAuctionService auctions)
+    public AuctionUpdate(IAuctionUpdateService service)
     {
-      this.auctions = auctions;
+      this.service = service;
     }
 
     public async Task UpdateAuctions([TimerTrigger("3/5 * * * * *", RunOnStartup = false)] TimerInfo timerInfo, ILogger logger)
     {
-      logger.LogInformation("Hello World!");
+      await this.service.UpdateAuctions();
     }
   }
 }

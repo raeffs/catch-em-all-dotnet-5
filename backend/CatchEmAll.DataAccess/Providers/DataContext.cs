@@ -29,6 +29,12 @@ namespace CatchEmAll.Providers
 
       modelBuilder.Entity<Auction>()
         .OwnsOne(x => x.Price);
+
+      modelBuilder.Entity<Auction>()
+        .OwnsOne(x => x.Update);
+
+      modelBuilder.Entity<Auction>()
+        .OwnsOne(x => x.Provider);
     }
   }
 }

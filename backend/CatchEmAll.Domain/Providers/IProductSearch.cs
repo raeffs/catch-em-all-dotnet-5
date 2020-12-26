@@ -7,5 +7,7 @@ namespace CatchEmAll.Providers
   public interface IProductSearch
   {
     Task<ICollection<Auction>> FindProductsAsync(SearchCriteria criteria);
+
+    Task<(AuctionInfo, AuctionPrice)> GetAuctionAsync(string id);
   }
 }

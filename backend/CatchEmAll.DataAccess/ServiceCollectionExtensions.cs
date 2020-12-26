@@ -11,6 +11,7 @@ namespace CatchEmAll
     {
       return services
         .AddTransient<IDataContext, DataContext>()
+        .AddSingleton<IDataContextFactory, DataContextFactory>()
         .AddDbContext<DataContext>(options =>
         {
           options

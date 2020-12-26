@@ -21,23 +21,65 @@ namespace CatchEmAll.Providers
         return Array.Empty<Auction>();
       }
 
-      var products = entries.Select(x => new Auction
-      {
-        // Id = x.Id,
-        Info = new AuctionInfo
+      var products = entries.Select(x => new Auction(
+        new ProviderInfo
+        {
+          Key = "ricardo",
+          Value = x.Id.ToString()
+        },
+        new AuctionInfo
         {
           Name = x.Title ?? string.Empty,
           Created = x.CreationDate,
           Ends = x.EndDate,
         },
-        Price = new AuctionPrice
+        new AuctionPrice
         {
           PurchasePrice = x.BuyNowPrice,
           BidPrice = x.BidPrice,
         }
-      });
+      ));
 
       return products.ToList();
+    }
+
+    public async Task<(AuctionInfo, AuctionPrice)> GetAuctionAsync(string id)
+    {
+      // the url copied from the browser is human readable, but the human readable part can be omitted
+      var url = string.Format("https://www.ricardo.ch/de/a/{0}/", id);
+      var data = await this.FetchAndParsePage<ArticlePageDataJson>(url);
+      var articleData = data?.InitialState?.Pdp?.Article;
+      var bidData = data?.InitialState?.Pdp?.Bid;
+
+      if (articleData == null)
+      {
+        // todo: add proper exceptions
+        throw new Exception();
+      }
+
+      /*
+      if (articleData.Id != articleData.ProductId)
+      {
+        // todo: not sure yet what that could mean
+        throw new Exception();
+      }
+      */
+
+      var info = new AuctionInfo
+      {
+        Name = articleData.Title ?? string.Empty,
+        Created = articleData.CreationDate,
+        Ends = articleData.EndDate,
+        IsClosed = articleData.Status != 0,
+      };
+
+      var price = new AuctionPrice
+      {
+        PurchasePrice = articleData.Offer?.Price,
+        BidPrice = bidData?.Data?.NextMinimumBid,
+      };
+
+      return (info, price);
     }
 
     private async Task<T?> FetchAndParsePage<T>(string url)

@@ -63,7 +63,7 @@ namespace CatchEmAll.WebApi
         endpoints.MapControllers();
       });
 
-      app.ApplicationServices.CreateDatabase();
+      //app.ApplicationServices.CreateDatabase();
     }
   }
 }
