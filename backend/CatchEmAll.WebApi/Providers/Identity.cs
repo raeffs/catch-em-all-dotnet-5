@@ -38,6 +38,6 @@ namespace CatchEmAll.Providers
       };
     }
 
-    private string? FromClaim(string claimType) => this.accessor.HttpContext?.User?.Claims?.Single(x => x.Type == claimType)?.Value;
+    private string? FromClaim(string claimType) => this.accessor.HttpContext?.User?.Claims?.SingleOrDefault(x => x.Type == claimType)?.Value;
   }
 }

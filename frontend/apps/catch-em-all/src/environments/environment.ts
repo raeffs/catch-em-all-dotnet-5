@@ -1,6 +1,6 @@
 export const environment = {
   production: false,
-  authIssuer: 'https://raefftec.eu.auth0.com/',
-  authClientId: 'QAuZ5ePArGrJ7WV83pd08XlOMUujqlpv',
+  authIssuer: 'https://raeffs.eu.auth0.com/',
+  authClientId: 'CISn8AsidIlWXUperfhBHUjJ9GhQ3Xuq',
   apiEndpoint: 'http://localhost:5000',
 };
