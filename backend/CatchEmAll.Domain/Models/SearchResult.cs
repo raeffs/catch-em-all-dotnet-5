@@ -5,7 +5,7 @@ namespace CatchEmAll.Models
   /// <summary>
   /// Represents a search result that is part of a search query.
   /// </summary>
-  public record SearchResult : IHasIdentifier
+  public record SearchResult : IHasIdentifier, IHasSoftDelete
   {
     /// <summary>
     /// The identifier of the search result.
@@ -31,5 +31,10 @@ namespace CatchEmAll.Models
     /// The auction the search result represents.
     /// </summary>
     public Auction Auction { get; init; } = null!;
+
+    /// <summary>
+    /// Whether the search result is deleted or not.
+    /// </summary>
+    public bool IsDeleted { get; init; }
   }
 }

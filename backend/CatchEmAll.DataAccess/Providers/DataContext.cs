@@ -36,6 +36,8 @@ namespace CatchEmAll.Providers
       modelBuilder.Owned<AuctionPrice>();
       modelBuilder.Owned<ProviderInfo>();
       modelBuilder.Owned<UserSettings>();
+
+      modelBuilder.Entity<SearchResult>().HasQueryFilter(x => !x.IsDeleted);
     }
 
     private void ApplyGlobalModifications(ModelBuilder modelBuilder)
