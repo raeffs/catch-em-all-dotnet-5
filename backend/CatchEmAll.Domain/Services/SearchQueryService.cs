@@ -11,11 +11,13 @@ namespace CatchEmAll.Services
   {
     private readonly IDataContext data;
     private readonly IProductSearch search;
+    private readonly IIdentity identity;
 
-    public SearchQueryService(IDataContext data, IProductSearch search)
+    public SearchQueryService(IDataContext data, IProductSearch search, IIdentity identity)
     {
       this.data = data;
       this.search = search;
+      this.identity = identity;
     }
 
     public async Task<Guid> CreateQueryAsync(CreateSearchQueryOptions options)
@@ -26,7 +28,8 @@ namespace CatchEmAll.Services
         Criteria = new SearchCriteria
         {
           WithAllTheseWords = options.SearchTerm
-        }
+        },
+        User = await this.data.GetOrCreateUserReferenceAsync(this.identity)
       };
       this.data.SearchQueries.Add(query);
       await this.data.SaveChangesAsync();
@@ -50,6 +53,7 @@ namespace CatchEmAll.Services
     public Task<SearchQueryDetail> GetDetailAsync(Guid id)
     {
       return this.data.SearchQueries
+        .BelongingToOrNoOne(this.identity)
         .Where(x => x.Id == id)
         .Select(x => new SearchQueryDetail
         {
@@ -63,6 +67,7 @@ namespace CatchEmAll.Services
     public IQueryable<SearchQuerySummary> GetSummaries()
     {
       return this.data.SearchQueries
+        .BelongingTo(this.identity)
         .Select(x => new SearchQuerySummary
         {
           Id = x.Id,
@@ -73,7 +78,9 @@ namespace CatchEmAll.Services
 
     public async Task UpdateAsync(Guid id, SearchQueryDetail model)
     {
-      var query = await this.data.SearchQueries.AsTracking().SingleOrDefaultAsync(x => x.Id == id) ?? new SearchQuery();
+      var query = await this.data.SearchQueries.AsTracking()
+        .BelongingTo(this.identity)
+        .SingleOrDefaultAsync(x => x.Id == id) ?? new SearchQuery();
 
       query.Name = model.Name;
       query.Criteria = model.Criteria;

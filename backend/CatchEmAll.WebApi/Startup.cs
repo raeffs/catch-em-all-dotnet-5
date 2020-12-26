@@ -1,4 +1,5 @@
 using CatchEmAll.Options;
+using CatchEmAll.Providers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -58,6 +59,10 @@ namespace CatchEmAll.WebApi
               NameClaimType = "name"
             };
           });
+
+      services
+        .AddHttpContextAccessor()
+        .AddScoped<IIdentity, Identity>();
 
       services
         .AddDataAccess(this.configuration.GetConnectionString("DataContext"))

@@ -6,7 +6,7 @@ namespace CatchEmAll.Models
   /// <summary>
   /// Represents a search query.
   /// </summary>
-  public record SearchQuery : IHasIdentifier
+  public record SearchQuery : IHasIdentifier, IMayBelongToUser
   {
     /// <summary>
     /// The identifier of the search query.

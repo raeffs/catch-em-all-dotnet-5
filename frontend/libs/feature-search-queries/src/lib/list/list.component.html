@@ -1,3 +1,18 @@
-<cea-breadcrumbs>
-  <cea-breadcrumb>Search Queries</cea-breadcrumb>
-</cea-breadcrumbs>
+<div>
+  <cea-breadcrumbs>
+    <cea-breadcrumb>Search Queries</cea-breadcrumb>
+  </cea-breadcrumbs>
+
+  <cea-card *ngIf="queries | async as queriesModel">
+    <div class="row">
+      <div class="cell">Name</div>
+      <div class="cell">Number of Auctions</div>
+    </div>
+    <cdk-virtual-scroll-viewport itemSize="45">
+      <div *cdkVirtualFor="let query of queriesModel" class="row">
+        <div class="cell">{{ query.name }}</div>
+        <div class="cell">{{ query.numberOfAuctions }}</div>
+      </div>
+    </cdk-virtual-scroll-viewport>
+  </cea-card>
+</div>
