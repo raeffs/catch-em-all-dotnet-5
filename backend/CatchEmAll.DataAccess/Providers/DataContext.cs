@@ -1,5 +1,6 @@
 using CatchEmAll.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace CatchEmAll.Providers
@@ -11,7 +12,9 @@ namespace CatchEmAll.Providers
     {
     }
 
-    public DbSet<SearchQuery> Queries { get; set; } = null!;
+    public DbSet<UserReference> Users { get; set; } = null!;
+    public DbSet<SearchQuery> SearchQueries { get; set; } = null!;
+    public DbSet<SearchResult> SearchResults { get; set; } = null!;
     public DbSet<Auction> Auctions { get; set; } = null!;
 
     public Task SaveChangesAsync()
@@ -21,23 +24,29 @@ namespace CatchEmAll.Providers
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-      modelBuilder.Entity<SearchQuery>()
-        .OwnsOne(x => x.Criteria);
+      this.BuildModel(modelBuilder);
+      this.ApplyGlobalModifications(modelBuilder);
+    }
 
-      modelBuilder.Entity<SearchQuery>()
-        .OwnsOne(x => x.Update);
+    private void BuildModel(ModelBuilder modelBuilder)
+    {
+      modelBuilder.Owned<SearchCriteria>();
+      modelBuilder.Owned<UpdateInfo>();
+      modelBuilder.Owned<AuctionInfo>();
+      modelBuilder.Owned<AuctionPrice>();
+      modelBuilder.Owned<ProviderInfo>();
+    }
 
-      modelBuilder.Entity<Auction>()
-        .OwnsOne(x => x.Info);
+    private void ApplyGlobalModifications(ModelBuilder modelBuilder)
+    {
+      var decimalProperties = modelBuilder.Model.GetEntityTypes()
+          .SelectMany(x => x.GetProperties())
+          .Where(x => x.ClrType == typeof(decimal) || x.ClrType == typeof(decimal?));
 
-      modelBuilder.Entity<Auction>()
-        .OwnsOne(x => x.Price);
-
-      modelBuilder.Entity<Auction>()
-        .OwnsOne(x => x.Update);
-
-      modelBuilder.Entity<Auction>()
-        .OwnsOne(x => x.Provider);
+      foreach (var property in decimalProperties)
+      {
+        property.SetColumnType("decimal(18, 6)");
+      }
     }
   }
 }

@@ -28,25 +28,28 @@ namespace CatchEmAll.Services
           WithAllTheseWords = options.SearchTerm
         }
       };
-      this.data.Queries.Add(query);
+      this.data.SearchQueries.Add(query);
       await this.data.SaveChangesAsync();
       return query.Id;
     }
 
     public async Task RefreshAsync(Guid id)
     {
-      var query = await this.data.Queries.AsTracking().SingleOrDefaultAsync(x => x.Id == id);
+      var query = await this.data.SearchQueries.AsTracking().SingleOrDefaultAsync(x => x.Id == id);
       var auctions = await this.search.FindProductsAsync(query.Criteria);
       foreach (var auction in auctions)
       {
-        query.Auctions.Add(auction);
+        query.Results.Add(new SearchResult
+        {
+          Auction = auction
+        });
       }
       await this.data.SaveChangesAsync();
     }
 
     public Task<SearchQueryDetail> GetDetailAsync(Guid id)
     {
-      return this.data.Queries
+      return this.data.SearchQueries
         .Where(x => x.Id == id)
         .Select(x => new SearchQueryDetail
         {
@@ -59,18 +62,18 @@ namespace CatchEmAll.Services
 
     public IQueryable<SearchQuerySummary> GetSummaries()
     {
-      return this.data.Queries
+      return this.data.SearchQueries
         .Select(x => new SearchQuerySummary
         {
           Id = x.Id,
           Name = x.Name,
-          NumberOfAuctions = x.Auctions.Count
+          NumberOfAuctions = x.Results.Count
         });
     }
 
     public async Task UpdateAsync(Guid id, SearchQueryDetail model)
     {
-      var query = await this.data.Queries.AsTracking().SingleOrDefaultAsync(x => x.Id == id) ?? new SearchQuery();
+      var query = await this.data.SearchQueries.AsTracking().SingleOrDefaultAsync(x => x.Id == id) ?? new SearchQuery();
 
       query.Name = model.Name;
       query.Criteria = model.Criteria;

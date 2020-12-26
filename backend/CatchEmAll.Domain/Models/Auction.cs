@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 
 namespace CatchEmAll.Models
 {
@@ -32,8 +31,6 @@ namespace CatchEmAll.Models
     /// The information about the provider the auction belongs to.
     /// </summary>
     public ProviderInfo Provider { get; private set; } = new ProviderInfo();
-
-    public ICollection<SearchQuery> Queries { get; init; } = new List<SearchQuery>();
 
     private Auction() { }
 

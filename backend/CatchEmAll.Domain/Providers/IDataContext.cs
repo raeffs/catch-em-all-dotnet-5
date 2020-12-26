@@ -7,7 +7,9 @@ namespace CatchEmAll.Providers
 {
   public interface IDataContext : IDisposable
   {
-    DbSet<SearchQuery> Queries { get; }
+    DbSet<UserReference> Users { get; }
+    DbSet<SearchQuery> SearchQueries { get; }
+    DbSet<SearchResult> SearchResults { get; }
     DbSet<Auction> Auctions { get; }
 
     Task SaveChangesAsync();

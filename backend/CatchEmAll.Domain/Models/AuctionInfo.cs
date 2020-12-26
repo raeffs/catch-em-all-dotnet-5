@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace CatchEmAll.Models
 {
@@ -10,6 +11,7 @@ namespace CatchEmAll.Models
     /// <summary>
     /// The name of the auction.
     /// </summary>
+    [StringLength(100)]
     public string Name { get; init; } = string.Empty;
 
     /// <summary>

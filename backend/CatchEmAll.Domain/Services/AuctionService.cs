@@ -29,9 +29,10 @@ namespace CatchEmAll.Services
 
     public IQueryable<AuctionSummary> GetSummariesByQueryId(Guid id)
     {
-      return this.data.Queries
+      return this.data.SearchQueries
         .Where(x => x.Id == id)
-        .SelectMany(x => x.Auctions)
+        .SelectMany(x => x.Results)
+        .Select(x => x.Auction)
         .Select(x => new AuctionSummary
         {
           Id = x.Id,

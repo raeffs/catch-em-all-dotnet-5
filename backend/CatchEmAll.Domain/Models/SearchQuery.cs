@@ -28,6 +28,19 @@ namespace CatchEmAll.Models
     /// </summary>
     public UpdateInfo Update { get; init; } = new UpdateInfo();
 
-    public ICollection<Auction> Auctions { get; init; } = new List<Auction>();
+    /// <summary>
+    /// The results of the search query.
+    /// </summary>
+    public ICollection<SearchResult> Results { get; init; } = new List<SearchResult>();
+
+    /// <summary>
+    /// The identifier of the user the search query belongs to.
+    /// </summary>
+    public Guid? UserId { get; set; }
+
+    /// <summary>
+    /// The user the search query belongs to.
+    /// </summary>
+    public UserReference? User { get; init; }
   }
 }
