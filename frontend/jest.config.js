@@ -6,5 +6,6 @@ module.exports = {
     '<rootDir>/libs/domain-data-access',
     '<rootDir>/libs/ui-controls',
     '<rootDir>/libs/app-shell',
+    '<rootDir>/libs/util-security',
   ],
 };

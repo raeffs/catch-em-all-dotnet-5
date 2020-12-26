@@ -10,12 +10,17 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 import { AppShellModule } from '@cea/app-shell';
+import { SecurityModule } from '@cea/util-security';
 import { Observable } from 'rxjs';
+import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
 
 export class TestInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    return next.handle(req.clone({ url: `http://localhost:5000${req.url}` }));
+    if (req.url.startsWith('/')) {
+      return next.handle(req.clone({ url: `http://localhost:5000${req.url}` }));
+    }
+    return next.handle(req);
   }
 }
 
@@ -36,6 +41,14 @@ export class TestInterceptor implements HttpInterceptor {
       },
     ]),
     AppShellModule,
+    SecurityModule.forRoot({
+      apiEndpoint: environment.apiEndpoint,
+      issuer: environment.authIssuer,
+      clientId: environment.authClientId,
+      redirectUri: `${window.location.origin}`,
+      silentRedirectUri: `${window.location.origin}/silent-refresh.html`,
+      scope: 'openid profile email offline_access',
+    }),
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: TestInterceptor, multi: true }],
   bootstrap: [AppComponent],

@@ -1,9 +1,11 @@
 using CatchEmAll.Options;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 
 namespace CatchEmAll.WebApi
 {
@@ -18,7 +20,8 @@ namespace CatchEmAll.WebApi
 
     public void ConfigureServices(IServiceCollection services)
     {
-      services.AddOptions<DataAccessOptions>().Bind(this.configuration.GetSection("DataAccess"));
+      services.AddOptions<DataAccessOptions>().Bind(this.configuration.GetSection("CatchEmAll:DataAccess"));
+      services.AddOptions<WebApiOptions>().Bind(this.configuration.GetSection("CatchEmAll:WebApi"));
 
       services.AddCors(o => o.AddPolicy("DefaultPolicy", builder =>
       {
@@ -37,6 +40,24 @@ namespace CatchEmAll.WebApi
           Version = "v1"
         });
       });
+
+      services
+          .AddAuthentication(options =>
+          {
+            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+          })
+          .AddJwtBearer(options =>
+          {
+            var config = this.configuration.GetSection("CatchEmAll:WebApi").Get<WebApiOptions>();
+
+            options.Authority = config.Issuer;
+            options.Audience = config.ClientId;
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+              NameClaimType = "name"
+            };
+          });
 
       services
         .AddDataAccess(this.configuration.GetConnectionString("DataContext"))
@@ -60,6 +81,9 @@ namespace CatchEmAll.WebApi
       });
 
       app.UseRouting();
+
+      app.UseAuthentication();
+      app.UseAuthorization();
 
       app.UseEndpoints(endpoints =>
       {

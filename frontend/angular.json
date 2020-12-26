@@ -251,6 +251,40 @@
           }
         }
       }
+    },
+    "util-security": {
+      "projectType": "library",
+      "root": "libs/util-security",
+      "sourceRoot": "libs/util-security/src",
+      "prefix": "cea",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "tsConfig": "libs/util-security/tsconfig.lib.json",
+            "project": "libs/util-security/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/util-security/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/util-security/src/**/*.ts", "libs/util-security/src/**/*.html"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/util-security"],
+          "options": {
+            "jestConfig": "libs/util-security/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
     }
   },
   "cli": {
