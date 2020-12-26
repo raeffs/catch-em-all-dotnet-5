@@ -56,7 +56,7 @@ namespace CatchEmAll.WebApi
             options.Audience = config.ClientId;
             options.TokenValidationParameters = new TokenValidationParameters
             {
-              NameClaimType = "name"
+              NameClaimType = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier",
             };
           });
 

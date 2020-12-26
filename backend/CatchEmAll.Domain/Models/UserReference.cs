@@ -13,8 +13,13 @@ namespace CatchEmAll.Models
     public Guid Id { get; init; }
 
     /// <summary>
-    /// The username of the user reference.
+    /// The external identifier of the user reference.
     /// </summary>
-    public string Username { get; init; } = string.Empty;
+    public string ExternalId { get; init; } = string.Empty;
+
+    /// <summary>
+    /// The email address of the user reference.
+    /// </summary>
+    public string EmailAddress { get; init; } = string.Empty;
   }
 }

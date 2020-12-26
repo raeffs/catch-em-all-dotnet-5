@@ -9,13 +9,13 @@ namespace CatchEmAll
     public static IQueryable<T> BelongingTo<T>(this IQueryable<T> source, IIdentity identity) where T : class, IMayBelongToUser
     {
       return source
-        .Where(x => x.User != null && x.User.Username == identity.Username);
+        .Where(x => x.User != null && x.User.ExternalId == identity.ExternalId);
     }
 
     public static IQueryable<T> BelongingToOrNoOne<T>(this IQueryable<T> source, IIdentity identity) where T : class, IMayBelongToUser
     {
       return source
-        .Where(x => x.User == null || x.User.Username == identity.Username);
+        .Where(x => x.User == null || x.User.ExternalId == identity.ExternalId);
     }
   }
 }

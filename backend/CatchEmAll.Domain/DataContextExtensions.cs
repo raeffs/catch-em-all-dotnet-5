@@ -15,8 +15,8 @@ namespace CatchEmAll
         return null;
       }
 
-      return (await context.Users.AsTracking().Where(u => u.Username == identity.Username).SingleOrDefaultAsync())
-          ?? new UserReference { Username = identity.Username };
+      return (await context.Users.AsTracking().Where(u => u.ExternalId == identity.ExternalId).SingleOrDefaultAsync())
+          ?? identity.AsUserReference();
     }
   }
 }
