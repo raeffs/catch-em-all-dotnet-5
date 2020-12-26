@@ -1,3 +1,4 @@
+using CatchEmAll.Options;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -8,15 +9,17 @@ namespace CatchEmAll.WebApi
 {
   public class Startup
   {
+    private readonly IConfiguration configuration;
+
     public Startup(IConfiguration configuration)
     {
-      Configuration = configuration;
+      this.configuration = configuration;
     }
-
-    public IConfiguration Configuration { get; }
 
     public void ConfigureServices(IServiceCollection services)
     {
+      services.AddOptions<DataAccessOptions>().Bind(this.configuration.GetSection("DataAccess"));
+
       services.AddCors(o => o.AddPolicy("DefaultPolicy", builder =>
       {
         builder.AllowAnyOrigin()
@@ -36,7 +39,7 @@ namespace CatchEmAll.WebApi
       });
 
       services
-        .AddDataAccess(this.Configuration.GetConnectionString("DataContext"))
+        .AddDataAccess(this.configuration.GetConnectionString("DataContext"))
         .AddDomain()
         .AddRicardo();
     }
@@ -62,8 +65,6 @@ namespace CatchEmAll.WebApi
       {
         endpoints.MapControllers();
       });
-
-      app.ApplicationServices.CreateDatabase();
     }
   }
 }

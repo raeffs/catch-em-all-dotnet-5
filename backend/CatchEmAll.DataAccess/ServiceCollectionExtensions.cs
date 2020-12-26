@@ -1,7 +1,6 @@
 using CatchEmAll.Providers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using System;
 
 namespace CatchEmAll
 {
@@ -10,6 +9,7 @@ namespace CatchEmAll
     public static IServiceCollection AddDataAccess(this IServiceCollection services, string connectionString)
     {
       return services
+        .AddTransient<IMigrator, Migrator>()
         .AddTransient<IDataContext, DataContext>()
         .AddSingleton<IDataContextFactory, DataContextFactory>()
         .AddDbContext<DataContext>(options =>
@@ -18,18 +18,6 @@ namespace CatchEmAll
             .UseSqlServer(connectionString)
             .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
         });
-    }
-
-    public static void CreateDatabase(this IServiceProvider services)
-    {
-      using (var scope = services.GetRequiredService<IServiceScopeFactory>().CreateScope())
-      {
-        using (var context = scope.ServiceProvider.GetRequiredService<DataContext>())
-        {
-          context.Database.EnsureDeleted();
-          context.Database.EnsureCreated();
-        }
-      }
     }
   }
 }
