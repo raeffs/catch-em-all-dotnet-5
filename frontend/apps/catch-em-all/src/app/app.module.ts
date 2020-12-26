@@ -7,7 +7,6 @@ import {
   HTTP_INTERCEPTORS,
 } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 import { AppShellModule } from '@cea/app-shell';
@@ -24,12 +23,16 @@ export class TestInterceptor implements HttpInterceptor {
   declarations: [AppComponent],
   imports: [
     BrowserModule,
-    FormsModule,
     HttpClientModule,
     RouterModule.forRoot([
       {
-        path: '',
+        path: 'queries',
         loadChildren: () => import('@cea/feature-search-queries').then(x => x.FeatureSearchQueriesModule),
+      },
+      {
+        path: '',
+        pathMatch: 'full',
+        redirectTo: 'queries',
       },
     ]),
     AppShellModule,

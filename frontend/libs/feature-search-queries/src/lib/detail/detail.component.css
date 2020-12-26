@@ -1,0 +1,29 @@
+:host > div {
+  /* create layout */
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  height: 100%;
+}
+
+cea-card:last-of-type {
+  flex: auto;
+}
+
+cdk-virtual-scroll-viewport {
+  height: calc(100% - 45px);
+}
+
+.row {
+  height: 45px;
+  display: grid;
+  grid-template-columns: 40% 100px 100px auto;
+  align-items: center;
+  gap: 20px;
+}
+
+.cell {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

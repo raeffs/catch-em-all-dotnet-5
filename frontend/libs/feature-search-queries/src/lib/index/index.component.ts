@@ -23,7 +23,7 @@ export class IndexComponent {
 
   public createSearchQuery(): void {
     this.queries.createSearchQuery({ searchTerm: this.model.get('searchTerm')?.value }).subscribe(query => {
-      this.router.navigate([query.id]);
+      this.router.navigate(['queries', 'detail', query.id]);
     });
   }
 }

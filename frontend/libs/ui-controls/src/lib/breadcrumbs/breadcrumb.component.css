@@ -1,0 +1,21 @@
+:host {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+:host.is-link {
+  cursor: pointer;
+}
+
+:host::after {
+  content: '\2192';
+  padding: 0 10px;
+}
+
+:host:last-of-type {
+  font-weight: bold;
+}
+
+:host:last-of-type::after {
+  display: none;
+}

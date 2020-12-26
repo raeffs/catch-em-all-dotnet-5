@@ -1,5 +1,6 @@
 using CatchEmAll.Models;
 using CatchEmAll.Providers;
+using System;
 using System.Linq;
 
 namespace CatchEmAll.Services
@@ -18,7 +19,26 @@ namespace CatchEmAll.Services
       return this.data.Auctions
         .Select(x => new AuctionSummary
         {
-          Id = x.Id
+          Id = x.Id,
+          Name = x.Info.Name,
+          Ends = x.Info.Ends,
+          BidPrice = x.Price.BidPrice,
+          PurchasePrice = x.Price.PurchasePrice
+        });
+    }
+
+    public IQueryable<AuctionSummary> GetSummariesByQueryId(Guid id)
+    {
+      return this.data.Queries
+        .Where(x => x.Id == id)
+        .SelectMany(x => x.Auctions)
+        .Select(x => new AuctionSummary
+        {
+          Id = x.Id,
+          Name = x.Info.Name,
+          Ends = x.Info.Ends,
+          BidPrice = x.Price.BidPrice,
+          PurchasePrice = x.Price.PurchasePrice
         });
     }
   }

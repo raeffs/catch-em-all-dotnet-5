@@ -2,4 +2,9 @@
   height: 100vh;
   display: grid;
   grid-template-rows: min-content auto min-content;
+  gap: 20px;
+}
+
+.content {
+  padding: 0 45px;
 }

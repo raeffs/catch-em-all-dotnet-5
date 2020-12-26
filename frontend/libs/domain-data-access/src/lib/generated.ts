@@ -92,10 +92,27 @@ export class SearchQueryService {
         return this.http.put<SearchQueryDetail>(url, _body);
     }
 
+    /**
+     * @return Success
+     */
+    public getAuctions(id: string): Observable<AuctionSummary[]> {
+        let url = '/api/search-queries/{id}/auctions';
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url = url.replace("{id}", encodeURIComponent("" + id));
+        url = url.replace(/[?&]$/, '');
+
+        return this.http.get<AuctionSummary[]>(url);
+    }
+
 }
 
 export interface AuctionSummary {
     id?: string;
+    name?: string | null;
+    ends?: string;
+    bidPrice?: number | null;
+    purchasePrice?: number | null;
 }
 
 export interface SearchQuerySummary {

@@ -1,27 +1,29 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { UiControlsModule } from '@cea/ui-controls';
-import { DetailComponent } from './detail/detail.component';
-import { IndexComponent } from './index/index.component';
 
 @NgModule({
   imports: [
     CommonModule,
-    ReactiveFormsModule,
     RouterModule.forChild([
       {
-        path: '',
-        component: IndexComponent,
+        path: 'start',
+        loadChildren: () => import('./index/index.module').then(m => m.IndexModule),
       },
       {
-        path: ':id',
-        component: DetailComponent,
+        path: 'list',
+        loadChildren: () => import('./list/list.module').then(m => m.ListModule),
+      },
+      {
+        path: 'detail/:id',
+        loadChildren: () => import('./detail/detail.module').then(m => m.DetailModule),
+      },
+      {
+        path: '',
+        pathMatch: 'full',
+        redirectTo: 'start',
       },
     ]),
-    UiControlsModule,
   ],
-  declarations: [IndexComponent, DetailComponent],
 })
 export class FeatureSearchQueriesModule {}

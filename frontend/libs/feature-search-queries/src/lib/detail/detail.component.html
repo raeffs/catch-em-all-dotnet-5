@@ -1,0 +1,25 @@
+<div *ngIf="query | async as model">
+  <cea-breadcrumbs>
+    <cea-breadcrumb routerLink="/queries/list">Search Queries</cea-breadcrumb>
+    <cea-breadcrumb>{{ model.name }}</cea-breadcrumb>
+  </cea-breadcrumbs>
+  <cea-card>
+    <pre>{{ model | json }}</pre>
+  </cea-card>
+  <cea-card *ngIf="auctions | async as auctionsModel">
+    <div class="row">
+      <div class="cell">Name</div>
+      <div class="cell">Bid Price</div>
+      <div class="cell">Purchase Price</div>
+      <div class="cell">Ends in</div>
+    </div>
+    <cdk-virtual-scroll-viewport itemSize="45">
+      <div *cdkVirtualFor="let auction of auctionsModel" class="row">
+        <div class="cell">{{ auction.name }}</div>
+        <div class="cell">{{ auction.bidPrice }}</div>
+        <div class="cell">{{ auction.purchasePrice }}</div>
+        <div class="cell">{{ auction.ends }}</div>
+      </div>
+    </cdk-virtual-scroll-viewport>
+  </cea-card>
+</div>
