@@ -24,6 +24,9 @@ namespace CatchEmAll.Providers
       modelBuilder.Entity<SearchQuery>()
         .OwnsOne(x => x.Criteria);
 
+      modelBuilder.Entity<SearchQuery>()
+        .OwnsOne(x => x.Update);
+
       modelBuilder.Entity<Auction>()
         .OwnsOne(x => x.Info);
 

@@ -2,6 +2,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CatchEmAll.Models
 {
+  /// <summary>
+  /// Represents search criteria used by a query.
+  /// </summary>
   public record SearchCriteria
   {
     [StringLength(100)]
