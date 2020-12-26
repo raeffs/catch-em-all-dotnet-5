@@ -31,7 +31,10 @@ namespace CatchEmAll.Providers
       return new UserReference
       {
         ExternalId = this.FromClaim(IdClaimType)!,
-        EmailAddress = this.FromClaim(EmailClaimType)!
+        Settings = new UserSettings
+        {
+          EmailAddress = this.FromClaim(EmailClaimType)!
+        }
       };
     }
 

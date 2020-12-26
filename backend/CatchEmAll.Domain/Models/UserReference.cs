@@ -18,8 +18,8 @@ namespace CatchEmAll.Models
     public string ExternalId { get; init; } = string.Empty;
 
     /// <summary>
-    /// The email address of the user reference.
+    /// The settings of the user reference.
     /// </summary>
-    public string EmailAddress { get; init; } = string.Empty;
+    public UserSettings Settings { get; init; } = new UserSettings();
   }
 }

@@ -35,6 +35,7 @@ namespace CatchEmAll.Providers
       modelBuilder.Owned<AuctionInfo>();
       modelBuilder.Owned<AuctionPrice>();
       modelBuilder.Owned<ProviderInfo>();
+      modelBuilder.Owned<UserSettings>();
     }
 
     private void ApplyGlobalModifications(ModelBuilder modelBuilder)
