@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CatchEmAll.Ricardo", "Catch
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CatchEmAll.WebApi", "CatchEmAll.WebApi\CatchEmAll.WebApi.csproj", "{C2CC4B56-9BFA-451F-AFC0-650F46BCB395}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CatchEmAll.WebJobs", "CatchEmAll.WebJobs\CatchEmAll.WebJobs.csproj", "{F07EBFB6-5453-487D-8CB9-3402EEC8538F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{C2CC4B56-9BFA-451F-AFC0-650F46BCB395}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C2CC4B56-9BFA-451F-AFC0-650F46BCB395}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C2CC4B56-9BFA-451F-AFC0-650F46BCB395}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F07EBFB6-5453-487D-8CB9-3402EEC8538F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F07EBFB6-5453-487D-8CB9-3402EEC8538F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F07EBFB6-5453-487D-8CB9-3402EEC8538F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F07EBFB6-5453-487D-8CB9-3402EEC8538F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
