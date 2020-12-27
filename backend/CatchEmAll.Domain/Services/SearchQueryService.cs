@@ -24,7 +24,7 @@ namespace CatchEmAll.Services
     {
       var query = new SearchQuery
       {
-        Name = "Unnamed Query",
+        Name = $"Unnamed Query ({options.SearchTerm})",
         Criteria = new SearchCriteria
         {
           WithAllTheseWords = options.SearchTerm

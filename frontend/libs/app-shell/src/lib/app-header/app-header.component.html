@@ -1,3 +1,4 @@
 <header>
   <h1 [routerLink]="'/'">Demo App</h1>
+  <span (click)="logInOrOut()">{{ isLoggedIn ? 'Logout' : 'Login' }}</span>
 </header>

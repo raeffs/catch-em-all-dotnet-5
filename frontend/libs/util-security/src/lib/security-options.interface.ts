@@ -9,6 +9,5 @@ export interface SecurityOptions {
   readonly issuer: string;
   readonly clientId: string;
   readonly redirectUri: string;
-  readonly silentRedirectUri: string;
   readonly scope: string;
 }

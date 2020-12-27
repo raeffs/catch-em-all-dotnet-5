@@ -46,7 +46,6 @@ export class TestInterceptor implements HttpInterceptor {
       issuer: environment.authIssuer,
       clientId: environment.authClientId,
       redirectUri: `${window.location.origin}`,
-      silentRedirectUri: `${window.location.origin}/silent-refresh.html`,
       scope: 'openid profile email offline_access',
     }),
   ],

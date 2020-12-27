@@ -31,6 +31,8 @@ export class AuthenticationService {
   }
 
   public async logout(): Promise<void> {
-    // todo
+    await this.oAuth.logOut({
+      returnTo: this.config.redirectUri,
+    });
   }
 }
