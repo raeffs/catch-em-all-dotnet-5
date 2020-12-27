@@ -1,6 +1,7 @@
 using CatchEmAll.Options;
 using CatchEmAll.Providers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -23,6 +24,8 @@ namespace CatchEmAll.WebApi
     {
       services.AddOptions<DataAccessOptions>().Bind(this.configuration.GetSection("CatchEmAll:DataAccess"));
       services.AddOptions<WebApiOptions>().Bind(this.configuration.GetSection("CatchEmAll:WebApi"));
+
+      var webApiOptions = this.configuration.GetSection("CatchEmAll:WebApi").Get<WebApiOptions>();
 
       services.AddCors(o => o.AddPolicy("DefaultPolicy", builder =>
       {
@@ -50,15 +53,27 @@ namespace CatchEmAll.WebApi
           })
           .AddJwtBearer(options =>
           {
-            var config = this.configuration.GetSection("CatchEmAll:WebApi").Get<WebApiOptions>();
-
-            options.Authority = config.Issuer;
-            options.Audience = config.ClientId;
+            options.Authority = webApiOptions.SpaIssuer;
+            options.Audience = webApiOptions.SpaClientId;
             options.TokenValidationParameters = new TokenValidationParameters
             {
               NameClaimType = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier",
             };
+          })
+          .AddJwtBearer("m2m-client", options =>
+          {
+            options.Authority = webApiOptions.M2mIssuer;
+            options.Audience = webApiOptions.M2mAudience;
           });
+
+      services
+        .AddAuthorization(Options =>
+        {
+          Options.DefaultPolicy = new AuthorizationPolicyBuilder()
+            .RequireAuthenticatedUser()
+            .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme, "m2m-client")
+            .Build();
+        });
 
       services
         .AddHttpContextAccessor()

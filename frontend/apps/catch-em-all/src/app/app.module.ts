@@ -1,28 +1,11 @@
-import {
-  HttpClientModule,
-  HttpEvent,
-  HttpHandler,
-  HttpInterceptor,
-  HttpRequest,
-  HTTP_INTERCEPTORS,
-} from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 import { AppShellModule } from '@cea/app-shell';
 import { SecurityModule } from '@cea/util-security';
-import { Observable } from 'rxjs';
 import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
-
-export class TestInterceptor implements HttpInterceptor {
-  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    if (req.url.startsWith('/')) {
-      return next.handle(req.clone({ url: `http://localhost:5000${req.url}` }));
-    }
-    return next.handle(req);
-  }
-}
 
 @NgModule({
   declarations: [AppComponent],
@@ -49,7 +32,6 @@ export class TestInterceptor implements HttpInterceptor {
       scope: 'openid profile email offline_access',
     }),
   ],
-  providers: [{ provide: HTTP_INTERCEPTORS, useClass: TestInterceptor, multi: true }],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
