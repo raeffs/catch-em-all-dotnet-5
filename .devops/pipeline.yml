@@ -16,3 +16,4 @@ steps:
       publishWebProjects: false
       projects: "backend/CatchEmAll.WebApi/CatchEmAll.WebApi.csproj"
       workingDirectory: "backend"
+      zipAfterPublish: True
