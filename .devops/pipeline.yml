@@ -22,5 +22,5 @@ steps:
       ConnectionType: "AzureRM"
       azureSubscription: "Azure - CEA"
       appType: "webApp"
-      WebAppName: "cea-app"
+      WebAppName: "cea-api"
       packageForLinux: "backend/CatchEmAll.WebApi/**/*.zip"
