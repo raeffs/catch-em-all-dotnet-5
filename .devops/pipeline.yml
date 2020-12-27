@@ -17,3 +17,10 @@ steps:
       projects: "backend/CatchEmAll.WebApi/CatchEmAll.WebApi.csproj"
       workingDirectory: "backend"
       zipAfterPublish: True
+  - task: AzureRmWebAppDeployment@4
+    inputs:
+      ConnectionType: "AzureRM"
+      azureSubscription: "Azure - CEA"
+      appType: "webApp"
+      WebAppName: "cea-app"
+      packageForLinux: "backend/CatchEmAll.WebApi/**/*.zip"
