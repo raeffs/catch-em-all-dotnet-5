@@ -4,23 +4,79 @@ trigger:
 pool:
   vmImage: "ubuntu-latest"
 
-steps:
-  - task: DotNetCoreCLI@2
-    inputs:
-      command: "build"
-      projects: "backend/CatchEmAll.sln"
-      workingDirectory: "backend"
-  - task: DotNetCoreCLI@2
-    inputs:
-      command: "publish"
-      publishWebProjects: false
-      projects: "backend/CatchEmAll.WebApi/CatchEmAll.WebApi.csproj"
-      workingDirectory: "backend"
-      zipAfterPublish: True
-  - task: AzureRmWebAppDeployment@4
-    inputs:
-      ConnectionType: "AzureRM"
-      azureSubscription: "Azure - CEA"
-      appType: "webApp"
-      WebAppName: "cea-api"
-      packageForLinux: "backend/CatchEmAll.WebApi/**/*.zip"
+stages:
+  - stage: backend
+    displayName: Backend Stage
+    dependsOn: []
+    jobs:
+      - job: default
+        displayName: Build & Deploy Backend
+        steps:
+          - checkout: self
+            displayName: Checkout
+            lfs: true
+          - task: DotNetCoreCLI@2
+            displayName: Build Backend
+            inputs:
+              command: "build"
+              projects: "backend/CatchEmAll.sln"
+              workingDirectory: "backend"
+          - task: DotNetCoreCLI@2
+            displayName: Create WebApi Zip Package
+            inputs:
+              command: "publish"
+              publishWebProjects: false
+              projects: "backend/CatchEmAll.WebApi/CatchEmAll.WebApi.csproj"
+              workingDirectory: "backend"
+              zipAfterPublish: True
+          - task: AzureRmWebAppDeployment@4
+            displayName: Deploy WebApi
+            inputs:
+              ConnectionType: "AzureRM"
+              azureSubscription: "Azure - CEA"
+              appType: "webApp"
+              WebAppName: "cea-api"
+              packageForLinux: "backend/CatchEmAll.WebApi/**/*.zip"
+  - stage: frontend
+    displayName: Frontend Stage
+    dependsOn: []
+    jobs:
+      - job: default
+        displayName: Build & Deploy Frontend
+        steps:
+          - checkout: self
+            displayName: Checkout
+            lfs: true
+          - task: CmdLine@2
+            displayName: Install Dependencies
+            inputs:
+              script: yarn --frozen-lockfile
+              workingDirectory: "frontend"
+          - task: CmdLine@2
+            displayName: Build Frontend
+            inputs:
+              script: yarn build --prod
+              workingDirectory: "frontend"
+          - task: CopyFiles@2
+            displayName: Copy Config
+            inputs:
+              SourceFolder: "frontend"
+              Contents: "web.config"
+              TargetFolder: "frontend/dist/apps/catch-em-all"
+              OverWrite: true
+          - task: ArchiveFiles@2
+            displayName: Create Frontend Zip Package
+            inputs:
+              rootFolderOrFile: "frontend/dist/apps/catch-em-all"
+              includeRootFolder: false
+              archiveType: "zip"
+              archiveFile: "$(Build.ArtifactStagingDirectory)/frontend.zip"
+              replaceExistingArchive: true
+          - task: AzureRmWebAppDeployment@4
+            displayName: Deploy Frontend
+            inputs:
+              ConnectionType: "AzureRM"
+              azureSubscription: "Azure - CEA"
+              appType: "webApp"
+              WebAppName: "cea-app"
+              packageForLinux: "$(Build.ArtifactStagingDirectory)/frontend.zip"
