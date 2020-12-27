@@ -7,9 +7,7 @@ namespace CatchEmAll.Models
   /// </summary>
   public record UserReference : IHasIdentifier
   {
-    /// <summary>
-    /// The identifier of the user reference.
-    /// </summary>
+    /// <inheritdoc />
     public Guid Id { get; init; }
 
     /// <summary>

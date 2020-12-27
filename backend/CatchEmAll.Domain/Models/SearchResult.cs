@@ -5,11 +5,9 @@ namespace CatchEmAll.Models
   /// <summary>
   /// Represents a search result that is part of a search query.
   /// </summary>
-  public record SearchResult : IHasIdentifier, IHasSoftDelete
+  public record SearchResult : IHasIdentifier, IHasLifetime
   {
-    /// <summary>
-    /// The identifier of the search result.
-    /// </summary>
+    /// <inheritdoc />
     public Guid Id { get; init; }
 
     /// <summary>
@@ -32,17 +30,19 @@ namespace CatchEmAll.Models
     /// </summary>
     public Auction Auction { get; init; } = null!;
 
-    /// <summary>
-    /// Whether the search result is deleted or not.
-    /// </summary>
-    public bool IsDeleted { get; private set; }
+    /// <inheritdoc />
+    public LifetimeInfo Lifetime { get; private set; } = new LifetimeInfo();
 
-    /// <summary>
-    /// Soft deletes the search result.
-    /// </summary>
-    public void MarkAsDeleted()
+    /// <inheritdoc />
+    public void Delete()
     {
-      this.IsDeleted = true;
+      this.Lifetime = this.Lifetime.Delete();
+    }
+
+    /// <inheritdoc />
+    public void Restore()
+    {
+      this.Lifetime = this.Lifetime.Restore();
     }
   }
 }

@@ -8,9 +8,7 @@ namespace CatchEmAll.Models
   /// </summary>
   public record Auction : IHasIdentifier
   {
-    /// <summary>
-    /// The identifier of the auction.
-    /// </summary>
+    /// <inheritdoc />
     public Guid Id { get; init; }
 
     /// <summary>

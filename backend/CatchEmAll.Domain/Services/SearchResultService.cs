@@ -49,7 +49,7 @@ namespace CatchEmAll.Services
         return;
       }
 
-      entity.MarkAsDeleted();
+      entity.Delete();
 
       await this.data.SaveChangesAsync();
     }

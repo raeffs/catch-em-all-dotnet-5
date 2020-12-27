@@ -8,9 +8,7 @@ namespace CatchEmAll.Models
   /// </summary>
   public record SearchQuery : IHasIdentifier, IMayBelongToUser
   {
-    /// <summary>
-    /// The identifier of the search query.
-    /// </summary>
+    /// <inheritdoc />
     public Guid Id { get; init; }
 
     /// <summary>
@@ -33,14 +31,10 @@ namespace CatchEmAll.Models
     /// </summary>
     public ICollection<SearchResult> Results { get; init; } = new List<SearchResult>();
 
-    /// <summary>
-    /// The identifier of the user the search query belongs to.
-    /// </summary>
+    /// <inheritdoc />
     public Guid? UserId { get; set; }
 
-    /// <summary>
-    /// The user the search query belongs to.
-    /// </summary>
+    /// <inheritdoc />
     public UserReference? User { get; init; }
 
     /// <summary>

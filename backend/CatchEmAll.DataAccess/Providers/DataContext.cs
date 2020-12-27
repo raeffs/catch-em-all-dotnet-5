@@ -36,9 +36,10 @@ namespace CatchEmAll.Providers
       modelBuilder.Owned<AuctionPrice>();
       modelBuilder.Owned<ProviderInfo>();
       modelBuilder.Owned<UserSettings>();
+      modelBuilder.Owned<LifetimeInfo>();
 
       modelBuilder.Entity<SearchResult>().HasIndex(x => new { x.QueryId, x.AuctionId }).IsUnique();
-      modelBuilder.Entity<SearchResult>().HasQueryFilter(x => !x.IsDeleted);
+      modelBuilder.Entity<SearchResult>().HasQueryFilter(x => !x.Lifetime.IsDeleted);
 
       modelBuilder.Entity<Auction>().HasIndex(x => new { x.Provider.Key, x.Provider.Value }).IsUnique();
     }

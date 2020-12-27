@@ -7,9 +7,7 @@ namespace CatchEmAll.Models
   /// </summary>
   public record SearchQuerySummary : IHasIdentifier
   {
-    /// <summary>
-    /// The identifier of the search query.
-    /// </summary>
+    /// <inheritdoc />
     public Guid Id { get; init; }
 
     /// <summary>
