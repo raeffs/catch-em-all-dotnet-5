@@ -35,6 +35,14 @@ namespace CatchEmAll.Models
     /// <summary>
     /// Whether the search result is deleted or not.
     /// </summary>
-    public bool IsDeleted { get; init; }
+    public bool IsDeleted { get; private set; }
+
+    /// <summary>
+    /// Soft deletes the search result.
+    /// </summary>
+    public void MarkAsDeleted()
+    {
+      this.IsDeleted = true;
+    }
   }
 }

@@ -92,17 +92,45 @@ export class SearchQueryService {
         return this.http.put<SearchQueryDetail>(url, _body);
     }
 
+}
+
+@Injectable({
+    providedIn: 'root'
+})
+export class SearchResultService {
+    private readonly http: HttpClient;
+
+    constructor(http: HttpClient) {
+        this.http = http;
+    }
+
     /**
      * @return Success
      */
-    public getAuctions(id: string): Observable<AuctionSummary[]> {
-        let url = '/api/search-queries/{id}/auctions';
+    public getAllResults(queryId: string): Observable<SearchResultSummary[]> {
+        let url = '/api/search-queries/{queryId}/search-results';
+        if (queryId === undefined || queryId === null)
+            throw new Error("The parameter 'queryId' must be defined.");
+        url = url.replace("{queryId}", encodeURIComponent("" + queryId));
+        url = url.replace(/[?&]$/, '');
+
+        return this.http.get<SearchResultSummary[]>(url);
+    }
+
+    /**
+     * @return Success
+     */
+    public deleteResult(queryId: string, id: string): Observable<void> {
+        let url = '/api/search-queries/{queryId}/search-results/{id}';
+        if (queryId === undefined || queryId === null)
+            throw new Error("The parameter 'queryId' must be defined.");
+        url = url.replace("{queryId}", encodeURIComponent("" + queryId));
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url = url.replace("{id}", encodeURIComponent("" + id));
         url = url.replace(/[?&]$/, '');
 
-        return this.http.get<AuctionSummary[]>(url);
+        return this.http.delete<void>(url);
     }
 
 }
@@ -136,4 +164,13 @@ export interface SearchQueryDetail {
     id?: string;
     name?: string | null;
     criteria?: SearchCriteria;
+}
+
+export interface SearchResultSummary {
+    id?: string;
+    queryId?: string;
+    name?: string | null;
+    ends?: string;
+    bidPrice?: number | null;
+    purchasePrice?: number | null;
 }

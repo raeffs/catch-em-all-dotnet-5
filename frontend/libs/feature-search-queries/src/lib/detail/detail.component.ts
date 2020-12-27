@@ -1,6 +1,11 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { AuctionSummary, SearchQueryDetail, SearchQueryService } from '@cea/domain-data-access';
+import {
+  SearchQueryDetail,
+  SearchQueryService,
+  SearchResultService,
+  SearchResultSummary,
+} from '@cea/domain-data-access';
 import { Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
@@ -11,10 +16,18 @@ import { switchMap } from 'rxjs/operators';
 })
 export class DetailComponent {
   public readonly query: Observable<SearchQueryDetail>;
-  public readonly auctions: Observable<AuctionSummary[]>;
+  public readonly results: Observable<SearchResultSummary[]>;
 
-  constructor(private readonly queries: SearchQueryService, private readonly route: ActivatedRoute) {
-    this.query = this.route.params.pipe(switchMap(params => this.queries.getSearchQuery(params['id'])));
-    this.auctions = this.route.params.pipe(switchMap(params => this.queries.getAuctions(params['id'])));
+  constructor(
+    private readonly searchQueryService: SearchQueryService,
+    private readonly searchResultService: SearchResultService,
+    private readonly route: ActivatedRoute
+  ) {
+    this.query = this.route.params.pipe(switchMap(params => this.searchQueryService.getSearchQuery(params['id'])));
+    this.results = this.route.params.pipe(switchMap(params => this.searchResultService.getAllResults(params['id'])));
+  }
+
+  public deleteResult(result: SearchResultSummary): void {
+    this.searchResultService.deleteResult(result.queryId ?? '', result.id ?? '').subscribe();
   }
 }

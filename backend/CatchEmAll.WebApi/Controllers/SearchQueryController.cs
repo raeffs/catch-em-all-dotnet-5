@@ -13,12 +13,10 @@ namespace CatchEmAll.Controllers
   public class SearchQueryController : ControllerBase
   {
     private readonly ISearchQueryService queries;
-    private readonly IAuctionService auctions;
 
-    public SearchQueryController(ISearchQueryService queries, IAuctionService auctions)
+    public SearchQueryController(ISearchQueryService queries)
     {
       this.queries = queries;
-      this.auctions = auctions;
     }
 
     [HttpGet(Name = "GetAllSearchQueries")]
@@ -60,14 +58,6 @@ namespace CatchEmAll.Controllers
       //await this.queries.RefreshAsync(id);
       var query = await this.queries.GetDetailAsync(id);
       return this.Ok(query);
-    }
-
-    [HttpGet("{id}/auctions", Name = "GetAuctions")]
-    [Produces(typeof(IEnumerable<AuctionSummary>))]
-    public async Task<IActionResult> GetAuctions(Guid id)
-    {
-      var auctions = await this.auctions.GetSummariesByQueryId(id).ToListAsync();
-      return this.Ok(auctions);
     }
   }
 }

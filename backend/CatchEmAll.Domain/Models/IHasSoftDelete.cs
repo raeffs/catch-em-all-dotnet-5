@@ -9,5 +9,10 @@ namespace CatchEmAll.Models
     /// Whether the entity is deleted or not.
     /// </summary>
     bool IsDeleted { get; }
+
+    /// <summary>
+    /// Soft deletes the entity.
+    /// </summary>
+    void MarkAsDeleted();
   }
 }

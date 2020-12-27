@@ -6,7 +6,7 @@
   <cea-card>
     <pre>{{ model | json }}</pre>
   </cea-card>
-  <cea-card *ngIf="auctions | async as auctionsModel">
+  <cea-card *ngIf="results | async as resultsModel">
     <div class="row">
       <div class="cell">Name</div>
       <div class="cell">Bid (CHF)</div>
@@ -15,13 +15,13 @@
       <div class="cell"></div>
     </div>
     <cdk-virtual-scroll-viewport itemSize="45">
-      <div *cdkVirtualFor="let auction of auctionsModel" class="row">
-        <div class="cell">{{ auction.name }}</div>
-        <div class="cell">{{ auction.bidPrice | number: '0.2' }}</div>
-        <div class="cell">{{ auction.purchasePrice | number: '0.2' }}</div>
-        <div class="cell">{{ auction.ends | date: 'medium' }}</div>
+      <div *cdkVirtualFor="let result of resultsModel" class="row">
+        <div class="cell">{{ result.name }}</div>
+        <div class="cell">{{ result.bidPrice | number: '0.2' }}</div>
+        <div class="cell">{{ result.purchasePrice | number: '0.2' }}</div>
+        <div class="cell">{{ result.ends | date: 'medium' }}</div>
         <div class="cell">
-          <i class="eva eva-trash-2-outline"></i>
+          <i class="eva eva-trash-2-outline" (click)="deleteResult(result)"></i>
           <i class="eva eva-external-link-outline"></i>
         </div>
       </div>

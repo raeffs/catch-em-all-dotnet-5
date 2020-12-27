@@ -64,6 +64,7 @@ namespace CatchEmAll.Services
 
       var entity = await context.SearchQueries.AsTracking()
           .Where(x => !x.Update.IsLocked)
+          //.Where(x => x.Update.Updated <= lastUpdatedBefore)
           .OrderBy(x => x.Update.Updated)
           .FirstOrDefaultAsync();
 
@@ -83,6 +84,7 @@ namespace CatchEmAll.Services
 
       var externalIds = auctions.Select(x => x.Provider.Value).ToList();
       var existingAuctions = await context.Auctions
+        .IgnoreQueryFilters()
         .Where(x => externalIds.Contains(x.Provider.Value))
         .Select(x => new
         {
