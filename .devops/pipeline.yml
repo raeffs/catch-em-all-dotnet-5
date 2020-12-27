@@ -47,6 +47,14 @@ stages:
           - checkout: self
             displayName: Checkout
             lfs: true
+          - task: Cache@2
+            displayName: Restore Cached Dependencies
+            inputs:
+              key: 'yarn | "$(Agent.OS)" | frontend/yarn.lock'
+              restoreKeys: |
+                yarn | "$(Agent.OS)"
+                yarn
+              path: frontend/node_modules
           - task: CmdLine@2
             displayName: Install Dependencies
             inputs:
