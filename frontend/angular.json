@@ -24,7 +24,7 @@
                 "output": "/"
               }
             ],
-            "styles": ["apps/catch-em-all/src/styles.css"],
+            "styles": ["apps/catch-em-all/src/styles.css", "apps/catch-em-all/src/icons.css"],
             "scripts": []
           },
           "configurations": {

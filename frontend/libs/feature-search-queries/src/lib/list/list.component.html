@@ -9,7 +9,7 @@
       <div class="cell">Number of Auctions</div>
     </div>
     <cdk-virtual-scroll-viewport itemSize="45">
-      <div *cdkVirtualFor="let query of queriesModel" class="row">
+      <div *cdkVirtualFor="let query of queriesModel" class="row" (click)="openQuery(query)">
         <div class="cell">{{ query.name }}</div>
         <div class="cell">{{ query.numberOfAuctions }}</div>
       </div>
