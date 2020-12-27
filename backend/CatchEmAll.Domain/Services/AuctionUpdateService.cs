@@ -34,7 +34,7 @@ namespace CatchEmAll.Services
       }
       catch (Exception exception)
       {
-        this.logger.LogError(exception, "Execution of function failed");
+        this.logger.LogError(exception, "Failed to update auctions.");
       }
     }
 
@@ -52,7 +52,7 @@ namespace CatchEmAll.Services
         }
         catch (Exception exception)
         {
-          this.logger.LogError(exception, "Failed to update article with {id}", id);
+          this.logger.LogError(exception, "Failed to update auction with {id}", id);
           await this.RelaseAuctionAsync(id);
         }
       }

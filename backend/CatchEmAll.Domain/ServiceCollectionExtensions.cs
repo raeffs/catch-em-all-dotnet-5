@@ -10,6 +10,7 @@ namespace CatchEmAll
       return services
         .AddTransient<ISearchQueryService, SearchQueryService>()
         .AddTransient<IAuctionService, AuctionService>()
+        .AddTransient<ISearchQueryUpdateService, SearchQueryUpdateService>()
         .AddTransient<IAuctionUpdateService, AuctionUpdateService>();
     }
   }

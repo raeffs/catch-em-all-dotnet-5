@@ -26,7 +26,7 @@ namespace CatchEmAll.Models
     /// <summary>
     /// The update information of the search query.
     /// </summary>
-    public UpdateInfo Update { get; init; } = new UpdateInfo();
+    public UpdateInfo Update { get; private set; } = new UpdateInfo();
 
     /// <summary>
     /// The results of the search query.
@@ -42,5 +42,28 @@ namespace CatchEmAll.Models
     /// The user the search query belongs to.
     /// </summary>
     public UserReference? User { get; init; }
+
+    /// <summary>
+    /// Locks the search query for the time of an update.
+    /// </summary>
+    public void Lock()
+    {
+      this.Update = this.Update.Lock();
+    }
+
+    /// <summary>
+    /// Releases the search query after an update.
+    /// </summary>
+    public void Release(bool successful)
+    {
+      if (successful)
+      {
+        this.Update = this.Update.MarkAsSuccessful();
+      }
+      else
+      {
+        this.Update = this.Update.MarkAsFailed();
+      }
+    }
   }
 }

@@ -57,7 +57,7 @@ namespace CatchEmAll.Controllers
     public async Task<IActionResult> Create([FromBody] CreateSearchQueryOptions options)
     {
       var id = await this.queries.CreateQueryAsync(options);
-      await this.queries.RefreshAsync(id);
+      //await this.queries.RefreshAsync(id);
       var query = await this.queries.GetDetailAsync(id);
       return this.Ok(query);
     }
