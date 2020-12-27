@@ -10,3 +10,9 @@ steps:
       command: "build"
       projects: "backend/CatchEmAll.sln"
       workingDirectory: "backend"
+  - task: DotNetCoreCLI@2
+    inputs:
+      command: "publish"
+      publishWebProjects: false
+      projects: "backend/CatchEmAll.WebApi/CatchEmAll.WebApi.csproj"
+      workingDirectory: "backend"
