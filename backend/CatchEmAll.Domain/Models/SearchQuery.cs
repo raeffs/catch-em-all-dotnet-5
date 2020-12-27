@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace CatchEmAll.Models
 {
@@ -14,6 +15,7 @@ namespace CatchEmAll.Models
     /// <summary>
     /// The name of the search query.
     /// </summary>
+    [StringLength(100)]
     public string Name { get; set; } = string.Empty;
 
     /// <summary>

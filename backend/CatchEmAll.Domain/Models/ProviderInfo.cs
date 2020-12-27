@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace CatchEmAll.Models
 {
   /// <summary>
@@ -8,11 +10,13 @@ namespace CatchEmAll.Models
     /// <summary>
     /// The key of the provider.
     /// </summary>
+    [StringLength(64)]
     public string Key { get; init; } = string.Empty;
 
     /// <summary>
     /// A provider specific value that identifies the entity.
     /// </summary>
+    [StringLength(64)]
     public string Value { get; init; } = string.Empty;
   }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace CatchEmAll.Models
 {
@@ -13,6 +14,7 @@ namespace CatchEmAll.Models
     /// <summary>
     /// The external identifier of the user reference.
     /// </summary>
+    [StringLength(64)]
     public string ExternalId { get; init; } = string.Empty;
 
     /// <summary>
