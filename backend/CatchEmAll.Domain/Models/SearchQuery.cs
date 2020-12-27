@@ -38,6 +38,11 @@ namespace CatchEmAll.Models
     public UserReference? User { get; init; }
 
     /// <summary>
+    /// The priority of the search query.
+    /// </summary>
+    public Priority Priority { get; init; } = Priority.Low;
+
+    /// <summary>
     /// Locks the search query for the time of an update.
     /// </summary>
     public void Lock()

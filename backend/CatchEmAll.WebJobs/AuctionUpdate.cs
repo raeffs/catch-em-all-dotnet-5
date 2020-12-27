@@ -1,6 +1,5 @@
 using CatchEmAll.Services;
 using Microsoft.Azure.WebJobs;
-using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 
 namespace CatchEmAll.WebJobs
@@ -14,9 +13,9 @@ namespace CatchEmAll.WebJobs
       this.service = service;
     }
 
-    public async Task UpdateAuctions([TimerTrigger("3/5 * * * * *", RunOnStartup = false)] TimerInfo timerInfo, ILogger logger)
+    public async Task UpdateAuctions([TimerTrigger("3/5 * * * * *", RunOnStartup = false)] TimerInfo timerInfo)
     {
-      //await this.service.UpdateAuctions();
+      await this.service.UpdateAuctions();
     }
   }
 }

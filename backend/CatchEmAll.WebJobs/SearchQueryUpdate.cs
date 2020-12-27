@@ -1,3 +1,4 @@
+using CatchEmAll.Models;
 using CatchEmAll.Services;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;
@@ -14,9 +15,19 @@ namespace CatchEmAll.WebJobs
       this.service = service;
     }
 
-    public async Task UpdateSearchQueries([TimerTrigger("3/5 * * * * *", RunOnStartup = true)] TimerInfo timerInfo, ILogger logger)
+    public async Task UpdateSearchQueriesWithHighPriority([TimerTrigger("5,10,20,25,35,40,50,55 * * * * *", RunOnStartup = false)] TimerInfo timerInfo, ILogger logger)
     {
-      await this.service.UpdateSearchQueries();
+      await this.service.UpdateSearchQueries(Priority.High);
     }
+
+    public async Task UpdateSearchQueriesWithMidPriority([TimerTrigger("15,30,45 * * * * *", RunOnStartup = false)] TimerInfo timerInfo, ILogger logger)
+    {
+      await this.service.UpdateSearchQueries(Priority.Mid);
+    }
+    /*
+    public async Task UpdateSearchQueriesWithLowPriority([TimerTrigger("1 * * * * *", RunOnStartup = false)] TimerInfo timerInfo, ILogger logger)
+    {
+      await this.service.UpdateSearchQueries(Priority.Low);
+    }*/
   }
 }

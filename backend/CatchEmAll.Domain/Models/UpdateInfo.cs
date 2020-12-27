@@ -10,7 +10,7 @@ namespace CatchEmAll.Models
     /// <summary>
     /// The point in time when the entity was last updated sucessfully.
     /// </summary>
-    public DateTimeOffset Updated { get; init; } = DateTimeOffset.Now.AddHours(-2);
+    public DateTimeOffset Updated { get; init; } = DateTimeOffset.Now.AddHours(-24);
 
     /// <summary>
     /// Whether the entity is being updated.

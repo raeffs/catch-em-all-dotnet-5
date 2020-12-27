@@ -29,7 +29,8 @@ namespace CatchEmAll.Services
         {
           WithAllTheseWords = options.SearchTerm
         },
-        User = await this.data.GetOrCreateUserReferenceAsync(this.identity)
+        User = await this.data.GetOrCreateUserReferenceAsync(this.identity),
+        Priority = Priority.High
       };
       this.data.SearchQueries.Add(query);
       await this.data.SaveChangesAsync();

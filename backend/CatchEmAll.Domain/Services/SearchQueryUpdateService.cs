@@ -16,9 +16,9 @@ namespace CatchEmAll.Services
     private readonly ILogger<SearchQueryUpdateService> logger;
     private readonly IDataContextFactory factory;
     private readonly IProductSearch search;
-    private readonly UpdateOptions options;
+    private readonly SearchQueryUpdateOptions options;
 
-    public SearchQueryUpdateService(ILogger<SearchQueryUpdateService> logger, IDataContextFactory factory, IOptionsSnapshot<UpdateOptions> options, IProductSearch search)
+    public SearchQueryUpdateService(ILogger<SearchQueryUpdateService> logger, IDataContextFactory factory, IOptionsSnapshot<SearchQueryUpdateOptions> options, IProductSearch search)
     {
       this.logger = logger;
       this.factory = factory;
@@ -26,11 +26,11 @@ namespace CatchEmAll.Services
       this.options = options.Value;
     }
 
-    public async Task UpdateSearchQueries()
+    public async Task UpdateSearchQueries(Priority priority)
     {
       try
       {
-        await this.InternalUpdate();
+        await this.InternalUpdate(priority);
       }
       catch (Exception exception)
       {
@@ -38,35 +38,46 @@ namespace CatchEmAll.Services
       }
     }
 
-    private async Task InternalUpdate()
+    private async Task InternalUpdate(Priority priority)
     {
-      var (id, criteria) = await this.LoadSearchQueryAsync();
+      var (id, criteria) = await this.LoadSearchQueryAsync(priority);
+
+      if (id == null)
+      {
+        return;
+      }
+
       try
       {
         var auctions = await this.search.FindProductsAsync(criteria);
 
-        await this.UpdateSearchQueryAsync(id, auctions);
-        this.logger.LogInformation("Updated search query with {id}", id);
+        await this.UpdateSearchQueryAsync(id.Value, auctions);
+        this.logger.LogInformation("Updated search query with {id}", id.Value);
       }
       catch (Exception exception)
       {
-        this.logger.LogError(exception, "Failed to update search query with {id}", id);
-        await this.RelaseSearchQueryAsync(id);
+        this.logger.LogError(exception, "Failed to update search query with {id}", id.Value);
+        await this.RelaseSearchQueryAsync(id.Value);
       }
     }
 
-    private async Task<(Guid, SearchCriteria)> LoadSearchQueryAsync()
+    private async Task<(Guid?, SearchCriteria)> LoadSearchQueryAsync(Priority priority)
     {
       using var context = this.factory.GetContext();
 
       var now = DateTimeOffset.Now;
-      var lastUpdatedBefore = now.Add(TimeSpan.FromHours(this.options.UpdateIntervalInHours * -1));
+      var lastUpdatedBefore = now.Add(TimeSpan.FromHours(this.options.GetUpdateIntervalFor(priority) * -1));
 
       var entity = await context.SearchQueries.AsTracking()
           .Where(x => !x.Update.IsLocked)
-          //.Where(x => x.Update.Updated <= lastUpdatedBefore)
+          .Where(x => x.Update.Updated <= lastUpdatedBefore && x.Priority == priority)
           .OrderBy(x => x.Update.Updated)
           .FirstOrDefaultAsync();
+
+      if (entity == null)
+      {
+        return (null, new SearchCriteria());
+      }
 
       entity.Lock();
 

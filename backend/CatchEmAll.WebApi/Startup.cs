@@ -24,6 +24,7 @@ namespace CatchEmAll.WebApi
     {
       services.AddOptions<DataAccessOptions>().Bind(this.configuration.GetSection("CatchEmAll:DataAccess"));
       services.AddOptions<WebApiOptions>().Bind(this.configuration.GetSection("CatchEmAll:WebApi"));
+      services.AddOptions<SearchQueryUpdateOptions>().Bind(this.configuration.GetSection("CatchEmAll:Domain:SearchQueryUpdate"));
 
       var webApiOptions = this.configuration.GetSection("CatchEmAll:WebApi").Get<WebApiOptions>();
 
