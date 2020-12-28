@@ -9,9 +9,13 @@ namespace CatchEmAll.WebJobs
   {
     static async Task Main()
     {
-      var builder = new HostBuilder();
+      var hostBuilder = new HostBuilder();
 
-      builder.ConfigureServices((context, services) =>
+#if DEBUG
+      hostBuilder.UseEnvironment("development");
+#endif
+
+      hostBuilder.ConfigureServices((context, services) =>
       {
         services
           .AddDataAccess(context.Configuration.GetConnectionString("DataContext"))
@@ -19,29 +23,29 @@ namespace CatchEmAll.WebJobs
           .AddRicardo();
       });
 
-      builder.ConfigureLogging((context, b) =>
+      hostBuilder.ConfigureLogging((context, loggingBuilder) =>
       {
-        b.AddConsole();
+        loggingBuilder.AddConsole();
       });
 
-      builder.ConfigureWebJobs(b =>
+      hostBuilder.ConfigureWebJobs(webJobsBuilder =>
       {
-        b.AddAzureStorageCoreServices();
-        b.AddTimers();
+        webJobsBuilder.AddAzureStorageCoreServices();
+        webJobsBuilder.AddTimers();
       });
 
-      builder.ConfigureAppConfiguration(builder =>
+      hostBuilder.ConfigureAppConfiguration(configurationBuilder =>
       {
-        builder.Sources.Clear();
-        builder
+        configurationBuilder.Sources.Clear();
+        configurationBuilder
           .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
 #if DEBUG
-          .AddJsonFile($"appsettings.development.json", optional: true, reloadOnChange: true)
+          .AddJsonFile("appsettings.development.json", optional: true, reloadOnChange: true)
 #endif
           .AddEnvironmentVariables();
       });
 
-      var host = builder.Build();
+      var host = hostBuilder.Build();
       using (host)
       {
         await host.RunAsync();
