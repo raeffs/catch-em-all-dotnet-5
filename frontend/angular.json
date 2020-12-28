@@ -19,8 +19,13 @@
             "assets": [
               {
                 "glob": "**/*",
-                "input": "assets",
+                "input": "assets/favicons",
                 "output": "/"
+              },
+              {
+                "glob": "**/*",
+                "input": "assets/fonts",
+                "output": "/fonts/"
               }
             ],
             "styles": ["apps/catch-em-all/src/styles.css", "apps/catch-em-all/src/icons.css"],
