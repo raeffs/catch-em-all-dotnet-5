@@ -9,8 +9,8 @@ stages:
     displayName: Backend Stage
     dependsOn: []
     jobs:
-      - job: default
-        displayName: Build & Deploy Backend
+      - job: api
+        displayName: Build & Deploy WebApi
         steps:
           - checkout: self
             displayName: Checkout
@@ -37,6 +37,34 @@ stages:
               appType: "webApp"
               WebAppName: "cea-api"
               packageForLinux: "backend/CatchEmAll.WebApi/**/*.zip"
+      - job: jobs
+        displayName: Build & Deploy WebJobs
+        steps:
+          - checkout: self
+            displayName: Checkout
+            lfs: true
+          - task: DotNetCoreCLI@2
+            displayName: Build Backend
+            inputs:
+              command: "build"
+              projects: "backend/CatchEmAll.sln"
+              workingDirectory: "backend"
+          - task: DotNetCoreCLI@2
+            displayName: Create WebJobs Zip Package
+            inputs:
+              command: "publish"
+              publishWebProjects: false
+              projects: "backend/CatchEmAll.WebJobs/CatchEmAll.WebJobs.csproj"
+              workingDirectory: "backend"
+              zipAfterPublish: True
+          - task: AzureRmWebAppDeployment@4
+            displayName: Deploy WebJobs
+            inputs:
+              ConnectionType: "AzureRM"
+              azureSubscription: "Azure - CEA"
+              appType: "webApp"
+              WebAppName: "cea-jobs"
+              packageForLinux: "backend/CatchEmAll.WebJobs/**/*.zip"
   - stage: frontend
     displayName: Frontend Stage
     dependsOn: []
