@@ -34,7 +34,7 @@ namespace CatchEmAll.WebJobs
       {
         builder.Sources.Clear();
         builder
-          .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+          .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
 #if DEBUG
           .AddJsonFile($"appsettings.development.json", optional: true, reloadOnChange: true)
 #endif
