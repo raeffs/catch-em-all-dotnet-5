@@ -44,8 +44,6 @@ stages:
               packageForLinux: "backend/CatchEmAll.WebApi/**/*.zip"
       - job: jobs
         displayName: Build & Deploy WebJobs
-        pool:
-          vmImage: "windows-latest"
         steps:
           - checkout: self
             displayName: Checkout
@@ -67,7 +65,7 @@ stages:
               command: "publish"
               publishWebProjects: false
               projects: "backend/CatchEmAll.WebJobs/CatchEmAll.WebJobs.csproj"
-              arguments: "--output $(Build.BinariesDirectory)/webjobs/App_Data/jobs/triggered/CatchEmAll.WebJobs"
+              arguments: "--output $(Build.BinariesDirectory)/webjobs/App_Data/jobs/continuous/CatchEmAll.WebJobs"
               workingDirectory: "backend"
               zipAfterPublish: false
               modifyOutputPath: false
