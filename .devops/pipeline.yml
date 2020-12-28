@@ -67,8 +67,18 @@ stages:
               command: "publish"
               publishWebProjects: false
               projects: "backend/CatchEmAll.WebJobs/CatchEmAll.WebJobs.csproj"
+              arguments: "--output $(Build.BinariesDirectory)/webjobs/App_Data/jobs/triggered/CatchEmAll.WebJobs"
               workingDirectory: "backend"
-              zipAfterPublish: True
+              zipAfterPublish: false
+              modifyOutputPath: false
+          - task: ArchiveFiles@2
+            displayName: Create WebJobs Zip Package
+            inputs:
+              rootFolderOrFile: "$(Build.BinariesDirectory)/webjobs"
+              includeRootFolder: false
+              archiveType: "zip"
+              archiveFile: "$(Build.ArtifactStagingDirectory)/webjobs.zip"
+              replaceExistingArchive: true
           - task: AzureRmWebAppDeployment@4
             displayName: Deploy WebJobs
             inputs:
@@ -76,7 +86,7 @@ stages:
               azureSubscription: "Azure - CEA"
               appType: "webApp"
               WebAppName: "cea-jobs"
-              packageForLinux: "backend/CatchEmAll.WebJobs/**/*.zip"
+              packageForLinux: "$(Build.ArtifactStagingDirectory)/webjobs.zip"
   - stage: frontend
     displayName: Frontend Stage
     dependsOn: []
