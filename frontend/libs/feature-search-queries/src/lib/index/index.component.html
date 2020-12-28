@@ -1,22 +1,24 @@
 <cea-centered-layout ceaColumnLayout>
+  <img src="android-chrome-512x512.png" />
   <form [formGroup]="model" (ngSubmit)="createSearchQuery()">
     <input type="text" [formControlName]="'searchTerm'" placeholder="What are you looking for?" />
-    <button [disabled]="model.pristine || model.invalid" type="submit">Submit</button>
+    <button primary [disabled]="model.pristine || model.invalid" type="submit">Submit</button>
   </form>
   <div>
     <p>Not sure what to do here? No problem, we've got you covered!</p>
-    <p><b>Collect & Minimize Expenses</b></p>
+    <p class="title">Collect & Minimize Expenses!</p>
     <p>
       You can start by searching for some precious treasures that you would like to collect. Maybe you want to start a
       new collection? Or you already collected a ton of stuff, but there is this one piece that's still missing? The app
       will crawl through the depths of the internet and notify you once it found it.
     </p>
-    <p><b>Sell & Maximize Profit</b></p>
+    <p class="title">Sell & Maximize Profit!</p>
     <p>
       You don't care about collecting things? Maybe you have something laying around that you'd like to sell, but you
       don't know at which price? In that case the app can keep track of others that try to sell the same stuff as you
       and tell you at which price someone actually bought it.
     </p>
+    <p class="title">Just try it!</p>
     <p>
       And if you're not sure what you're looking for; don't worry. Just give it a try! You can adjust everything later
       or start over from scratch if you don't like the result.

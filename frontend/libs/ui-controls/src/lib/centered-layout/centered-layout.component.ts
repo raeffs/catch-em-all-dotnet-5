@@ -10,7 +10,6 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
         height: 100%;
         display: flex;
         flex-direction: column;
-        justify-content: center;
         align-items: center;
         margin: auto;
         text-align: center;

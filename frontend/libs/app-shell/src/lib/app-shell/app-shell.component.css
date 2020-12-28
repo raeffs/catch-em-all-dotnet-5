@@ -7,4 +7,5 @@
 
 .content {
   padding: 0 45px;
+  overflow: auto;
 }
