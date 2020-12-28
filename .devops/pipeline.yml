@@ -2,7 +2,7 @@ trigger:
   - main
 
 pool:
-  vmImage: "windows-latest"
+  vmImage: "ubuntu-latest"
 
 stages:
   - stage: backend
@@ -39,6 +39,8 @@ stages:
               packageForLinux: "backend/CatchEmAll.WebApi/**/*.zip"
       - job: jobs
         displayName: Build & Deploy WebJobs
+        pool:
+          vmImage: "windows-latest"
         steps:
           - checkout: self
             displayName: Checkout
