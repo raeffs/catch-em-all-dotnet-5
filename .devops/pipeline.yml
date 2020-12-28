@@ -44,6 +44,8 @@ stages:
               packageForLinux: "backend/CatchEmAll.WebApi/**/*.zip"
       - job: jobs
         displayName: Build & Deploy WebJobs
+        pool:
+          vmImage: "windows-latest"
         steps:
           - checkout: self
             displayName: Checkout
