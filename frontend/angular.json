@@ -17,10 +17,9 @@
             "tsConfig": "apps/catch-em-all/tsconfig.app.json",
             "aot": true,
             "assets": [
-              "apps/catch-em-all/src/favicon.ico",
               {
                 "glob": "**/*",
-                "input": "apps/catch-em-all/src/assets",
+                "input": "assets",
                 "output": "/"
               }
             ],
