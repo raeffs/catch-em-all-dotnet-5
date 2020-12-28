@@ -16,6 +16,11 @@ stages:
             displayName: Checkout
             lfs: true
           - task: DotNetCoreCLI@2
+            displayName: Restore Dependencies
+            inputs:
+              command: "restore"
+              projects: "backend/CatchEmAll.sln"
+          - task: DotNetCoreCLI@2
             displayName: Build Backend
             inputs:
               command: "build"
@@ -45,6 +50,11 @@ stages:
           - checkout: self
             displayName: Checkout
             lfs: true
+          - task: DotNetCoreCLI@2
+            displayName: Restore Dependencies
+            inputs:
+              command: "restore"
+              projects: "backend/CatchEmAll.sln"
           - task: DotNetCoreCLI@2
             displayName: Build Backend
             inputs:
