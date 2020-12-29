@@ -8,7 +8,7 @@ namespace CatchEmAll.Options
     public int MidPriorityUpdateIntervalInMinutes { get; init; } = 120;
     public int LowPriorityUpdateIntervalInMinutes { get; init; } = 720;
 
-    public int GetUpdateIntervalFor(Priority priority) => priority switch
+    public int GetUpdateIntervalInMinutesFor(Priority priority) => priority switch
     {
       Priority.High => this.HighPriorityUpdateIntervalInMinutes,
       Priority.Mid => this.MidPriorityUpdateIntervalInMinutes,

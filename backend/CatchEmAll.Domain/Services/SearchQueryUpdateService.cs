@@ -66,7 +66,7 @@ namespace CatchEmAll.Services
       using var context = this.factory.GetContext();
 
       var now = DateTimeOffset.Now;
-      var lastUpdatedBefore = now.Add(TimeSpan.FromHours(this.options.GetUpdateIntervalFor(priority) * -1));
+      var lastUpdatedBefore = now.Add(TimeSpan.FromMinutes(this.options.GetUpdateIntervalInMinutesFor(priority) * -1));
 
       var entity = await context.SearchQueries.AsTracking()
           .Where(x => !x.Update.IsLocked)
