@@ -3,16 +3,28 @@
     <cea-breadcrumb>Search Queries</cea-breadcrumb>
   </cea-breadcrumbs>
 
-  <cea-card *ngIf="queries | async as queriesModel">
-    <div class="row">
-      <div class="cell">Name</div>
-      <div class="cell">Number of Auctions</div>
-    </div>
-    <cdk-virtual-scroll-viewport itemSize="45">
-      <div *cdkVirtualFor="let query of queriesModel" class="row" (click)="openQuery(query)">
-        <div class="cell">{{ query.name }}</div>
-        <div class="cell">{{ query.numberOfAuctions }}</div>
-      </div>
-    </cdk-virtual-scroll-viewport>
+  <cea-card (ceaResize)="handleResize($event)">
+    <cdk-table [dataSource]="dataSource" [trackBy]="myTrackById" [style.grid-template-rows]="rowStyle">
+      <cdk-header-row *cdkHeaderRowDef="columns" class="row"></cdk-header-row>
+      <cdk-row *cdkRowDef="let row; columns: columns" class="row" (click)="openQuery(row)"></cdk-row>
+
+      <ng-container cdkColumnDef="name">
+        <cdk-header-cell *cdkHeaderCellDef class="cell">Name</cdk-header-cell>
+        <cdk-cell *cdkCellDef="let element" class="cell">{{ element.name }}</cdk-cell>
+      </ng-container>
+      <ng-container cdkColumnDef="numberOfAuctions">
+        <cdk-header-cell *cdkHeaderCellDef class="cell">#</cdk-header-cell>
+        <cdk-cell *cdkCellDef="let element" class="cell">{{ element.numberOfAuctions }}</cdk-cell>
+      </ng-container>
+      <ng-container cdkColumnDef="priority">
+        <cdk-header-cell *cdkHeaderCellDef class="cell">Priority</cdk-header-cell>
+        <cdk-cell *cdkCellDef="let element" class="cell">{{ element.priority }}</cdk-cell>
+      </ng-container>
+      <ng-container cdkColumnDef="updated">
+        <cdk-header-cell *cdkHeaderCellDef class="cell">Updated</cdk-header-cell>
+        <cdk-cell *cdkCellDef="let element" class="cell">{{ element.updated | date: 'medium' }}</cdk-cell>
+      </ng-container>
+    </cdk-table>
+    <cea-paginator [dataSource]="dataSource"></cea-paginator>
   </cea-card>
 </div>

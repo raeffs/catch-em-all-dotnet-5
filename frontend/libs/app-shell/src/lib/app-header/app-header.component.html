@@ -1,4 +1,7 @@
 <header>
-  <h1 [routerLink]="'/'">Demo App</h1>
+  <div class="logo" [routerLink]="'/'">
+    <img src="android-chrome-512x512.png" />
+    <p class="title">Catch `Em All</p>
+  </div>
   <span (click)="logInOrOut()">{{ isLoggedIn ? 'Logout' : 'Login' }}</span>
 </header>

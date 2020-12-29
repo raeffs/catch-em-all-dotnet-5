@@ -73,6 +73,8 @@ namespace CatchEmAll.Services
         {
           Id = x.Id,
           Name = x.Name,
+          Priority = x.Priority,
+          Updated = x.Update.Updated,
           NumberOfAuctions = x.Results.Count
         });
     }

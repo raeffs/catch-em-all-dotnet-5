@@ -3,7 +3,7 @@ using CatchEmAll.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace CatchEmAll.Controllers
@@ -20,11 +20,35 @@ namespace CatchEmAll.Controllers
     }
 
     [HttpGet(Name = "GetAllSearchQueries")]
-    [Produces(typeof(IEnumerable<SearchQuerySummary>))]
-    public async Task<IActionResult> Get()
+    [Produces(typeof(Page<SearchQuerySummary>))]
+    public async Task<IActionResult> Get(int? pageNumber, int? pageSize)
     {
-      var queries = await this.queries.GetSummaries().ToListAsync();
-      return this.Ok(queries);
+      var pageRequest = new PageRequest
+      {
+        PageNumber = pageNumber ?? 1,
+        PageSize = pageSize ?? 10
+      };
+
+      var queryable = this.queries.GetSummaries();
+
+      if (pageRequest.Sort != null)
+      {
+        queryable = queryable.OrderBy(new[] { pageRequest.Sort });
+      }
+
+      queryable = queryable
+        .Skip((pageRequest.PageNumber - 1) * pageRequest.PageSize)
+        .Take(pageRequest.PageSize);
+
+      var page = new Page<SearchQuerySummary>
+      {
+        PageNumber = pageRequest.PageNumber,
+        PageSize = pageRequest.PageSize,
+        TotalItems = await this.queries.GetSummaries().CountAsync(),
+        Items = await queryable.ToListAsync()
+      };
+
+      return this.Ok(page);
     }
 
     [HttpGet("{id}", Name = "GetSearchQuery")]

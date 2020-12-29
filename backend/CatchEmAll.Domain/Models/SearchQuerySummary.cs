@@ -15,6 +15,10 @@ namespace CatchEmAll.Models
     /// </summary>
     public string Name { get; init; } = string.Empty;
 
+    public Priority Priority { get; init; }
+
+    public DateTimeOffset Updated { get; init; }
+
     public int NumberOfAuctions { get; init; }
   }
 }

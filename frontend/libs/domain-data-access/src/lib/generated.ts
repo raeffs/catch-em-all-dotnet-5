@@ -41,13 +41,19 @@ export class SearchQueryService {
     }
 
     /**
+     * @param pageNumber (optional) 
+     * @param pageSize (optional) 
      * @return Success
      */
-    public getAllSearchQueries(): Observable<SearchQuerySummary[]> {
-        let url = '/api/search-queries';
+    public getAllSearchQueries(pageNumber?: number | null | undefined, pageSize?: number | null | undefined): Observable<SearchQuerySummaryPage> {
+        let url = '/api/search-queries?';
+        if (pageNumber !== undefined && pageNumber !== null)
+            url += "pageNumber=" + encodeURIComponent("" + pageNumber) + "&";
+        if (pageSize !== undefined && pageSize !== null)
+            url += "pageSize=" + encodeURIComponent("" + pageSize) + "&";
         url = url.replace(/[?&]$/, '');
 
-        return this.http.get<SearchQuerySummary[]>(url);
+        return this.http.get<SearchQuerySummaryPage>(url);
     }
 
     /**
@@ -143,10 +149,21 @@ export interface AuctionSummary {
     purchasePrice?: number | null;
 }
 
+export type Priority = 0 | 1 | 2;
+
 export interface SearchQuerySummary {
     id?: string;
     name?: string | null;
+    priority?: Priority;
+    updated?: string;
     numberOfAuctions?: number;
+}
+
+export interface SearchQuerySummaryPage {
+    items: SearchQuerySummary[];
+    totalItems: number;
+    pageSize: number;
+    pageNumber: number;
 }
 
 export interface CreateSearchQueryOptions {

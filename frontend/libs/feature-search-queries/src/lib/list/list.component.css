@@ -9,21 +9,36 @@
 cea-card:last-of-type {
   flex: auto;
 }
-
+/*
 cdk-virtual-scroll-viewport {
   height: calc(100% - 45px);
 }
+*/
 
 .row {
   height: 45px;
   display: grid;
-  grid-template-columns: 40% auto;
+  grid-template-columns: 40% 100px 100px auto;
   align-items: center;
   gap: 20px;
+}
+
+cea-card {
+  display: grid;
+  grid-template-rows: auto 45px;
+  overflow: hidden;
 }
 
 .cell {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+cdk-table {
+  display: grid;
+}
+
+cdk-header-row {
+  font-weight: bold;
 }
