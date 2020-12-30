@@ -4,7 +4,7 @@ let url = '/{{ operation.Path }}{% if operation.HasQueryParameters %}?{% endif %
 if ({{ parameter.VariableName }} === undefined || {{ parameter.VariableName }} === null)
     throw new Error("The parameter '{{ parameter.VariableName }}' must be defined.");
 {%     else -%}
-if ({{ parameter.VariableName }} !== null && {{ parameter.VariableName }} !== undefined)
+if ({{ parameter.VariableName }} != null)
 {%     endif -%}
 {%     if parameter.IsDateOrDateTimeArray -%}
 url = url.replace("{{ "{" }}{{ parameter.Name }}}", encodeURIComponent({{ parameter.VariableName }}.map(s_ => s_ ? s_.toJSON() : "null").join()));
@@ -33,7 +33,7 @@ else
 {%         endif -%}
 {%     else -%}
 {%         if parameter.IsNullable -%}
-if ({{ parameter.VariableName }} !== undefined && {{ parameter.VariableName }} !== null)
+if ({{ parameter.VariableName }} != null)
 {%         else -%}
 if ({{ parameter.VariableName }} === null)
     throw new Error("The parameter '{{ parameter.VariableName }}' cannot be null.");

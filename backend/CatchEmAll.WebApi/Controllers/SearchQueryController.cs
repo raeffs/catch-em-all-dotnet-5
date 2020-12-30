@@ -68,7 +68,7 @@ namespace CatchEmAll.Controllers
 
     [HttpPut("{id}", Name = "UpdateSearchQuery")]
     [Produces(typeof(SearchQueryDetail))]
-    public async Task<IActionResult> Update(Guid id, SearchQueryDetail model)
+    public async Task<IActionResult> Update(Guid id, [Required] SearchQueryDetail model)
     {
       await this.queries.UpdateAsync(id, model);
       return await this.Get(id);
@@ -77,7 +77,7 @@ namespace CatchEmAll.Controllers
 
     [HttpPost(Name = "CreateSearchQuery")]
     [Produces(typeof(SearchQueryDetail))]
-    public async Task<IActionResult> Create([FromBody] CreateSearchQueryOptions options)
+    public async Task<IActionResult> Create([Required][FromBody] CreateSearchQueryOptions options)
     {
       var id = await this.queries.CreateQueryAsync(options);
       //await this.queries.RefreshAsync(id);

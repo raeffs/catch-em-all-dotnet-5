@@ -12,6 +12,7 @@
       <div class="cell">Bid (CHF)</div>
       <div class="cell">Purchase (CHF)</div>
       <div class="cell">Ends in</div>
+      <div class="cell">Updated</div>
       <div class="cell"></div>
     </div>
     <cdk-virtual-scroll-viewport itemSize="45">
@@ -20,6 +21,7 @@
         <div class="cell">{{ result.bidPrice | number: '0.2' }}</div>
         <div class="cell">{{ result.purchasePrice | number: '0.2' }}</div>
         <div class="cell">{{ result.ends | date: 'medium' }}</div>
+        <div class="cell">{{ result.updated | date: 'medium' }}</div>
         <div class="cell">
           <i class="eva eva-trash-2-outline" (click)="deleteResult(result)"></i>
           <i class="eva eva-external-link-outline"></i>

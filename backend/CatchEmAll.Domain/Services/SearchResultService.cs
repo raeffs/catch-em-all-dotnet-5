@@ -31,7 +31,8 @@ namespace CatchEmAll.Services
           Name = x.Auction.Info.Name,
           Ends = x.Auction.Info.Ends,
           BidPrice = x.Auction.Price.BidPrice,
-          PurchasePrice = x.Auction.Price.PurchasePrice
+          PurchasePrice = x.Auction.Price.PurchasePrice,
+          Updated = x.Auction.Update.Updated
         });
     }
 

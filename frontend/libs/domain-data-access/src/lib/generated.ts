@@ -47,9 +47,9 @@ export class SearchQueryService {
      */
     public getAllSearchQueries(pageNumber?: number | null | undefined, pageSize?: number | null | undefined): Observable<SearchQuerySummaryPage> {
         let url = '/api/search-queries?';
-        if (pageNumber !== undefined && pageNumber !== null)
+        if (pageNumber != null)
             url += "pageNumber=" + encodeURIComponent("" + pageNumber) + "&";
-        if (pageSize !== undefined && pageSize !== null)
+        if (pageSize != null)
             url += "pageSize=" + encodeURIComponent("" + pageSize) + "&";
         url = url.replace(/[?&]$/, '');
 
@@ -57,10 +57,9 @@ export class SearchQueryService {
     }
 
     /**
-     * @param body (optional) 
      * @return Success
      */
-    public createSearchQuery(body?: CreateSearchQueryOptions | undefined): Observable<SearchQueryDetail> {
+    public createSearchQuery(body: CreateSearchQueryOptions): Observable<SearchQueryDetail> {
         let url = '/api/search-queries';
         url = url.replace(/[?&]$/, '');
 
@@ -97,10 +96,9 @@ export class SearchQueryService {
     }
 
     /**
-     * @param body (optional) 
      * @return Success
      */
-    public updateSearchQuery(id: string, body?: SearchQueryDetail | undefined): Observable<SearchQueryDetail> {
+    public updateSearchQuery(id: string, body: SearchQueryDetail): Observable<SearchQueryDetail> {
         let url = '/api/search-queries/{id}';
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -166,11 +164,11 @@ export interface AuctionSummary {
 export type Priority = 0 | 1 | 2;
 
 export interface SearchQuerySummary {
-    id?: string;
-    name?: string | null;
-    priority?: Priority;
-    updated?: string;
-    numberOfAuctions?: number;
+    id: string;
+    name: string;
+    priority: Priority;
+    updated: string;
+    numberOfAuctions: number;
 }
 
 export interface SearchQuerySummaryPage {
@@ -198,10 +196,11 @@ export interface SearchQueryDetail {
 }
 
 export interface SearchResultSummary {
-    id?: string;
-    queryId?: string;
-    name?: string | null;
-    ends?: string;
+    id: string;
+    queryId: string;
+    name: string;
+    ends: string;
     bidPrice?: number | null;
     purchasePrice?: number | null;
+    updated: string;
 }
