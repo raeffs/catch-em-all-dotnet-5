@@ -17,6 +17,8 @@ tr {
 cea-card {
   overflow: hidden;
   padding: 0;
+  display: grid;
+  grid-template-rows: auto 45px;
 }
 
 .cell {
@@ -41,6 +43,10 @@ tr:hover {
 
 tr.header {
   border: none;
+}
+
+tr.header,
+tr.footer {
   background-color: transparent;
   cursor: default;
 }
@@ -61,7 +67,7 @@ i.eva {
 
 td .material-icons {
   visibility: hidden;
-  font-size: 18px;
+  font-size: 20px;
   padding: 6px;
   border-radius: 2px;
   cursor: pointer;
