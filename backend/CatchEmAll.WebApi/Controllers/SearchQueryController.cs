@@ -3,6 +3,7 @@ using CatchEmAll.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -82,6 +83,13 @@ namespace CatchEmAll.Controllers
       //await this.queries.RefreshAsync(id);
       var query = await this.queries.GetDetailAsync(id);
       return this.Ok(query);
+    }
+
+    [HttpDelete(Name = "DeleteSearchQuery")]
+    public async Task<IActionResult> Delete([Required] Guid id)
+    {
+      await this.queries.DeleteAsync(id);
+      return this.Ok();
     }
   }
 }

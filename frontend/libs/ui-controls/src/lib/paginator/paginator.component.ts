@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { take } from 'rxjs/operators';
-import { PaginatedDataSource } from '../data-source';
+import { PaginatedDataSource } from '@raeffs/data-source';
 
 @Component({
   selector: 'cea-paginator',
@@ -13,14 +12,10 @@ export class PaginatorComponent {
   public dataSource: PaginatedDataSource<unknown> | null = null;
 
   public nextPage(): void {
-    this.dataSource?.page$.pipe(take(1)).subscribe(p => {
-      this.dataSource?.fetch(p.pageNumber + 1);
-    });
+    this.dataSource?.changeToNextPage();
   }
 
   public prevPage(): void {
-    this.dataSource?.page$.pipe(take(1)).subscribe(p => {
-      this.dataSource?.fetch(p.pageNumber - 1);
-    });
+    this.dataSource?.changeToPreviousPage();
   }
 }

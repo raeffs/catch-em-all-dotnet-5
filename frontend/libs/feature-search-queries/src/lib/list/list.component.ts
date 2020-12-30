@@ -1,7 +1,8 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
+import { CdkTable } from '@angular/cdk/table';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { SearchQueryService, SearchQuerySummary } from '@cea/domain-data-access';
-import { PaginatedDataSource } from '@cea/ui-controls';
+import { createPaginatedDataSource, PaginatedDataSource } from '@raeffs/data-source';
 
 @Component({
   templateUrl: 'list.component.html',
@@ -9,9 +10,12 @@ import { PaginatedDataSource } from '@cea/ui-controls';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ListComponent {
-  public readonly columns = ['name', 'numberOfAuctions', 'priority', 'updated'];
+  public readonly columns = ['name', 'operations', 'numberOfAuctions', 'priority', 'updated'];
 
   public readonly dataSource: PaginatedDataSource<SearchQuerySummary>;
+
+  @ViewChild(CdkTable)
+  private cdkTable: CdkTable<SearchQuerySummary> | null = null;
 
   private numberOfRows = 20;
 
@@ -24,10 +28,12 @@ export class ListComponent {
     private readonly router: Router,
     private changeDetectorRef: ChangeDetectorRef
   ) {
-    this.dataSource = new PaginatedDataSource<SearchQuerySummary>(
-      request => this.queryService.getAllSearchQueries(request.page, request.size),
-      { property: 'id', order: 'asc' }
-    );
+    this.dataSource = createPaginatedDataSource({
+      endpoint: request => this.queryService.getAllSearchQueries(request.pageNumber, request.pageSize),
+      sort: { property: 'id', order: 'asc' },
+      pageNumber: 1,
+      pageSize: 20,
+    });
   }
 
   public openQuery(query: SearchQuerySummary): void {
@@ -39,11 +45,17 @@ export class ListComponent {
     const rows = Math.floor(e.currentHeight / 45) - 2;
     console.log(rows);
     this.numberOfRows = rows;
-    this.dataSource.setPageSize(rows);
     this.changeDetectorRef.detectChanges();
+    this.dataSource.changePageSize(rows);
   }
 
-  public myTrackById(index: number, item: SearchQuerySummary): any {
-    return item.id;
+  public myTrackById(index: number, item: SearchQuerySummary): string {
+    return item.id ?? '';
+  }
+
+  public deleteQuery(event: Event, item: SearchQuerySummary): void {
+    event.stopPropagation();
+    event.preventDefault();
+    this.queryService.deleteSearchQuery(item.id).subscribe();
   }
 }

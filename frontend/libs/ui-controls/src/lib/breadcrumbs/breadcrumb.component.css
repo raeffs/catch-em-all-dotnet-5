@@ -8,7 +8,7 @@
 }
 
 :host::after {
-  content: '\2192';
+  content: '/';
   padding: 0 10px;
 }
 

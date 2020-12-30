@@ -24,10 +24,10 @@ namespace CatchEmAll.WebJobs
     {
       await this.service.UpdateSearchQueries(Priority.Mid);
     }
-    /*
+
     public async Task UpdateSearchQueriesWithLowPriority([TimerTrigger("1 * * * * *", RunOnStartup = false)] TimerInfo timerInfo, ILogger logger)
     {
       await this.service.UpdateSearchQueries(Priority.Low);
-    }*/
+    }
   }
 }

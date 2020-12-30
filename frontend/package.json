@@ -39,6 +39,8 @@
     "@angular/platform-browser-dynamic": "^11.0.0",
     "@angular/router": "^11.0.0",
     "@nrwl/angular": "11.0.18",
+    "@raeffs/common": "^0.0.2",
+    "@raeffs/data-source": "^0.0.2",
     "angular-oauth2-oidc": "^10.0.3",
     "rxjs": "~6.5.5",
     "tslib": "^2.0.0",

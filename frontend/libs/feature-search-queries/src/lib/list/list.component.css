@@ -9,24 +9,14 @@
 cea-card:last-of-type {
   flex: auto;
 }
-/*
-cdk-virtual-scroll-viewport {
-  height: calc(100% - 45px);
-}
-*/
 
-.row {
+tr {
   height: 45px;
-  display: grid;
-  grid-template-columns: 40% 100px 100px auto;
-  align-items: center;
-  gap: 20px;
 }
 
 cea-card {
-  display: grid;
-  grid-template-rows: auto 45px;
   overflow: hidden;
+  padding: 0;
 }
 
 .cell {
@@ -35,10 +25,29 @@ cea-card {
   text-overflow: ellipsis;
 }
 
-cdk-table {
-  display: grid;
+table {
+  width: 100%;
+  border-collapse: collapse;
 }
 
-cdk-header-row {
+tr {
+  border-top: 1px solid lightgray;
+}
+
+tr.header {
+  border: none;
+}
+
+th {
   font-weight: bold;
+  text-align: unset;
+}
+
+th,
+td {
+  padding: 10px;
+}
+
+i.eva {
+  cursor: pointer;
 }

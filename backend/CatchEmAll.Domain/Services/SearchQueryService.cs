@@ -90,5 +90,15 @@ namespace CatchEmAll.Services
 
       await this.data.SaveChangesAsync();
     }
+
+    public async Task DeleteAsync(Guid id)
+    {
+      var query = await this.data.SearchQueries.AsTracking()
+        .BelongingTo(this.identity)
+        .SingleAsync(x => x.Id == id);
+
+      this.data.SearchQueries.Remove(query);
+      await this.data.SaveChangesAsync();
+    }
   }
 }

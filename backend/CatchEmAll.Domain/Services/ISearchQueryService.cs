@@ -13,5 +13,7 @@ namespace CatchEmAll.Services
 
     IQueryable<SearchQuerySummary> GetSummaries();
     Task UpdateAsync(Guid id, SearchQueryDetail model);
+
+    Task DeleteAsync(Guid id);
   }
 }

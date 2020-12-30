@@ -1,7 +1,10 @@
+@import '/styles/variables';
+
 :host {
   display: block;
-  background: #f3f3f3;
+  background: #fff;
   margin: 0 -10px;
   padding: 0 10px;
   border-radius: 4px;
+  box-shadow: $default-shadow;
 }

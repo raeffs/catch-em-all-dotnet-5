@@ -1729,6 +1729,21 @@
     yargs "15.4.1"
     yargs-parser "20.0.0"
 
+"@raeffs/common@^0.0.2":
+  version "0.0.2"
+  resolved "https://npm.pkg.github.com/download/@raeffs/common/0.0.2/c6df9c4e2ed630b1aba1c348459ae9b76ad6c352c4b53044e57a6f7a0fc756ce#65428dcb4a691298a32417123ca4f59246abfb51"
+  integrity sha512-gO787EneRpqB9RAxvbLfX8q4Vf4bEm9ULm6MEHpKjoD44vf7TbQwC+ta4h8PGPpedvz3r5PpmJy4gm7Jmw3eBw==
+  dependencies:
+    tslib "^2.0.0"
+
+"@raeffs/data-source@^0.0.2":
+  version "0.0.2"
+  resolved "https://npm.pkg.github.com/download/@raeffs/data-source/0.0.2/05f3bd779246aaac9e74cb4f28cfa39f788521335bbe4f5534ca2997365f9ed9#d784f6967296208ba0aed2a69edc872e7dbd79f7"
+  integrity sha512-fFIL9GWcSm3zu9daoWu9Wy45VP7WEIi+BLieQUcteACHq4Z0gfgPgFafa6fom2gu0hablyZstMCkUJRtLsYl1Q==
+  dependencies:
+    rxjs "~6.5.5"
+    tslib "^2.0.0"
+
 "@rollup/plugin-commonjs@^15.0.0":
   version "15.1.0"
   resolved "https://registry.yarnpkg.com/@rollup/plugin-commonjs/-/plugin-commonjs-15.1.0.tgz#1e7d076c4f1b2abf7e65248570e555defc37c238"

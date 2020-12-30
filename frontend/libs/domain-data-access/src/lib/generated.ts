@@ -72,6 +72,20 @@ export class SearchQueryService {
     /**
      * @return Success
      */
+    public deleteSearchQuery(id: string): Observable<void> {
+        let url = '/api/search-queries?';
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined and cannot be null.");
+        else
+            url += "id=" + encodeURIComponent("" + id) + "&";
+        url = url.replace(/[?&]$/, '');
+
+        return this.http.delete<void>(url);
+    }
+
+    /**
+     * @return Success
+     */
     public getSearchQuery(id: string): Observable<SearchQueryDetail> {
         let url = '/api/search-queries/{id}';
         if (id === undefined || id === null)

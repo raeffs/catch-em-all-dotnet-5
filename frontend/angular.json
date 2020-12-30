@@ -28,7 +28,7 @@
                 "output": "/fonts/"
               }
             ],
-            "styles": ["apps/catch-em-all/src/styles.css", "apps/catch-em-all/src/icons.css"],
+            "styles": ["styles/main.scss", "apps/catch-em-all/src/icons.css"],
             "scripts": []
           },
           "configurations": {
