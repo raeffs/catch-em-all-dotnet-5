@@ -32,10 +32,17 @@ table {
 
 tr {
   border-top: 1px solid lightgray;
+  cursor: pointer;
+}
+
+tr:hover {
+  background-color: rgba(0, 0, 0, 0.02);
 }
 
 tr.header {
   border: none;
+  background-color: transparent;
+  cursor: default;
 }
 
 th {
@@ -45,9 +52,25 @@ th {
 
 th,
 td {
-  padding: 10px;
+  padding: 0 10px;
 }
 
 i.eva {
   cursor: pointer;
+}
+
+td .material-icons {
+  visibility: hidden;
+  font-size: 18px;
+  padding: 6px;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+tr:hover .material-icons {
+  visibility: visible;
+}
+
+td .material-icons:hover {
+  background-color: rgba(0, 0, 0, 0.06);
 }

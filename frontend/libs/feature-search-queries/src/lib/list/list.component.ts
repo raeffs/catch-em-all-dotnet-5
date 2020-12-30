@@ -56,6 +56,6 @@ export class ListComponent {
   public deleteQuery(event: Event, item: SearchQuerySummary): void {
     event.stopPropagation();
     event.preventDefault();
-    this.queryService.deleteSearchQuery(item.id).subscribe();
+    this.queryService.deleteSearchQuery(item.id).subscribe(() => this.dataSource.reload());
   }
 }

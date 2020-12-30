@@ -10,6 +10,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "preserveSymlinks": true,
             "outputPath": "dist/apps/catch-em-all",
             "index": "apps/catch-em-all/src/index.html",
             "main": "apps/catch-em-all/src/main.ts",
@@ -28,7 +29,7 @@
                 "output": "/fonts/"
               }
             ],
-            "styles": ["styles/main.scss", "apps/catch-em-all/src/icons.css"],
+            "styles": ["styles/main.scss"],
             "scripts": []
           },
           "configurations": {

@@ -19,7 +19,7 @@
       <ng-container cdkColumnDef="operations">
         <th cdk-header-cell *cdkHeaderCellDef class="cell"></th>
         <td cdk-cell *cdkCellDef="let element" class="cell">
-          <i class="eva eva-trash-2-outline" (click)="deleteQuery($event, element)"></i>
+          <i class="material-icons" (click)="deleteQuery($event, element)">delete_forever</i>
         </td>
         <td cdk-footer-cell *cdkFooterCellDef class="cell"></td>
       </ng-container>
@@ -39,6 +39,5 @@
         <td cdk-footer-cell *cdkFooterCellDef class="cell"></td>
       </ng-container>
     </table>
-    <!--<cea-paginator [dataSource]="dataSource"></cea-paginator>-->
   </cea-card>
 </div>

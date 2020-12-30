@@ -1729,17 +1729,17 @@
     yargs "15.4.1"
     yargs-parser "20.0.0"
 
-"@raeffs/common@^0.0.2":
-  version "0.0.2"
-  resolved "https://npm.pkg.github.com/download/@raeffs/common/0.0.2/c6df9c4e2ed630b1aba1c348459ae9b76ad6c352c4b53044e57a6f7a0fc756ce#65428dcb4a691298a32417123ca4f59246abfb51"
-  integrity sha512-gO787EneRpqB9RAxvbLfX8q4Vf4bEm9ULm6MEHpKjoD44vf7TbQwC+ta4h8PGPpedvz3r5PpmJy4gm7Jmw3eBw==
+"@raeffs/common@^0.0.4":
+  version "0.0.4"
+  resolved "https://npm.pkg.github.com/download/@raeffs/common/0.0.4/8ac1bfc0417eed3a85fd72e70f975875a1639c8959cac28b69274c35dc047bf6#11dffa73b2dfd8b06e2cce125a38bfeb01978288"
+  integrity sha512-JXrnr2IUcz1d0EpCbgyeGUo2wrAU9C31lkF5XmY7UIfT2a0f8CFspf82NXz+kwtK5mWvsIUROyCk4YnmG+ymsA==
   dependencies:
     tslib "^2.0.0"
 
-"@raeffs/data-source@^0.0.2":
-  version "0.0.2"
-  resolved "https://npm.pkg.github.com/download/@raeffs/data-source/0.0.2/05f3bd779246aaac9e74cb4f28cfa39f788521335bbe4f5534ca2997365f9ed9#d784f6967296208ba0aed2a69edc872e7dbd79f7"
-  integrity sha512-fFIL9GWcSm3zu9daoWu9Wy45VP7WEIi+BLieQUcteACHq4Z0gfgPgFafa6fom2gu0hablyZstMCkUJRtLsYl1Q==
+"@raeffs/data-source@^0.0.4":
+  version "0.0.4"
+  resolved "https://npm.pkg.github.com/download/@raeffs/data-source/0.0.4/9056269f08729ac92322bce6cfae1b8622f1acdd150381e6893d61789f2dc895#ed9de6f8995b8c7a3b0743618f8de34e463a14d1"
+  integrity sha512-2I2OMtSsGawi3C+ZZ0JDrC2NUnNUIz8AZ/o9bi7MpEKq/TSpmKsluvBTtnZwU8d5/pd4gqBF1E0jzql3NJ6Vbg==
   dependencies:
     rxjs "~6.5.5"
     tslib "^2.0.0"

@@ -64,7 +64,7 @@ stages:
               arguments: "--configuration Release"
               workingDirectory: "backend"
           - task: DotNetCoreCLI@2
-            displayName: Create WebJobs Zip Package
+            displayName: Publish WebJobs
             inputs:
               command: "publish"
               publishWebProjects: false
