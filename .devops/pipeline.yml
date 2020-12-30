@@ -107,6 +107,11 @@ stages:
                 yarn | "$(Agent.OS)"
                 yarn
               path: frontend/node_modules
+          - task: npmAuthenticate@0
+            displayName: Configure Yarn
+            inputs:
+              workingFile: "frontend/.npmrc"
+              customEndpoint: "GitHub NPM Registry"
           - task: CmdLine@2
             displayName: Install Dependencies
             inputs:
