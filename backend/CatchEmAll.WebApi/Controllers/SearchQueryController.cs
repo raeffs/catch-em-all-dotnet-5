@@ -22,12 +22,13 @@ namespace CatchEmAll.Controllers
 
     [HttpGet(Name = "GetAllSearchQueries")]
     [Produces(typeof(Page<SearchQuerySummary>))]
-    public async Task<IActionResult> Get(int? pageNumber, int? pageSize)
+    public async Task<IActionResult> Get(int? pageNumber, int? pageSize, string? sortBy, SortOrder? sortDirection)
     {
       var pageRequest = new PageRequest
       {
         PageNumber = pageNumber ?? 1,
-        PageSize = pageSize ?? 10
+        PageSize = pageSize ?? 10,
+        Sort = new Sort { Property = sortBy ?? "id", Order = sortDirection ?? SortOrder.Ascending }
       };
 
       var queryable = this.queries.GetSummaries();
@@ -46,7 +47,8 @@ namespace CatchEmAll.Controllers
         PageNumber = pageRequest.PageNumber,
         PageSize = pageRequest.PageSize,
         TotalItems = await this.queries.GetSummaries().CountAsync(),
-        Items = await queryable.ToListAsync()
+        Items = await queryable.ToListAsync(),
+        Sort = pageRequest.Sort ?? new Sort { Property = "id" }
       };
 
       return this.Ok(page);

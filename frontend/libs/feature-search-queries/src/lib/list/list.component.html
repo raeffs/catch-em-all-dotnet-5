@@ -4,12 +4,19 @@
   </cea-breadcrumbs>
 
   <cea-card (ceaResize)="handleResize($event)">
-    <table cdk-table [dataSource]="dataSource" [trackBy]="myTrackById">
+    <table cdk-table [dataSource]="dataSource" [trackBy]="myTrackById" *ngIf="dataSource.data | async as pageModel">
       <tr cdk-header-row *cdkHeaderRowDef="columns" class="header"></tr>
       <tr cdk-row *cdkRowDef="let row; columns: columns" (click)="openQuery(row)"></tr>
 
       <ng-container cdkColumnDef="name">
-        <th cdk-header-cell *cdkHeaderCellDef class="cell">Name</th>
+        <th cdk-header-cell *cdkHeaderCellDef class="cell" (click)="sortBy('name', pageModel?.sort)">
+          <div>
+            Name
+            <i class="material-icons" *ngIf="pageModel?.sort?.property === 'name'">{{
+              pageModel?.sort?.order === 'Ascending' ? 'north' : 'south'
+            }}</i>
+          </div>
+        </th>
         <td cdk-cell *cdkCellDef="let element" class="cell">{{ element.name }}</td>
         <td cdk-footer-cell *cdkFooterCellDef class="cell">
           <cea-paginator [dataSource]="dataSource"></cea-paginator>
@@ -22,15 +29,36 @@
         </td>
       </ng-container>
       <ng-container cdkColumnDef="numberOfAuctions">
-        <th cdk-header-cell *cdkHeaderCellDef class="cell">#</th>
+        <th cdk-header-cell *cdkHeaderCellDef class="cell" (click)="sortBy('numberOfAuctions', pageModel?.sort)">
+          <div>
+            #
+            <i class="material-icons" *ngIf="pageModel?.sort?.property === 'numberOfAuctions'">{{
+              pageModel?.sort?.order === 'Ascending' ? 'north' : 'south'
+            }}</i>
+          </div>
+        </th>
         <td cdk-cell *cdkCellDef="let element" class="cell">{{ element.numberOfAuctions }}</td>
       </ng-container>
       <ng-container cdkColumnDef="priority">
-        <th cdk-header-cell *cdkHeaderCellDef class="cell">Priority</th>
+        <th cdk-header-cell *cdkHeaderCellDef class="cell" (click)="sortBy('priority', pageModel?.sort)">
+          <div>
+            Priority
+            <i class="material-icons" *ngIf="pageModel?.sort?.property === 'priority'">{{
+              pageModel?.sort?.order === 'Ascending' ? 'north' : 'south'
+            }}</i>
+          </div>
+        </th>
         <td cdk-cell *cdkCellDef="let element" class="cell">{{ element.priority }}</td>
       </ng-container>
       <ng-container cdkColumnDef="updated">
-        <th cdk-header-cell *cdkHeaderCellDef class="cell">Updated</th>
+        <th cdk-header-cell *cdkHeaderCellDef class="cell" (click)="sortBy('updated', pageModel?.sort)">
+          <div>
+            Updated
+            <i class="material-icons" *ngIf="pageModel?.sort?.property === 'updated'">{{
+              pageModel?.sort?.order === 'Ascending' ? 'north' : 'south'
+            }}</i>
+          </div>
+        </th>
         <td cdk-cell *cdkCellDef="let element" class="cell">{{ element.updated | date: 'medium' }}</td>
       </ng-container>
     </table>

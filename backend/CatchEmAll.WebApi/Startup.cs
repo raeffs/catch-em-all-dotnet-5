@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using System.Text.Json.Serialization;
 
 namespace CatchEmAll.WebApi
 {
@@ -35,7 +36,12 @@ namespace CatchEmAll.WebApi
                .AllowAnyHeader();
       }));
 
-      services.AddControllers();
+      services
+        .AddControllers()
+        .AddJsonOptions(opts =>
+        {
+          opts.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+        });
 
       services.AddSwaggerGen(config =>
       {

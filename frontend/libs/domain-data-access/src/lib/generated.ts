@@ -43,14 +43,22 @@ export class SearchQueryService {
     /**
      * @param pageNumber (optional) 
      * @param pageSize (optional) 
+     * @param sortBy (optional) 
+     * @param sortDirection (optional) 
      * @return Success
      */
-    public getAllSearchQueries(pageNumber?: number | null | undefined, pageSize?: number | null | undefined): Observable<SearchQuerySummaryPage> {
+    public getAllSearchQueries(pageNumber?: number | null | undefined, pageSize?: number | null | undefined, sortBy?: string | null | undefined, sortDirection?: SortOrder | undefined): Observable<SearchQuerySummaryPage> {
         let url = '/api/search-queries?';
         if (pageNumber != null)
             url += "pageNumber=" + encodeURIComponent("" + pageNumber) + "&";
         if (pageSize != null)
             url += "pageSize=" + encodeURIComponent("" + pageSize) + "&";
+        if (sortBy != null)
+            url += "sortBy=" + encodeURIComponent("" + sortBy) + "&";
+        if (sortDirection === null)
+            throw new Error("The parameter 'sortDirection' cannot be null.");
+        else if (sortDirection !== undefined)
+            url += "sortDirection=" + encodeURIComponent("" + sortDirection) + "&";
         url = url.replace(/[?&]$/, '');
 
         return this.http.get<SearchQuerySummaryPage>(url);
@@ -161,7 +169,9 @@ export interface AuctionSummary {
     purchasePrice?: number | null;
 }
 
-export type Priority = 0 | 1 | 2;
+export type SortOrder = "Ascending" | "Descending";
+
+export type Priority = "Low" | "Mid" | "High";
 
 export interface SearchQuerySummary {
     id: string;
@@ -171,11 +181,17 @@ export interface SearchQuerySummary {
     numberOfAuctions: number;
 }
 
+export interface Sort {
+    property: string;
+    order: SortOrder;
+}
+
 export interface SearchQuerySummaryPage {
     items: SearchQuerySummary[];
     totalItems: number;
     pageSize: number;
     pageNumber: number;
+    sort: Sort;
 }
 
 export interface CreateSearchQueryOptions {

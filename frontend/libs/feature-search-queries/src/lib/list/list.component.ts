@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { SearchQueryService, SearchQuerySummary } from '@cea/domain-data-access';
+import { SearchQueryService, SearchQuerySummary, Sort } from '@cea/domain-data-access';
 import { createPaginatedDataSource, PaginatedDataSource } from '@raeffs/data-source';
 import { map } from 'rxjs/operators';
 
@@ -21,8 +21,14 @@ export class ListComponent {
     private changeDetectorRef: ChangeDetectorRef
   ) {
     this.dataSource = createPaginatedDataSource({
-      endpoint: request => this.queryService.getAllSearchQueries(request.pageNumber, request.pageSize),
-      initialSort: { property: 'id', order: 'asc' },
+      endpoint: request =>
+        this.queryService.getAllSearchQueries(
+          request.pageNumber,
+          request.pageSize,
+          request.sort.property,
+          request.sort.order
+        ),
+      initialSort: { property: 'name', order: 'Ascending' },
       initialPageNumber: 1,
       initialPageSize: 20,
       pageNumberChanges: this.route.queryParams.pipe(map(params => +params['page'])),
@@ -47,5 +53,12 @@ export class ListComponent {
     event.stopPropagation();
     event.preventDefault();
     this.queryService.deleteSearchQuery(item.id).subscribe(() => this.dataSource.reload());
+  }
+
+  public sortBy(property: keyof SearchQuerySummary, current?: Sort): void {
+    this.dataSource.sortBy({
+      property,
+      order: current?.property === property && current?.order === 'Ascending' ? 'Descending' : 'Ascending',
+    });
   }
 }
