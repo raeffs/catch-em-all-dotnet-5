@@ -1744,6 +1744,13 @@
     rxjs "~6.5.5"
     tslib "^2.0.0"
 
+"@raeffs/rxjs@^0.0.5":
+  version "0.0.5"
+  resolved "https://npm.pkg.github.com/download/@raeffs/rxjs/0.0.5/da81d2b55872001c7b2f383c09e6eabf04783126c32fd881fd2f4d0ccb50a51d#cef80cd5d11091fb8c0230ccd24e178d39833688"
+  integrity sha512-d+6c23zIfM00nlO/ROyHDFBx2QpfJQpweWaLKiVUf6/PSiMwe0xaS4DkZLS96X8kqF0sM4aJYI3yRtKvlzE4tw==
+  dependencies:
+    tslib "^2.0.0"
+
 "@rollup/plugin-commonjs@^15.0.0":
   version "15.1.0"
   resolved "https://registry.yarnpkg.com/@rollup/plugin-commonjs/-/plugin-commonjs-15.1.0.tgz#1e7d076c4f1b2abf7e65248570e555defc37c238"

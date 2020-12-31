@@ -1,6 +1,5 @@
-import { CdkTable } from '@angular/cdk/table';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { SearchQueryService, SearchQuerySummary } from '@cea/domain-data-access';
 import { createPaginatedDataSource, PaginatedDataSource } from '@raeffs/data-source';
 
@@ -14,18 +13,10 @@ export class ListComponent {
 
   public readonly dataSource: PaginatedDataSource<SearchQuerySummary>;
 
-  @ViewChild(CdkTable)
-  private cdkTable: CdkTable<SearchQuerySummary> | null = null;
-
-  private numberOfRows = 20;
-
-  public get rowStyle(): string {
-    return `repeat(${this.numberOfRows}, 45px)`;
-  }
-
   constructor(
     private readonly queryService: SearchQueryService,
     private readonly router: Router,
+    private readonly route: ActivatedRoute,
     private changeDetectorRef: ChangeDetectorRef
   ) {
     this.dataSource = createPaginatedDataSource({
@@ -34,6 +25,7 @@ export class ListComponent {
       pageNumber: 1,
       pageSize: 20,
     });
+    this.route.queryParams.subscribe(params => this.dataSource.changePageNumber(params['page']));
   }
 
   public openQuery(query: SearchQuerySummary): void {
@@ -41,10 +33,7 @@ export class ListComponent {
   }
 
   public handleResize(e: any): void {
-    console.log(e);
     const rows = Math.floor(e.currentHeight / 45) - 2;
-    console.log(rows);
-    this.numberOfRows = rows;
     this.changeDetectorRef.detectChanges();
     this.dataSource.changePageSize(rows);
   }

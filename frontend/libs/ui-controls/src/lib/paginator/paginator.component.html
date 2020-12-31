@@ -1,2 +1,31 @@
-<i class="material-icons" (click)="prevPage()">navigate_before</i>
-<i class="material-icons" (click)="nextPage()">navigate_next</i>
+<ng-container *ngIf="pagination | async as model">
+  <div>
+    <i
+      class="material-icons"
+      (click)="model.hasPreviousPage && goToPage(1)"
+      [class.is-disabled]="!model.hasPreviousPage"
+      >first_page</i
+    >
+    <i
+      class="material-icons"
+      (click)="model.hasPreviousPage && goToPage(model.previousPage)"
+      [class.is-disabled]="!model.hasPreviousPage"
+      >navigate_before</i
+    >
+  </div>
+  <div>Page {{ model.currentPage }} of {{ model.numberOfPages }}</div>
+  <div>
+    <i
+      class="material-icons"
+      (click)="model.hasNextPage && goToPage(model.nextPage)"
+      [class.is-disabled]="!model.hasNextPage"
+      >navigate_next</i
+    >
+    <i
+      class="material-icons"
+      (click)="model.hasNextPage && goToPage(model.numberOfPages)"
+      [class.is-disabled]="!model.hasNextPage"
+      >last_page</i
+    >
+  </div>
+</ng-container>

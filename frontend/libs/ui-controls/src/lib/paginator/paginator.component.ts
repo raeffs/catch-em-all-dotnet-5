@@ -1,5 +1,9 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { PaginatedDataSource } from '@raeffs/data-source';
+import { Router } from '@angular/router';
+import { createPagination, PaginatedDataSource, Pagination } from '@raeffs/data-source';
+import { filterNullAndUndefined } from '@raeffs/rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'cea-paginator',
@@ -8,14 +12,25 @@ import { PaginatedDataSource } from '@raeffs/data-source';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PaginatorComponent {
-  @Input()
-  public dataSource: PaginatedDataSource<unknown> | null = null;
+  private readonly _dataSource: BehaviorSubject<PaginatedDataSource<
+    unknown
+  > | null> = new BehaviorSubject<PaginatedDataSource<unknown> | null>(null);
 
-  public nextPage(): void {
-    this.dataSource?.changeToNextPage();
+  @Input()
+  public set dataSource(value: PaginatedDataSource<unknown>) {
+    this._dataSource.next(value);
   }
 
-  public prevPage(): void {
-    this.dataSource?.changeToPreviousPage();
+  constructor(private readonly router: Router) {}
+
+  public readonly pagination: Observable<Pagination> = this._dataSource.pipe(
+    filterNullAndUndefined(),
+    switchMap(source => source.data),
+    map(page => createPagination(page))
+  );
+
+  public goToPage(newPage: number): void {
+    //this._dataSource.value?.changePageNumber(newPage);
+    this.router.navigate([], { queryParams: { page: newPage }, queryParamsHandling: 'merge' });
   }
 }
