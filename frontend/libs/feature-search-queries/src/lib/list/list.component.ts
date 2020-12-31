@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/
 import { ActivatedRoute, Router } from '@angular/router';
 import { SearchQueryService, SearchQuerySummary } from '@cea/domain-data-access';
 import { createPaginatedDataSource, PaginatedDataSource } from '@raeffs/data-source';
+import { map } from 'rxjs/operators';
 
 @Component({
   templateUrl: 'list.component.html',
@@ -21,11 +22,11 @@ export class ListComponent {
   ) {
     this.dataSource = createPaginatedDataSource({
       endpoint: request => this.queryService.getAllSearchQueries(request.pageNumber, request.pageSize),
-      sort: { property: 'id', order: 'asc' },
-      pageNumber: 1,
-      pageSize: 20,
+      initialSort: { property: 'id', order: 'asc' },
+      initialPageNumber: 1,
+      initialPageSize: 20,
+      pageNumberChanges: this.route.queryParams.pipe(map(params => +params['page'])),
     });
-    this.route.queryParams.subscribe(params => this.dataSource.changePageNumber(params['page']));
   }
 
   public openQuery(query: SearchQuerySummary): void {
