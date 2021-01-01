@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { asObservable } from '@raeffs/rxjs';
 import { OAuthService } from 'angular-oauth2-oidc';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
 
 export interface UserInfo {
   readonly email: string;
@@ -20,7 +20,8 @@ export class UserService {
           email: data.email,
           picture: data.picture,
         };
-      })
+      }),
+      catchError(() => of({}))
     );
   }
 }
