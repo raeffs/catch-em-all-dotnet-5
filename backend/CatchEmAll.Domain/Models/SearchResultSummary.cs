@@ -45,5 +45,8 @@ namespace CatchEmAll.Models
     /// </summary>
     [Required]
     public DateTimeOffset Updated { get; init; }
+
+    [Required]
+    public string ExternalLink { get; init; } = string.Empty;
   }
 }

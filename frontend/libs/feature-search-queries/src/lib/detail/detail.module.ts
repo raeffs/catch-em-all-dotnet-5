@@ -1,4 +1,4 @@
-import { ScrollingModule } from '@angular/cdk/scrolling';
+import { CdkTableModule } from '@angular/cdk/table';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
@@ -8,7 +8,7 @@ import { DetailComponent } from './detail.component';
 @NgModule({
   imports: [
     CommonModule,
-    ScrollingModule,
+    CdkTableModule,
     UiControlsModule,
     RouterModule.forChild([
       {

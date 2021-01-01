@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace CatchEmAll.Controllers
@@ -21,16 +21,42 @@ namespace CatchEmAll.Controllers
       this.searchResultService = searchResultService;
     }
 
-    [HttpGet(Name = "GetAllResults")]
-    [Produces(typeof(IEnumerable<SearchResultSummary>))]
-    public async Task<IActionResult> GetAuctions(Guid queryId)
+    [HttpGet(Name = "GetAll")]
+    [Produces(typeof(Page<SearchResultSummary>))]
+    public async Task<IActionResult> GetAll(Guid queryId, int? pageNumber, int? pageSize, string? sortBy, SortOrder? sortDirection)
     {
-      var auctions = await this.searchResultService.GetSummaries(queryId).ToListAsync();
-      return this.Ok(auctions);
+      var pageRequest = new PageRequest
+      {
+        PageNumber = pageNumber ?? 1,
+        PageSize = pageSize ?? 10,
+        Sort = new Sort { Property = sortBy ?? "id", Order = sortDirection ?? SortOrder.Ascending }
+      };
+
+      var queryable = this.searchResultService.GetSummaries(queryId);
+
+      if (pageRequest.Sort != null)
+      {
+        queryable = queryable.OrderBy(new[] { pageRequest.Sort });
+      }
+
+      queryable = queryable
+        .Skip((pageRequest.PageNumber - 1) * pageRequest.PageSize)
+        .Take(pageRequest.PageSize);
+
+      var page = new Page<SearchResultSummary>
+      {
+        PageNumber = pageRequest.PageNumber,
+        PageSize = pageRequest.PageSize,
+        TotalItems = await this.searchResultService.GetSummaries(queryId).CountAsync(),
+        Items = await queryable.ToListAsync(),
+        Sort = pageRequest.Sort ?? new Sort { Property = "id" }
+      };
+
+      return this.Ok(page);
     }
 
-    [HttpDelete("{id}", Name = "DeleteResult")]
-    public async Task<IActionResult> DeleteSearchResult(Guid queryId, Guid id)
+    [HttpDelete("{id}", Name = "Delete")]
+    public async Task<IActionResult> Delete(Guid queryId, Guid id)
     {
       await this.searchResultService.DeleteAsync(queryId, id);
       return this.Ok();

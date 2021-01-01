@@ -82,6 +82,8 @@ namespace CatchEmAll.Providers
       return (info, price);
     }
 
+    public string GetExternalAuctionLink(string id) => $"https://www.ricardo.ch/de/a/{id}";
+
     private async Task<T?> FetchAndParsePage<T>(string url)
     {
       var document = await WebRequest.Create(url).GetHtmlDocumentAsync();

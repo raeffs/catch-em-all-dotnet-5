@@ -11,11 +11,13 @@ namespace CatchEmAll.Services
   {
     private readonly IDataContext data;
     private readonly IIdentity identity;
+    private readonly IProductSearch provider;
 
-    public SearchResultService(IDataContext data, IIdentity identity)
+    public SearchResultService(IDataContext data, IIdentity identity, IProductSearch provider)
     {
       this.data = data;
       this.identity = identity;
+      this.provider = provider;
     }
 
     public IQueryable<SearchResultSummary> GetSummaries(Guid queryId)
@@ -32,7 +34,8 @@ namespace CatchEmAll.Services
           Ends = x.Auction.Info.Ends,
           BidPrice = x.Auction.Price.BidPrice,
           PurchasePrice = x.Auction.Price.PurchasePrice,
-          Updated = x.Auction.Update.Updated
+          Updated = x.Auction.Update.Updated,
+          ExternalLink = this.provider.GetExternalAuctionLink(x.Auction.Provider.Value)
         });
     }
 

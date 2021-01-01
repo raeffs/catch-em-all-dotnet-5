@@ -131,22 +131,36 @@ export class SearchResultService {
     }
 
     /**
+     * @param pageNumber (optional) 
+     * @param pageSize (optional) 
+     * @param sortBy (optional) 
+     * @param sortDirection (optional) 
      * @return Success
      */
-    public getAllResults(queryId: string): Observable<SearchResultSummary[]> {
-        let url = '/api/search-queries/{queryId}/search-results';
+    public getAll(queryId: string, pageNumber?: number | null | undefined, pageSize?: number | null | undefined, sortBy?: string | null | undefined, sortDirection?: SortOrder | undefined): Observable<SearchResultSummaryPage> {
+        let url = '/api/search-queries/{queryId}/search-results?';
         if (queryId === undefined || queryId === null)
             throw new Error("The parameter 'queryId' must be defined.");
         url = url.replace("{queryId}", encodeURIComponent("" + queryId));
+        if (pageNumber != null)
+            url += "pageNumber=" + encodeURIComponent("" + pageNumber) + "&";
+        if (pageSize != null)
+            url += "pageSize=" + encodeURIComponent("" + pageSize) + "&";
+        if (sortBy != null)
+            url += "sortBy=" + encodeURIComponent("" + sortBy) + "&";
+        if (sortDirection === null)
+            throw new Error("The parameter 'sortDirection' cannot be null.");
+        else if (sortDirection !== undefined)
+            url += "sortDirection=" + encodeURIComponent("" + sortDirection) + "&";
         url = url.replace(/[?&]$/, '');
 
-        return this.http.get<SearchResultSummary[]>(url);
+        return this.http.get<SearchResultSummaryPage>(url);
     }
 
     /**
      * @return Success
      */
-    public deleteResult(queryId: string, id: string): Observable<void> {
+    public delete(queryId: string, id: string): Observable<void> {
         let url = '/api/search-queries/{queryId}/search-results/{id}';
         if (queryId === undefined || queryId === null)
             throw new Error("The parameter 'queryId' must be defined.");
@@ -219,4 +233,13 @@ export interface SearchResultSummary {
     bidPrice?: number | null;
     purchasePrice?: number | null;
     updated: string;
+    externalLink: string;
+}
+
+export interface SearchResultSummaryPage {
+    items: SearchResultSummary[];
+    totalItems: number;
+    pageSize: number;
+    pageNumber: number;
+    sort: Sort;
 }

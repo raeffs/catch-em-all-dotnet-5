@@ -3,30 +3,82 @@
     <cea-breadcrumb routerLink="/queries/list">Search Queries</cea-breadcrumb>
     <cea-breadcrumb>{{ model.name }}</cea-breadcrumb>
   </cea-breadcrumbs>
-  <cea-card>
-    <pre>{{ model | json }}</pre>
-  </cea-card>
-  <cea-card *ngIf="results | async as resultsModel">
-    <div class="row">
-      <div class="cell">Name</div>
-      <div class="cell">Bid (CHF)</div>
-      <div class="cell">Purchase (CHF)</div>
-      <div class="cell">Ends in</div>
-      <div class="cell">Updated</div>
-      <div class="cell"></div>
-    </div>
-    <cdk-virtual-scroll-viewport itemSize="45">
-      <div *cdkVirtualFor="let result of resultsModel" class="row">
-        <div class="cell">{{ result.name }}</div>
-        <div class="cell">{{ result.bidPrice | number: '0.2' }}</div>
-        <div class="cell">{{ result.purchasePrice | number: '0.2' }}</div>
-        <div class="cell">{{ result.ends | date: 'medium' }}</div>
-        <div class="cell">{{ result.updated | date: 'medium' }}</div>
-        <div class="cell">
-          <i class="eva eva-trash-2-outline" (click)="deleteResult(result)"></i>
-          <i class="eva eva-external-link-outline"></i>
-        </div>
-      </div>
-    </cdk-virtual-scroll-viewport>
+
+  <cea-card (ceaResize)="handleResize($event)">
+    <table cdk-table [dataSource]="dataSource" [trackBy]="myTrackById" *ngIf="dataSource.data | async as pageModel">
+      <tr cdk-header-row *cdkHeaderRowDef="columns" class="header"></tr>
+      <tr cdk-row *cdkRowDef="let row; columns: columns" (click)="openResult(row)"></tr>
+
+      <ng-container cdkColumnDef="name">
+        <th cdk-header-cell *cdkHeaderCellDef class="cell is-sortable" (click)="sortBy('name', pageModel?.sort)">
+          <div>
+            Name
+            <i class="material-icons" *ngIf="pageModel?.sort?.property === 'name'">{{
+              pageModel?.sort?.order === 'Ascending' ? 'north' : 'south'
+            }}</i>
+          </div>
+        </th>
+        <td cdk-cell *cdkCellDef="let element" class="cell">{{ element.name }}</td>
+        <td cdk-footer-cell *cdkFooterCellDef class="cell">
+          <cea-paginator [dataSource]="dataSource"></cea-paginator>
+        </td>
+      </ng-container>
+      <ng-container cdkColumnDef="operations">
+        <th cdk-header-cell *cdkHeaderCellDef class="cell"></th>
+        <td cdk-cell *cdkCellDef="let element" class="cell">
+          <i class="material-icons" (click)="deleteResult($event, element)">delete_forever</i>
+        </td>
+      </ng-container>
+      <ng-container cdkColumnDef="bidPrice">
+        <th cdk-header-cell *cdkHeaderCellDef class="cell is-sortable" (click)="sortBy('bidPrice', pageModel?.sort)">
+          <div>
+            Bid (CHF)
+            <i class="material-icons" *ngIf="pageModel?.sort?.property === 'bidPrice'">{{
+              pageModel?.sort?.order === 'Ascending' ? 'north' : 'south'
+            }}</i>
+          </div>
+        </th>
+        <td cdk-cell *cdkCellDef="let element" class="cell">{{ element.bidPrice | number: '0.2' }}</td>
+      </ng-container>
+      <ng-container cdkColumnDef="purchasePrice">
+        <th
+          cdk-header-cell
+          *cdkHeaderCellDef
+          class="cell is-sortable"
+          (click)="sortBy('purchasePrice', pageModel?.sort)"
+        >
+          <div>
+            Purchase (CHF)
+            <i class="material-icons" *ngIf="pageModel?.sort?.property === 'purchasePrice'">{{
+              pageModel?.sort?.order === 'Ascending' ? 'north' : 'south'
+            }}</i>
+          </div>
+        </th>
+        <td cdk-cell *cdkCellDef="let element" class="cell">{{ element.purchasePrice | number: '0.2' }}</td>
+      </ng-container>
+      <ng-container cdkColumnDef="ends">
+        <th cdk-header-cell *cdkHeaderCellDef class="cell is-sortable" (click)="sortBy('ends', pageModel?.sort)">
+          <div>
+            Ends in
+            <i class="material-icons" *ngIf="pageModel?.sort?.property === 'ends'">{{
+              pageModel?.sort?.order === 'Ascending' ? 'north' : 'south'
+            }}</i>
+          </div>
+        </th>
+        <td cdk-cell *cdkCellDef="let element" class="cell">{{ element.ends | date: 'medium' }}</td>
+      </ng-container>
+      <ng-container cdkColumnDef="updated">
+        <th cdk-header-cell *cdkHeaderCellDef class="cell is-sortable" (click)="sortBy('updated', pageModel?.sort)">
+          <div>
+            Updated
+            <i class="material-icons" *ngIf="pageModel?.sort?.property === 'updated'">{{
+              pageModel?.sort?.order === 'Ascending' ? 'north' : 'south'
+            }}</i>
+          </div>
+        </th>
+        <td cdk-cell *cdkCellDef="let element" class="cell">{{ element.updated | date: 'medium' }}</td>
+      </ng-container>
+    </table>
+    <cea-paginator [dataSource]="dataSource"></cea-paginator>
   </cea-card>
 </div>

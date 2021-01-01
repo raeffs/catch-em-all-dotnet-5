@@ -10,20 +10,92 @@ cea-card:last-of-type {
   flex: auto;
 }
 
-cdk-virtual-scroll-viewport {
-  height: calc(100% - 45px);
+tr {
+  height: 45px;
 }
 
-.row {
-  height: 45px;
+cea-card {
+  overflow: hidden;
+  padding: 0;
   display: grid;
-  grid-template-columns: auto 100px 100px 200px 200px 50px;
-  align-items: center;
-  gap: 20px;
+  grid-template-rows: auto 45px;
 }
 
 .cell {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+tr {
+  border-top: 1px solid lightgray;
+  cursor: pointer;
+}
+
+tr:hover {
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
+tr.header {
+  border: none;
+}
+
+tr.header,
+tr.footer {
+  background-color: transparent;
+  cursor: default;
+}
+
+th {
+  font-weight: bold;
+  text-align: unset;
+}
+
+th,
+td {
+  padding: 0 10px;
+}
+
+.material-icons {
+  font-size: 20px;
+  padding: 6px;
+  border-radius: 2px;
+}
+
+td .material-icons {
+  visibility: hidden;
+  cursor: pointer;
+}
+
+tr:hover .material-icons {
+  visibility: visible;
+}
+
+td .material-icons:hover {
+  background-color: rgba(0, 0, 0, 0.06);
+}
+
+th div {
+  display: flex;
+  align-items: center;
+}
+
+th div .material-icons {
+  font-size: 14px;
+}
+
+th.is-sortable div {
+  cursor: pointer;
+}
+
+th.is-sortable:hover div {
+  background-color: rgba(0, 0, 0, 0.06);
+  border-radius: 2px;
+  padding: 0 4px;
+  margin: 0 -4px;
 }

@@ -9,5 +9,7 @@ namespace CatchEmAll.Providers
     Task<ICollection<Auction>> FindProductsAsync(SearchCriteria criteria);
 
     Task<(AuctionInfo, AuctionPrice)> GetAuctionAsync(string id);
+
+    string GetExternalAuctionLink(string id);
   }
 }
