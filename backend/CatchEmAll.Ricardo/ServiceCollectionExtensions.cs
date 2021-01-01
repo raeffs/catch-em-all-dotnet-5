@@ -8,7 +8,7 @@ namespace CatchEmAll
     public static IServiceCollection AddRicardo(this IServiceCollection services)
     {
       return services
-        .AddSingleton<IProductSearch, ProductSearch>();
+        .AddSingleton<IAuctionPlatform, AuctionPlatform>();
     }
   }
 }

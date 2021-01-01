@@ -15,10 +15,10 @@ namespace CatchEmAll.Services
   {
     private readonly ILogger<AuctionUpdateService> logger;
     private readonly IDataContextFactory factory;
-    private readonly IProductSearch search;
+    private readonly IAuctionPlatform search;
     private readonly UpdateOptions options;
 
-    public AuctionUpdateService(ILogger<AuctionUpdateService> logger, IDataContextFactory factory, IOptionsSnapshot<UpdateOptions> options, IProductSearch search)
+    public AuctionUpdateService(ILogger<AuctionUpdateService> logger, IDataContextFactory factory, IOptionsSnapshot<UpdateOptions> options, IAuctionPlatform search)
     {
       this.logger = logger;
       this.factory = factory;

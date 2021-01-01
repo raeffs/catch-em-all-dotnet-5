@@ -11,9 +11,9 @@ namespace CatchEmAll.Services
   {
     private readonly IDataContext data;
     private readonly IIdentity identity;
-    private readonly IProductSearch provider;
+    private readonly IAuctionPlatform provider;
 
-    public SearchResultService(IDataContext data, IIdentity identity, IProductSearch provider)
+    public SearchResultService(IDataContext data, IIdentity identity, IAuctionPlatform provider)
     {
       this.data = data;
       this.identity = identity;

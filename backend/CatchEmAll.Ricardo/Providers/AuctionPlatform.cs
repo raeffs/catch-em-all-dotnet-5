@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace CatchEmAll.Providers
 {
-  internal class ProductSearch : IProductSearch
+  internal class ProductSearch : IAuctionPlatform
   {
     private readonly ILogger<ProductSearch> logger;
 
@@ -18,7 +18,7 @@ namespace CatchEmAll.Providers
       this.logger = logger;
     }
 
-    public async Task<ICollection<Auction>> FindProductsAsync(SearchCriteria criteria)
+    public async Task<ICollection<Auction>> FindAuctionsAsync(SearchCriteria criteria)
     {
       var url = string.Format("https://www.ricardo.ch/de/s/{0}?sort=newest", Uri.EscapeDataString(criteria.WithAllTheseWords));
       var (data, raw) = await this.FetchAndParsePage<SearchPageDataJson>(url);

@@ -15,10 +15,10 @@ namespace CatchEmAll.Services
   {
     private readonly ILogger<SearchQueryUpdateService> logger;
     private readonly IDataContextFactory factory;
-    private readonly IProductSearch search;
+    private readonly IAuctionPlatform search;
     private readonly SearchQueryUpdateOptions options;
 
-    public SearchQueryUpdateService(ILogger<SearchQueryUpdateService> logger, IDataContextFactory factory, IOptionsSnapshot<SearchQueryUpdateOptions> options, IProductSearch search)
+    public SearchQueryUpdateService(ILogger<SearchQueryUpdateService> logger, IDataContextFactory factory, IOptionsSnapshot<SearchQueryUpdateOptions> options, IAuctionPlatform search)
     {
       this.logger = logger;
       this.factory = factory;
@@ -49,7 +49,7 @@ namespace CatchEmAll.Services
 
       try
       {
-        var auctions = await this.search.FindProductsAsync(criteria);
+        var auctions = await this.search.FindAuctionsAsync(criteria);
 
         await this.UpdateSearchQueryAsync(id.Value, auctions);
         this.logger.LogInformation("Updated search query with {id}", id.Value);

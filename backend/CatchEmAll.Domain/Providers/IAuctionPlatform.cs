@@ -4,9 +4,9 @@ using System.Threading.Tasks;
 
 namespace CatchEmAll.Providers
 {
-  public interface IProductSearch
+  public interface IAuctionPlatform
   {
-    Task<ICollection<Auction>> FindProductsAsync(SearchCriteria criteria);
+    Task<ICollection<Auction>> FindAuctionsAsync(SearchCriteria criteria);
 
     Task<(AuctionInfo, AuctionPrice)> GetAuctionAsync(string id);
 

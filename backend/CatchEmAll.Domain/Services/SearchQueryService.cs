@@ -10,10 +10,10 @@ namespace CatchEmAll.Services
   internal class SearchQueryService : ISearchQueryService
   {
     private readonly IDataContext data;
-    private readonly IProductSearch search;
+    private readonly IAuctionPlatform search;
     private readonly IIdentity identity;
 
-    public SearchQueryService(IDataContext data, IProductSearch search, IIdentity identity)
+    public SearchQueryService(IDataContext data, IAuctionPlatform search, IIdentity identity)
     {
       this.data = data;
       this.search = search;
@@ -40,7 +40,7 @@ namespace CatchEmAll.Services
     public async Task RefreshAsync(Guid id)
     {
       var query = await this.data.SearchQueries.AsTracking().SingleOrDefaultAsync(x => x.Id == id);
-      var auctions = await this.search.FindProductsAsync(query.Criteria);
+      var auctions = await this.search.FindAuctionsAsync(query.Criteria);
       foreach (var auction in auctions)
       {
         query.Results.Add(new SearchResult
