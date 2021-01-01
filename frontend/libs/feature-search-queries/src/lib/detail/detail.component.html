@@ -23,12 +23,38 @@
           <cea-paginator [dataSource]="dataSource"></cea-paginator>
         </td>
       </ng-container>
+
       <ng-container cdkColumnDef="operations">
         <th cdk-header-cell *cdkHeaderCellDef class="cell"></th>
         <td cdk-cell *cdkCellDef="let element" class="cell">
           <i class="material-icons" (click)="deleteResult($event, element)">delete_forever</i>
         </td>
       </ng-container>
+
+      <ng-container cdkColumnDef="condition">
+        <th cdk-header-cell *cdkHeaderCellDef class="cell is-sortable" (click)="sortBy('condition', pageModel?.sort)">
+          <div>
+            Condition
+            <i class="material-icons" *ngIf="pageModel?.sort?.property === 'condition'">{{
+              pageModel?.sort?.order === 'Ascending' ? 'north' : 'south'
+            }}</i>
+          </div>
+        </th>
+        <td cdk-cell *cdkCellDef="let element" class="cell">{{ element.condition }}</td>
+      </ng-container>
+
+      <ng-container cdkColumnDef="type">
+        <th cdk-header-cell *cdkHeaderCellDef class="cell is-sortable" (click)="sortBy('type', pageModel?.sort)">
+          <div>
+            Type
+            <i class="material-icons" *ngIf="pageModel?.sort?.property === 'type'">{{
+              pageModel?.sort?.order === 'Ascending' ? 'north' : 'south'
+            }}</i>
+          </div>
+        </th>
+        <td cdk-cell *cdkCellDef="let element" class="cell">{{ element.type }}</td>
+      </ng-container>
+
       <ng-container cdkColumnDef="bidPrice">
         <th cdk-header-cell *cdkHeaderCellDef class="cell is-sortable" (click)="sortBy('bidPrice', pageModel?.sort)">
           <div>
@@ -40,6 +66,7 @@
         </th>
         <td cdk-cell *cdkCellDef="let element" class="cell">{{ element.bidPrice | number: '0.2' }}</td>
       </ng-container>
+
       <ng-container cdkColumnDef="purchasePrice">
         <th
           cdk-header-cell
@@ -56,6 +83,7 @@
         </th>
         <td cdk-cell *cdkCellDef="let element" class="cell">{{ element.purchasePrice | number: '0.2' }}</td>
       </ng-container>
+
       <ng-container cdkColumnDef="ends">
         <th cdk-header-cell *cdkHeaderCellDef class="cell is-sortable" (click)="sortBy('ends', pageModel?.sort)">
           <div>
@@ -67,6 +95,7 @@
         </th>
         <td cdk-cell *cdkCellDef="let element" class="cell">{{ element.ends | date: 'medium' }}</td>
       </ng-container>
+
       <ng-container cdkColumnDef="updated">
         <th cdk-header-cell *cdkHeaderCellDef class="cell is-sortable" (click)="sortBy('updated', pageModel?.sort)">
           <div>

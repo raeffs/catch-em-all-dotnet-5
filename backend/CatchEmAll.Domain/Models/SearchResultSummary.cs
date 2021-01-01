@@ -46,7 +46,22 @@ namespace CatchEmAll.Models
     [Required]
     public DateTimeOffset Updated { get; init; }
 
+    /// <summary>
+    /// An external link to the auction assigned to the search result.
+    /// </summary>
     [Required]
     public string ExternalLink { get; init; } = string.Empty;
+
+    /// <summary>
+    /// The condition of the auction assigned to the search result.
+    /// </summary>
+    [Required]
+    public Condition Condition { get; init; }
+
+    /// <summary>
+    /// The type of the auction assigned to the search result.
+    /// </summary>
+    [Required]
+    public AuctionType Type { get; init; }
   }
 }

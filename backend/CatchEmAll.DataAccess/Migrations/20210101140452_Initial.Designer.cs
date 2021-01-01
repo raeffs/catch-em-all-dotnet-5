@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CatchEmAll.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20201227170614_Initial")]
+    [Migration("20210101140452_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -101,6 +101,9 @@ namespace CatchEmAll.Migrations
                             b1.Property<Guid>("AuctionId")
                                 .HasColumnType("uniqueidentifier");
 
+                            b1.Property<int>("Condition")
+                                .HasColumnType("int");
+
                             b1.Property<DateTimeOffset>("Created")
                                 .HasColumnType("datetimeoffset");
 
@@ -117,6 +120,9 @@ namespace CatchEmAll.Migrations
                                 .IsRequired()
                                 .HasMaxLength(100)
                                 .HasColumnType("nvarchar(100)");
+
+                            b1.Property<int>("Type")
+                                .HasColumnType("int");
 
                             b1.HasKey("AuctionId");
 

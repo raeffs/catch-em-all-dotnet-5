@@ -17,6 +17,8 @@ namespace CatchEmAll.Migrations
                     Info_Ends = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     Info_IsClosed = table.Column<bool>(type: "bit", nullable: false),
                     Info_IsSold = table.Column<bool>(type: "bit", nullable: false),
+                    Info_Condition = table.Column<int>(type: "int", nullable: false),
+                    Info_Type = table.Column<int>(type: "int", nullable: false),
                     Price_BidPrice = table.Column<decimal>(type: "decimal(18,6)", nullable: true),
                     Price_PurchasePrice = table.Column<decimal>(type: "decimal(18,6)", nullable: true),
                     Price_FinalPrice = table.Column<decimal>(type: "decimal(18,6)", nullable: true),

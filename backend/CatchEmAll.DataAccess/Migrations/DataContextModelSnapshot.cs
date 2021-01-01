@@ -99,6 +99,9 @@ namespace CatchEmAll.Migrations
                             b1.Property<Guid>("AuctionId")
                                 .HasColumnType("uniqueidentifier");
 
+                            b1.Property<int>("Condition")
+                                .HasColumnType("int");
+
                             b1.Property<DateTimeOffset>("Created")
                                 .HasColumnType("datetimeoffset");
 
@@ -115,6 +118,9 @@ namespace CatchEmAll.Migrations
                                 .IsRequired()
                                 .HasMaxLength(100)
                                 .HasColumnType("nvarchar(100)");
+
+                            b1.Property<int>("Type")
+                                .HasColumnType("int");
 
                             b1.HasKey("AuctionId");
 

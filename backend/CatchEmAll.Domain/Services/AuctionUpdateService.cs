@@ -67,7 +67,7 @@ namespace CatchEmAll.Services
 
       var entities = await context.Auctions.AsTracking()
           .Where(x => !x.Info.IsClosed && !x.Update.IsLocked)
-          .Where(x => x.Update.Updated <= lastUpdatedBefore || x.Info.Ends <= now)
+          .Where(x => x.Update.Updated <= lastUpdatedBefore)
           .OrderBy(x => x.Update.Updated)
           .Take(this.options.BatchSize)
           .ToListAsync();

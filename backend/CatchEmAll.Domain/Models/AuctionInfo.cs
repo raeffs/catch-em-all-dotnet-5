@@ -33,5 +33,15 @@ namespace CatchEmAll.Models
     /// Whether the auction was sold or not.
     /// </summary>
     public bool IsSold { get; init; }
+
+    /// <summary>
+    /// The condition of the auction.
+    /// </summary>
+    public Condition Condition { get; init; }
+
+    /// <summary>
+    /// The type of the auction.
+    /// </summary>
+    public AuctionType Type { get; init; }
   }
 }

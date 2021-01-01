@@ -1,4 +1,5 @@
 using CatchEmAll.Models;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,10 +11,17 @@ namespace CatchEmAll.Providers
 {
   internal class ProductSearch : IProductSearch
   {
+    private readonly ILogger<ProductSearch> logger;
+
+    public ProductSearch(ILogger<ProductSearch> logger)
+    {
+      this.logger = logger;
+    }
+
     public async Task<ICollection<Auction>> FindProductsAsync(SearchCriteria criteria)
     {
       var url = string.Format("https://www.ricardo.ch/de/s/{0}?sort=newest", Uri.EscapeDataString(criteria.WithAllTheseWords));
-      var data = await this.FetchAndParsePage<SearchPageDataJson>(url);
+      var (data, raw) = await this.FetchAndParsePage<SearchPageDataJson>(url);
       var entries = data?.InitialState?.Srp?.Results;
 
       if (entries == null)
@@ -32,6 +40,8 @@ namespace CatchEmAll.Providers
           Name = x.Title ?? string.Empty,
           Created = x.CreationDate,
           Ends = x.EndDate,
+          Condition = this.GetAuctionCondition(x.ConditionKey),
+          Type = this.GetAuctionType(x.HasAuction, x.HasBuyNow)
         },
         new AuctionPrice
         {
@@ -45,46 +55,62 @@ namespace CatchEmAll.Providers
 
     public async Task<(AuctionInfo, AuctionPrice)> GetAuctionAsync(string id)
     {
-      // the url copied from the browser is human readable, but the human readable part can be omitted
-      var url = string.Format("https://www.ricardo.ch/de/a/{0}/", id);
-      var data = await this.FetchAndParsePage<ArticlePageDataJson>(url);
-      var articleData = data?.InitialState?.Pdp?.Article;
-      var bidData = data?.InitialState?.Pdp?.Bid;
-
-      if (articleData == null)
+      try
       {
-        // todo: add proper exceptions
-        throw new Exception();
+        //id = "1152379596";
+        //id = "1152550444";
+        //id = "1151553198";
+
+        // the url copied from the browser is human readable, but the human readable part can be omitted
+        var url = string.Format("https://www.ricardo.ch/de/a/{0}/", id);
+        var (data, raw) = await this.FetchAndParsePage<ArticlePageDataJson>(url);
+        var articleData = data?.InitialState?.Pdp?.Article;
+        var bidData = data?.InitialState?.Pdp?.Bid;
+
+        if (articleData == null)
+        {
+          // todo: add proper exceptions
+          throw new Exception("Article data is missing!");
+        }
+
+        /*
+        if (articleData.Id != articleData.ProductId)
+        {
+          // todo: not sure yet what that could mean
+          throw new Exception();
+        }
+        */
+
+        var info = new AuctionInfo
+        {
+          Name = articleData.Title ?? string.Empty,
+          Created = articleData.CreationDate,
+          Ends = articleData.EndDate,
+          IsClosed = articleData.Status != ArticlePageDataJson_Status.Open,
+          IsSold = articleData.Status != ArticlePageDataJson_Status.Open && bidData?.Data?.LastBid != null,
+          Condition = this.GetAuctionCondition(articleData.ConditionKey),
+          Type = this.GetAuctionType(articleData.Offer?.OfferType)
+        };
+
+        var price = new AuctionPrice
+        {
+          PurchasePrice = articleData.Offer?.Price,
+          BidPrice = bidData?.Data?.NextMinimumBid,
+          FinalPrice = bidData?.Data?.LastBid
+        };
+
+        return (info, price);
       }
-
-      /*
-      if (articleData.Id != articleData.ProductId)
+      catch (Exception exception)
       {
-        // todo: not sure yet what that could mean
-        throw new Exception();
+        this.logger.LogWarning(exception, "Failed to extract auction data!");
+        throw;
       }
-      */
-
-      var info = new AuctionInfo
-      {
-        Name = articleData.Title ?? string.Empty,
-        Created = articleData.CreationDate,
-        Ends = articleData.EndDate,
-        IsClosed = articleData.Status != 0,
-      };
-
-      var price = new AuctionPrice
-      {
-        PurchasePrice = articleData.Offer?.Price,
-        BidPrice = bidData?.Data?.NextMinimumBid,
-      };
-
-      return (info, price);
     }
 
     public string GetExternalAuctionLink(string id) => $"https://www.ricardo.ch/de/a/{id}";
 
-    private async Task<T?> FetchAndParsePage<T>(string url)
+    private async Task<(T?, string?)> FetchAndParsePage<T>(string url)
     {
       var document = await WebRequest.Create(url).GetHtmlDocumentAsync();
       // the HTML contains an inline script that contains the initial data for the page for SEO / prerendering purposes
@@ -98,7 +124,30 @@ namespace CatchEmAll.Providers
       {
         PropertyNameCaseInsensitive = true,
       };
-      return JsonSerializer.Deserialize<T>(jsonContent, options);
+      return (JsonSerializer.Deserialize<T>(jsonContent, options), jsonContent);
     }
+
+    private Condition GetAuctionCondition(string? key) => key switch
+    {
+      "new" => Condition.New,
+      "like_new" => Condition.LikeNew,
+      "used" => Condition.Used,
+      "damaged" => Condition.Damaged,
+      _ => Condition.Unknown
+    };
+
+    private AuctionType GetAuctionType(string? type) => type switch
+    {
+      "auction" => AuctionType.Auction,
+      "auction_with_buynow" => AuctionType.AuctionWithBuyNow,
+      _ => AuctionType.Unknown
+    };
+
+    private AuctionType GetAuctionType(bool hasAuction, bool hasBuyNow) => (hasAuction, hasBuyNow) switch
+    {
+      (true, true) => AuctionType.AuctionWithBuyNow,
+      (true, false) => AuctionType.Auction,
+      _ => AuctionType.Unknown
+    };
   }
 }

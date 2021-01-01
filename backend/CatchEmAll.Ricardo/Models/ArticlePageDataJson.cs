@@ -38,12 +38,7 @@ namespace CatchEmAll.Models
     public string? ConditionKey { get; init; }
     [JsonPropertyName("creation_date")]
     public DateTimeOffset CreationDate { get; init; }
-
-    /// <summary>
-    /// Probably 0 = open, 1 = closed or sold
-    /// </summary>
-    public int Status { get; init; }
-
+    public ArticlePageDataJson_Status Status { get; init; }
     [JsonPropertyName("legacy_status")]
     public int LegacyStatus { get; init; }
     [JsonPropertyName("end_date")]
@@ -54,6 +49,8 @@ namespace CatchEmAll.Models
   internal record ArticlePageDataJson_Offer
   {
     public decimal? Price { get; init; }
+    [JsonPropertyName("offer_type")]
+    public string? OfferType { get; set; }
   }
 
   internal record ArticlePageDataJson_Bid
@@ -64,6 +61,15 @@ namespace CatchEmAll.Models
   internal record ArticlePageDataJson_BidData
   {
     [JsonPropertyName("next_minimum_bid")]
-    public decimal NextMinimumBid { get; init; }
+    public decimal? NextMinimumBid { get; init; }
+    // the last bid contains also the final price when sold directly
+    [JsonPropertyName("last_bid")]
+    public decimal? LastBid { get; init; }
+  }
+
+  internal enum ArticlePageDataJson_Status
+  {
+    Open = 0,
+    Closed = 1
   }
 }

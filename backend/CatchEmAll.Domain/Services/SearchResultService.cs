@@ -35,7 +35,9 @@ namespace CatchEmAll.Services
           BidPrice = x.Auction.Price.BidPrice,
           PurchasePrice = x.Auction.Price.PurchasePrice,
           Updated = x.Auction.Update.Updated,
-          ExternalLink = this.provider.GetExternalAuctionLink(x.Auction.Provider.Value)
+          ExternalLink = this.provider.GetExternalAuctionLink(x.Auction.Provider.Value),
+          Condition = x.Auction.Info.Condition,
+          Type = x.Auction.Info.Type
         });
     }
 
