@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace CatchEmAll.Providers
 {
-  internal class ProductSearch : IAuctionPlatform
+  internal class AuctionPlatform : IAuctionPlatform
   {
-    private readonly ILogger<ProductSearch> logger;
+    private readonly ILogger<AuctionPlatform> logger;
 
-    public ProductSearch(ILogger<ProductSearch> logger)
+    public AuctionPlatform(ILogger<AuctionPlatform> logger)
     {
       this.logger = logger;
     }
@@ -120,6 +120,16 @@ namespace CatchEmAll.Providers
         this.logger.LogWarning(exception, "Failed to extract auction data!");
         throw;
       }
+    }
+
+    public Task GetCategoryAsync(string id)
+    {
+      throw new NotImplementedException();
+    }
+
+    public Task GetSellerAsync(string id)
+    {
+      throw new NotImplementedException();
     }
 
     public string GetExternalAuctionLink(string id) => $"https://www.ricardo.ch/de/a/{id}";

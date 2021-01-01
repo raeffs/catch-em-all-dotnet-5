@@ -10,6 +10,10 @@ namespace CatchEmAll.Providers
 
     Task<(AuctionInfo, AuctionPrice)> GetAuctionAsync(string id);
 
+    Task GetSellerAsync(string id);
+
+    Task GetCategoryAsync(string id);
+
     string GetExternalAuctionLink(string id);
   }
 }
