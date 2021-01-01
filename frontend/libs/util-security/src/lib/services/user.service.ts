@@ -14,14 +14,18 @@ export class UserService {
   constructor(private readonly oAuth: OAuthService) {}
 
   public getLoggedInUser(): Observable<UserInfo> {
-    return asObservable(this.oAuth.loadUserProfile()).pipe(
-      map<any, UserInfo>(data => {
-        return {
-          email: data.email,
-          picture: data.picture,
-        };
-      }),
-      catchError(() => of({ email: '', picture: '' }))
-    );
+    try {
+      return asObservable(this.oAuth.loadUserProfile()).pipe(
+        map<any, UserInfo>(data => {
+          return {
+            email: data.email,
+            picture: data.picture,
+          };
+        }),
+        catchError(() => of({ email: '', picture: '' }))
+      );
+    } catch {
+      return of({ email: '', picture: '' });
+    }
   }
 }
