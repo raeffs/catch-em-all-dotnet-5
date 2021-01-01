@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthenticationService } from '@cea/util-security';
+import { AuthenticationService, UserInfo, UserService } from '@cea/util-security';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'cea-app-header',
@@ -11,8 +12,15 @@ import { AuthenticationService } from '@cea/util-security';
 export class AppHeaderComponent {
   public isLoggedIn: boolean;
 
-  constructor(private readonly auth: AuthenticationService, private readonly router: Router) {
+  public readonly currentUser: Observable<UserInfo>;
+
+  constructor(
+    private readonly auth: AuthenticationService,
+    private readonly router: Router,
+    private readonly user: UserService
+  ) {
     this.isLoggedIn = this.auth.isLoggedIn();
+    this.currentUser = this.user.getLoggedInUser();
   }
 
   public logInOrOut(): void {

@@ -3,5 +3,14 @@
     <img src="android-chrome-512x512.png" />
     <p class="title">Catch `Em All</p>
   </div>
-  <span (click)="logInOrOut()">{{ isLoggedIn ? 'Logout' : 'Login' }}</span>
+  <div class="profile" *ngIf="isLoggedIn; else login">
+    <ng-container *ngIf="currentUser | async as user">
+      <p>{{ user.email }} <i class="material-icons">expand_more</i></p>
+      <img [src]="user.picture" />
+    </ng-container>
+  </div>
 </header>
+
+<ng-template #login>
+  <span (click)="logInOrOut()">{{ isLoggedIn ? 'Logout' : 'Login' }}</span>
+</ng-template>
