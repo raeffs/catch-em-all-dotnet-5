@@ -109,7 +109,7 @@ namespace CatchEmAll.Providers
         var price = new AuctionPrice
         {
           PurchasePrice = articleData.Offer?.Price,
-          BidPrice = bidData?.Data?.NextMinimumBid,
+          BidPrice = info.Type != AuctionType.FixedPrice ? bidData?.Data?.NextMinimumBid : null,
           FinalPrice = bidData?.Data?.LastBid
         };
 

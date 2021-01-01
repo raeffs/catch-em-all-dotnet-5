@@ -63,11 +63,11 @@ namespace CatchEmAll.Services
       using var context = this.factory.GetContext();
 
       var now = DateTimeOffset.Now;
-      var lastUpdatedBefore = now.Add(TimeSpan.FromHours(this.options.UpdateIntervalInHours * -1));
+      var endsAfter = now.Add(TimeSpan.FromMinutes(-5));
 
       var entities = await context.Auctions.AsTracking()
           .Where(x => !x.Info.IsClosed && !x.Update.IsLocked)
-          .Where(x => x.Update.Updated <= lastUpdatedBefore)
+          .Where(x => x.Info.Ends <= endsAfter)
           .OrderBy(x => x.Update.Updated)
           .Take(this.options.BatchSize)
           .ToListAsync();
