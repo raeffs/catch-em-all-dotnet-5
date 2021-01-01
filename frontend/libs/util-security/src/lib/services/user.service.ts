@@ -21,7 +21,7 @@ export class UserService {
           picture: data.picture,
         };
       }),
-      catchError(() => of({}))
+      catchError(() => of({ email: '', picture: '' }))
     );
   }
 }
