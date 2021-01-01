@@ -132,6 +132,7 @@ namespace CatchEmAll.Providers
       "new" => Condition.New,
       "like_new" => Condition.LikeNew,
       "used" => Condition.Used,
+      "antique" => Condition.Antique,
       "damaged" => Condition.Damaged,
       _ => Condition.Unknown
     };
@@ -140,6 +141,7 @@ namespace CatchEmAll.Providers
     {
       "auction" => AuctionType.Auction,
       "auction_with_buynow" => AuctionType.AuctionWithBuyNow,
+      "fixed_price" => AuctionType.FixedPrice,
       _ => AuctionType.Unknown
     };
 
@@ -147,6 +149,7 @@ namespace CatchEmAll.Providers
     {
       (true, true) => AuctionType.AuctionWithBuyNow,
       (true, false) => AuctionType.Auction,
+      (false, true) => AuctionType.FixedPrice,
       _ => AuctionType.Unknown
     };
   }
