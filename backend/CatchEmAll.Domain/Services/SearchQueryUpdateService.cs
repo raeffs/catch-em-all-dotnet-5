@@ -105,15 +105,54 @@ namespace CatchEmAll.Services
         })
         .ToListAsync();
 
+      var externalCategoryIds = auctions.Select(x => x.Category.Provider.Value).Distinct().ToList();
+      var existingCategories = await context.Categories
+        .Where(x => externalCategoryIds.Contains(x.Provider.Value))
+        .Select(x => new
+        {
+          Id = x.Id,
+          ExternalId = x.Provider.Value
+        })
+        .ToListAsync();
+      var newCategories = externalCategoryIds
+        .Where(x => !existingCategories.Any(y => y.ExternalId == x))
+        .Select(x => auctions.Select(y => y.Category).First(y => y.Provider.Value == x))
+        .ToList();
+
+      var externalSellerIds = auctions.Select(x => x.Seller.Provider.Value).Distinct().ToList();
+      var existingSellers = await context.Sellers
+        .Where(x => externalSellerIds.Contains(x.Provider.Value))
+        .Select(x => new
+        {
+          Id = x.Id,
+          ExternalId = x.Provider.Value
+        })
+        .ToListAsync();
+      var newSellers = externalSellerIds
+        .Where(x => !existingSellers.Any(y => y.ExternalId == x))
+        .Select(x => auctions.Select(y => y.Seller).First(y => y.Provider.Value == x))
+        .ToList();
+
       foreach (var auction in auctions)
       {
         var existingAuction = existingAuctions.SingleOrDefault(x => x.ExternalId == auction.Provider.Value);
 
         if (existingAuction == null)
         {
+          var existingCategory = existingCategories.SingleOrDefault(x => x.ExternalId == auction.Category.Provider.Value);
+          var newCategory = newCategories.SingleOrDefault(x => x.Provider.Value == auction.Category.Provider.Value);
+          var existingSeller = existingSellers.SingleOrDefault(x => x.ExternalId == auction.Seller.Provider.Value);
+          var newSeller = newSellers.SingleOrDefault(x => x.Provider.Value == auction.Seller.Provider.Value);
+
           entity.Results.Add(new SearchResult
           {
-            Auction = auction
+            Auction = auction with
+            {
+              Category = newCategory ?? null!,
+              CategoryId = existingCategory?.Id ?? Guid.Empty,
+              Seller = newSeller ?? null!,
+              SellerId = existingSeller?.Id ?? Guid.Empty
+            }
           });
         }
         else if (existingAuction.Result == null)

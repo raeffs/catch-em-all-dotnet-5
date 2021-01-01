@@ -10,6 +10,10 @@ namespace CatchEmAll.Models
     /// </summary>
     public decimal? BidPrice { get; init; }
 
+    public decimal? StartPrice { get; init; }
+
+    public int NumberOfBids { get; init; }
+
     /// <summary>
     /// The purchase price of the auction, if any.
     /// </summary>

@@ -17,7 +17,18 @@ import { map, switchMap } from 'rxjs/operators';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DetailComponent {
-  public readonly columns = ['name', 'operations', 'condition', 'type', 'bidPrice', 'purchasePrice', 'ends', 'updated'];
+  public readonly columns = [
+    'name',
+    'operations',
+    'condition',
+    'type',
+    'bidPrice',
+    'purchasePrice',
+    'seller',
+    'category',
+    'ends',
+    'updated',
+  ];
 
   public readonly query: Observable<SearchQueryDetail>;
   public readonly dataSource: PaginatedDataSource<SearchResultSummary>;

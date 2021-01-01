@@ -11,6 +11,8 @@ namespace CatchEmAll.Providers
     DbSet<SearchQuery> SearchQueries { get; }
     DbSet<SearchResult> SearchResults { get; }
     DbSet<Auction> Auctions { get; }
+    DbSet<Category> Categories { get; }
+    DbSet<Seller> Sellers { get; }
 
     Task SaveChangesAsync();
   }

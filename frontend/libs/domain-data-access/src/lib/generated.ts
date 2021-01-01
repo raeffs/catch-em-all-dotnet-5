@@ -225,6 +225,10 @@ export interface SearchQueryDetail {
     criteria?: SearchCriteria;
 }
 
+export type Condition = "Unknown" | "New" | "LikeNew" | "Used" | "Antique" | "Damaged";
+
+export type AuctionType = "Unknown" | "Auction" | "AuctionWithBuyNow" | "FixedPrice";
+
 export interface SearchResultSummary {
     id: string;
     queryId: string;
@@ -234,6 +238,10 @@ export interface SearchResultSummary {
     purchasePrice?: number | null;
     updated: string;
     externalLink: string;
+    condition: Condition;
+    type: AuctionType;
+    seller: string;
+    category: string;
 }
 
 export interface SearchResultSummaryPage {

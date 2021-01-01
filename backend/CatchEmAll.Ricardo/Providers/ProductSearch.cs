@@ -47,7 +47,21 @@ namespace CatchEmAll.Providers
         {
           PurchasePrice = x.BuyNowPrice,
           BidPrice = x.BidPrice,
-        }
+        },
+        new Seller(
+          new ProviderInfo
+          {
+            Key = "ricardo",
+            Value = x.SellerId.ToString()
+          }
+        ),
+        new Category(
+          new ProviderInfo
+          {
+            Key = "ricardo",
+            Value = x.CategoryId.ToString()
+          }
+        )
       ));
 
       return products.ToList();

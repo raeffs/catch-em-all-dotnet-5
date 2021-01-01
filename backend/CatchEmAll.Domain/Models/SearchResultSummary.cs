@@ -63,5 +63,17 @@ namespace CatchEmAll.Models
     /// </summary>
     [Required]
     public AuctionType Type { get; init; }
+
+    /// <summary>
+    /// The name of the seller selling the auction assigned to the search result.
+    /// </summary>
+    [Required]
+    public string Seller { get; init; } = string.Empty;
+
+    /// <summary>
+    /// The name of the category the auction assigned to the search result belongs to.
+    /// </summary>
+    [Required]
+    public string Category { get; init; } = string.Empty;
   }
 }

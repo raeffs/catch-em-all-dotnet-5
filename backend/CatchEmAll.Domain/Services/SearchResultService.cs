@@ -37,7 +37,9 @@ namespace CatchEmAll.Services
           Updated = x.Auction.Update.Updated,
           ExternalLink = this.provider.GetExternalAuctionLink(x.Auction.Provider.Value),
           Condition = x.Auction.Info.Condition,
-          Type = x.Auction.Info.Type
+          Type = x.Auction.Info.Type,
+          Category = x.Auction.Category.Name,
+          Seller = x.Auction.Seller.Name
         });
     }
 

@@ -18,16 +18,15 @@
           </div>
         </th>
         <td cdk-cell *cdkCellDef="let element" class="cell">{{ element.name }}</td>
-        <td cdk-footer-cell *cdkFooterCellDef class="cell">
-          <cea-paginator [dataSource]="dataSource"></cea-paginator>
-        </td>
       </ng-container>
+
       <ng-container cdkColumnDef="operations">
         <th cdk-header-cell *cdkHeaderCellDef class="cell"></th>
         <td cdk-cell *cdkCellDef="let element" class="cell">
           <i class="material-icons" (click)="deleteQuery($event, element)">delete_forever</i>
         </td>
       </ng-container>
+
       <ng-container cdkColumnDef="numberOfAuctions">
         <th
           cdk-header-cell
@@ -44,6 +43,7 @@
         </th>
         <td cdk-cell *cdkCellDef="let element" class="cell">{{ element.numberOfAuctions }}</td>
       </ng-container>
+
       <ng-container cdkColumnDef="priority">
         <th cdk-header-cell *cdkHeaderCellDef class="cell is-sortable" (click)="sortBy('priority', pageModel?.sort)">
           <div>
@@ -55,6 +55,7 @@
         </th>
         <td cdk-cell *cdkCellDef="let element" class="cell">{{ element.priority }}</td>
       </ng-container>
+
       <ng-container cdkColumnDef="updated">
         <th cdk-header-cell *cdkHeaderCellDef class="cell is-sortable" (click)="sortBy('updated', pageModel?.sort)">
           <div>

@@ -8,29 +8,31 @@ namespace CatchEmAll.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Auctions",
+                name: "Categories",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Info_Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Info_Created = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    Info_Ends = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    Info_IsClosed = table.Column<bool>(type: "bit", nullable: false),
-                    Info_IsSold = table.Column<bool>(type: "bit", nullable: false),
-                    Info_Condition = table.Column<int>(type: "int", nullable: false),
-                    Info_Type = table.Column<int>(type: "int", nullable: false),
-                    Price_BidPrice = table.Column<decimal>(type: "decimal(18,6)", nullable: true),
-                    Price_PurchasePrice = table.Column<decimal>(type: "decimal(18,6)", nullable: true),
-                    Price_FinalPrice = table.Column<decimal>(type: "decimal(18,6)", nullable: true),
-                    Update_Updated = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    Update_IsLocked = table.Column<bool>(type: "bit", nullable: false),
-                    Update_NumberOfFailures = table.Column<int>(type: "int", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Provider_Key = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
                     Provider_Value = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Auctions", x => x.Id);
+                    table.PrimaryKey("PK_Categories", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Sellers",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Provider_Key = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
+                    Provider_Value = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Sellers", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -44,6 +46,48 @@ namespace CatchEmAll.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Auctions",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Info_Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Info_Created = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    Info_Ends = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    Info_IsClosed = table.Column<bool>(type: "bit", nullable: false),
+                    Info_IsSold = table.Column<bool>(type: "bit", nullable: false),
+                    Info_Condition = table.Column<int>(type: "int", nullable: false),
+                    Info_Type = table.Column<int>(type: "int", nullable: false),
+                    Price_BidPrice = table.Column<decimal>(type: "decimal(18,6)", nullable: true),
+                    Price_StartPrice = table.Column<decimal>(type: "decimal(18,6)", nullable: true),
+                    Price_NumberOfBids = table.Column<int>(type: "int", nullable: false),
+                    Price_PurchasePrice = table.Column<decimal>(type: "decimal(18,6)", nullable: true),
+                    Price_FinalPrice = table.Column<decimal>(type: "decimal(18,6)", nullable: true),
+                    Update_Updated = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    Update_IsLocked = table.Column<bool>(type: "bit", nullable: false),
+                    Update_NumberOfFailures = table.Column<int>(type: "int", nullable: false),
+                    Provider_Key = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
+                    Provider_Value = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
+                    CategoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    SellerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Auctions", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Auctions_Categories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "Categories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Auctions_Sellers_SellerId",
+                        column: x => x.SellerId,
+                        principalTable: "Sellers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -102,9 +146,26 @@ namespace CatchEmAll.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Auctions_CategoryId",
+                table: "Auctions",
+                column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Auctions_Provider_Key_Provider_Value",
                 table: "Auctions",
-                columns: new[] { "Provider_Key", "Provider_Value" });
+                columns: new[] { "Provider_Key", "Provider_Value" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Auctions_SellerId",
+                table: "Auctions",
+                column: "SellerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Categories_Provider_Key_Provider_Value",
+                table: "Categories",
+                columns: new[] { "Provider_Key", "Provider_Value" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_SearchQueries_UserId",
@@ -121,6 +182,12 @@ namespace CatchEmAll.Migrations
                 table: "SearchResults",
                 columns: new[] { "QueryId", "AuctionId" },
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Sellers_Provider_Key_Provider_Value",
+                table: "Sellers",
+                columns: new[] { "Provider_Key", "Provider_Value" },
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -133,6 +200,12 @@ namespace CatchEmAll.Migrations
 
             migrationBuilder.DropTable(
                 name: "SearchQueries");
+
+            migrationBuilder.DropTable(
+                name: "Categories");
+
+            migrationBuilder.DropTable(
+                name: "Sellers");
 
             migrationBuilder.DropTable(
                 name: "Users");

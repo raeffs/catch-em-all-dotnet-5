@@ -19,9 +19,30 @@
           </div>
         </th>
         <td cdk-cell *cdkCellDef="let element" class="cell">{{ element.name }}</td>
-        <td cdk-footer-cell *cdkFooterCellDef class="cell">
-          <cea-paginator [dataSource]="dataSource"></cea-paginator>
-        </td>
+      </ng-container>
+
+      <ng-container cdkColumnDef="seller">
+        <th cdk-header-cell *cdkHeaderCellDef class="cell is-sortable" (click)="sortBy('seller', pageModel?.sort)">
+          <div>
+            Seller
+            <i class="material-icons" *ngIf="pageModel?.sort?.property === 'seller'">{{
+              pageModel?.sort?.order === 'Ascending' ? 'north' : 'south'
+            }}</i>
+          </div>
+        </th>
+        <td cdk-cell *cdkCellDef="let element" class="cell">{{ element.seller }}</td>
+      </ng-container>
+
+      <ng-container cdkColumnDef="category">
+        <th cdk-header-cell *cdkHeaderCellDef class="cell is-sortable" (click)="sortBy('category', pageModel?.sort)">
+          <div>
+            Category
+            <i class="material-icons" *ngIf="pageModel?.sort?.property === 'category'">{{
+              pageModel?.sort?.order === 'Ascending' ? 'north' : 'south'
+            }}</i>
+          </div>
+        </th>
+        <td cdk-cell *cdkCellDef="let element" class="cell">{{ element.category }}</td>
       </ng-container>
 
       <ng-container cdkColumnDef="operations">

@@ -36,13 +36,35 @@ namespace CatchEmAll.Models
     /// </summary>
     public ICollection<SearchResult> Results { get; init; } = new List<SearchResult>();
 
+    /// <summary>
+    /// The identifier of the category the auction belongs to.
+    /// </summary>
+    public Guid CategoryId { get; init; }
+
+    /// <summary>
+    /// The category the auction belongs to.
+    /// </summary>
+    public Category Category { get; init; } = null!;
+
+    /// <summary>
+    /// The identifier of the seller selling the auction.
+    /// </summary>
+    public Guid SellerId { get; init; }
+
+    /// <summary>
+    /// The seller selling the auction.
+    /// </summary>
+    public Seller Seller { get; init; } = null!;
+
     private Auction() { }
 
-    public Auction(ProviderInfo provider, AuctionInfo info, AuctionPrice price)
+    public Auction(ProviderInfo provider, AuctionInfo info, AuctionPrice price, Seller seller, Category category)
     {
       this.Provider = provider;
       this.Info = info;
       this.Price = price;
+      this.Seller = seller;
+      this.Category = category;
     }
 
     /// <summary>

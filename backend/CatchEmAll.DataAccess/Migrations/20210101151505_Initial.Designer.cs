@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CatchEmAll.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20210101140452_Initial")]
+    [Migration("20210101151505_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,9 +27,35 @@ namespace CatchEmAll.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("CategoryId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("SellerId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
 
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("SellerId");
+
                     b.ToTable("Auctions");
+                });
+
+            modelBuilder.Entity("CatchEmAll.Models.Category", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("CatchEmAll.Models.SearchQuery", b =>
@@ -78,6 +104,22 @@ namespace CatchEmAll.Migrations
                     b.ToTable("SearchResults");
                 });
 
+            modelBuilder.Entity("CatchEmAll.Models.Seller", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Sellers");
+                });
+
             modelBuilder.Entity("CatchEmAll.Models.UserReference", b =>
                 {
                     b.Property<Guid>("Id")
@@ -96,6 +138,18 @@ namespace CatchEmAll.Migrations
 
             modelBuilder.Entity("CatchEmAll.Models.Auction", b =>
                 {
+                    b.HasOne("CatchEmAll.Models.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CatchEmAll.Models.Seller", "Seller")
+                        .WithMany()
+                        .HasForeignKey("SellerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.OwnsOne("CatchEmAll.Models.AuctionInfo", "Info", b1 =>
                         {
                             b1.Property<Guid>("AuctionId")
@@ -143,7 +197,13 @@ namespace CatchEmAll.Migrations
                             b1.Property<decimal?>("FinalPrice")
                                 .HasColumnType("decimal(18,6)");
 
+                            b1.Property<int>("NumberOfBids")
+                                .HasColumnType("int");
+
                             b1.Property<decimal?>("PurchasePrice")
+                                .HasColumnType("decimal(18,6)");
+
+                            b1.Property<decimal?>("StartPrice")
                                 .HasColumnType("decimal(18,6)");
 
                             b1.HasKey("AuctionId");
@@ -171,7 +231,8 @@ namespace CatchEmAll.Migrations
 
                             b1.HasKey("AuctionId");
 
-                            b1.HasIndex("Key", "Value");
+                            b1.HasIndex("Key", "Value")
+                                .IsUnique();
 
                             b1.ToTable("Auctions");
 
@@ -201,6 +262,8 @@ namespace CatchEmAll.Migrations
                                 .HasForeignKey("AuctionId");
                         });
 
+                    b.Navigation("Category");
+
                     b.Navigation("Info")
                         .IsRequired();
 
@@ -210,7 +273,41 @@ namespace CatchEmAll.Migrations
                     b.Navigation("Provider")
                         .IsRequired();
 
+                    b.Navigation("Seller");
+
                     b.Navigation("Update")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("CatchEmAll.Models.Category", b =>
+                {
+                    b.OwnsOne("CatchEmAll.Models.ProviderInfo", "Provider", b1 =>
+                        {
+                            b1.Property<Guid>("CategoryId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<string>("Key")
+                                .IsRequired()
+                                .HasMaxLength(64)
+                                .HasColumnType("nvarchar(64)");
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasMaxLength(64)
+                                .HasColumnType("nvarchar(64)");
+
+                            b1.HasKey("CategoryId");
+
+                            b1.HasIndex("Key", "Value")
+                                .IsUnique();
+
+                            b1.ToTable("Categories");
+
+                            b1.WithOwner()
+                                .HasForeignKey("CategoryId");
+                        });
+
+                    b.Navigation("Provider")
                         .IsRequired();
                 });
 
@@ -326,6 +423,38 @@ namespace CatchEmAll.Migrations
                         .IsRequired();
 
                     b.Navigation("Query");
+                });
+
+            modelBuilder.Entity("CatchEmAll.Models.Seller", b =>
+                {
+                    b.OwnsOne("CatchEmAll.Models.ProviderInfo", "Provider", b1 =>
+                        {
+                            b1.Property<Guid>("SellerId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<string>("Key")
+                                .IsRequired()
+                                .HasMaxLength(64)
+                                .HasColumnType("nvarchar(64)");
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasMaxLength(64)
+                                .HasColumnType("nvarchar(64)");
+
+                            b1.HasKey("SellerId");
+
+                            b1.HasIndex("Key", "Value")
+                                .IsUnique();
+
+                            b1.ToTable("Sellers");
+
+                            b1.WithOwner()
+                                .HasForeignKey("SellerId");
+                        });
+
+                    b.Navigation("Provider")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("CatchEmAll.Models.UserReference", b =>

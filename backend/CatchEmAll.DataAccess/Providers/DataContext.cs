@@ -16,6 +16,8 @@ namespace CatchEmAll.Providers
     public DbSet<SearchQuery> SearchQueries { get; set; } = null!;
     public DbSet<SearchResult> SearchResults { get; set; } = null!;
     public DbSet<Auction> Auctions { get; set; } = null!;
+    public DbSet<Category> Categories { get; set; } = null!;
+    public DbSet<Seller> Sellers { get; set; } = null!;
 
     public Task SaveChangesAsync()
     {
@@ -43,7 +45,17 @@ namespace CatchEmAll.Providers
 
       modelBuilder.Entity<Auction>().OwnsOne(x => x.Provider, x =>
       {
-        x.HasIndex(y => new { y.Key, y.Value });
+        x.HasIndex(y => new { y.Key, y.Value }).IsUnique();
+      });
+
+      modelBuilder.Entity<Category>().OwnsOne(x => x.Provider, x =>
+      {
+        x.HasIndex(y => new { y.Key, y.Value }).IsUnique();
+      });
+
+      modelBuilder.Entity<Seller>().OwnsOne(x => x.Provider, x =>
+      {
+        x.HasIndex(y => new { y.Key, y.Value }).IsUnique();
       });
     }
 
