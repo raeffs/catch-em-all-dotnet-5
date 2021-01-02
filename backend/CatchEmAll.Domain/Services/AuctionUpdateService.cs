@@ -45,9 +45,9 @@ namespace CatchEmAll.Services
       {
         try
         {
-          var (info, price) = await this.search.GetAuctionAsync(id);
+          var auction = await this.search.GetAuctionAsync(id);
 
-          await this.UpdateAuctionAsync(id, info, price);
+          await this.UpdateAuctionAsync(id, auction);
           this.logger.LogInformation("Updated auction with {id}", id);
         }
         catch (Exception exception)
@@ -82,14 +82,18 @@ namespace CatchEmAll.Services
       return entities.Select(x => x.Provider.Value).ToList();
     }
 
-    private async Task UpdateAuctionAsync(string id, AuctionInfo auctionInfo, AuctionPrice auctionPrice)
+    private async Task UpdateAuctionAsync(string id, Auction auction)
     {
       using var context = this.factory.GetContext();
 
       var entity = await context.Auctions.AsTracking()
+          .Include(x => x.Seller)
+          .Include(x => x.Category)
           .SingleAsync(x => x.Provider.Value == id);
 
-      entity.UpdateAuction(auctionInfo, auctionPrice);
+      entity.UpdateAuction(auction.Info, auction.Price);
+      entity.Seller.Name = auction.Seller.Name;
+      entity.Category.Name = auction.Category.Name;
 
       await context.SaveChangesAsync();
     }

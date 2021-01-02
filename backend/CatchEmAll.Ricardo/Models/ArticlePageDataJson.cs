@@ -44,6 +44,8 @@ namespace CatchEmAll.Models
     [JsonPropertyName("end_date")]
     public DateTimeOffset EndDate { get; init; }
     public ArticlePageDataJson_Offer? Offer { get; init; }
+    public ArticlePageDataJson_Category? Category { get; init; }
+    public ArticlePageDataJson_Seller? Seller { get; init; }
   }
 
   internal record ArticlePageDataJson_Offer
@@ -65,6 +67,39 @@ namespace CatchEmAll.Models
     // the last bid contains also the final price when sold directly
     [JsonPropertyName("last_bid")]
     public decimal? LastBid { get; init; }
+  }
+
+  internal record ArticlePageDataJson_Category
+  {
+    public long Id { get; init; }
+    public string Name { get; init; } = string.Empty;
+    [JsonPropertyName("display_name")]
+    public string DisplayName { get; init; } = string.Empty;
+  }
+
+  internal record ArticlePageDataJson_Seller
+  {
+    public string Id { get; init; } = string.Empty;
+    public string Nickname { get; init; } = string.Empty;
+    public bool IsPro { get; init; }
+    [JsonPropertyName("account_type")]
+    public string AccountType { get; init; } = string.Empty;
+    public string Country { get; init; } = string.Empty;
+    public int RatingsCount { get; init; }
+    public decimal Score { get; init; }
+    public ArticlePageDataJson_SellerIdentification? Identification { get; init; }
+  }
+
+  internal record ArticlePageDataJson_SellerIdentification
+  {
+    public ArticlePageDataJson_SellerIdentificationDetails? IdDocument { get; init; }
+    public ArticlePageDataJson_SellerIdentificationDetails? PhoneNumber { get; init; }
+    public ArticlePageDataJson_SellerIdentificationDetails? PostalAddress { get; init; }
+  }
+
+  internal record ArticlePageDataJson_SellerIdentificationDetails
+  {
+    public string Status { get; init; } = string.Empty;
   }
 
   internal enum ArticlePageDataJson_Status

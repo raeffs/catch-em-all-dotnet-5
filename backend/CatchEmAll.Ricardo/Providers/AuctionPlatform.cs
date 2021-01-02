@@ -13,6 +13,8 @@ namespace CatchEmAll.Providers
   {
     private readonly ILogger<AuctionPlatform> logger;
 
+    public string ProviderKey => "ricardo";
+
     public AuctionPlatform(ILogger<AuctionPlatform> logger)
     {
       this.logger = logger;
@@ -30,11 +32,7 @@ namespace CatchEmAll.Providers
       }
 
       var products = entries.Select(x => new Auction(
-        new ProviderInfo
-        {
-          Key = "ricardo",
-          Value = x.Id.ToString()
-        },
+        this.GetProviderInfo(x.Id.ToString()),
         new AuctionInfo
         {
           Name = x.Title ?? string.Empty,
@@ -49,32 +47,20 @@ namespace CatchEmAll.Providers
           BidPrice = x.BidPrice,
         },
         new Seller(
-          new ProviderInfo
-          {
-            Key = "ricardo",
-            Value = x.SellerId.ToString()
-          }
+          this.GetProviderInfo(x.SellerId.ToString())
         ),
         new Category(
-          new ProviderInfo
-          {
-            Key = "ricardo",
-            Value = x.CategoryId.ToString()
-          }
+          this.GetProviderInfo(x.CategoryId.ToString())
         )
       ));
 
       return products.ToList();
     }
 
-    public async Task<(AuctionInfo, AuctionPrice)> GetAuctionAsync(string id)
+    public async Task<Auction> GetAuctionAsync(string id)
     {
       try
       {
-        //id = "1152379596";
-        //id = "1152550444";
-        //id = "1151553198";
-
         // the url copied from the browser is human readable, but the human readable part can be omitted
         var url = string.Format("https://www.ricardo.ch/de/a/{0}/", id);
         var (data, raw) = await this.FetchAndParsePage<ArticlePageDataJson>(url);
@@ -113,23 +99,43 @@ namespace CatchEmAll.Providers
           FinalPrice = bidData?.Data?.LastBid
         };
 
-        return (info, price);
+        var sellerData = articleData.Seller;
+        if (sellerData == null)
+        {
+          // todo: add proper exceptions
+          throw new Exception("Seller data is missing!");
+        }
+
+        var seller = new Seller(this.GetProviderInfo(sellerData.Id))
+        {
+          Name = sellerData.Nickname
+        };
+
+        var categoryData = articleData.Category;
+        if (categoryData == null)
+        {
+          // todo: add proper exceptions
+          throw new Exception("Category data is missing!");
+        }
+
+        var category = new Category(this.GetProviderInfo(categoryData.Id.ToString()))
+        {
+          Name = categoryData.DisplayName
+        };
+
+        return new Auction(
+          this.GetProviderInfo(id),
+          info,
+          price,
+          seller,
+          category
+        );
       }
       catch (Exception exception)
       {
         this.logger.LogWarning(exception, "Failed to extract auction data!");
         throw;
       }
-    }
-
-    public Task GetCategoryAsync(string id)
-    {
-      throw new NotImplementedException();
-    }
-
-    public Task GetSellerAsync(string id)
-    {
-      throw new NotImplementedException();
     }
 
     public string GetExternalAuctionLink(string id) => $"https://www.ricardo.ch/de/a/{id}";
@@ -175,6 +181,12 @@ namespace CatchEmAll.Providers
       (true, false) => AuctionType.Auction,
       (false, true) => AuctionType.FixedPrice,
       _ => AuctionType.Unknown
+    };
+
+    private ProviderInfo GetProviderInfo(string value) => new ProviderInfo
+    {
+      Key = this.ProviderKey,
+      Value = value
     };
   }
 }

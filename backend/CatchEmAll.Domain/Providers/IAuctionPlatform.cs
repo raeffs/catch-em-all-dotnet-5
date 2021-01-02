@@ -6,13 +6,11 @@ namespace CatchEmAll.Providers
 {
   public interface IAuctionPlatform
   {
+    string ProviderKey { get; }
+
     Task<ICollection<Auction>> FindAuctionsAsync(SearchCriteria criteria);
 
-    Task<(AuctionInfo, AuctionPrice)> GetAuctionAsync(string id);
-
-    Task GetSellerAsync(string id);
-
-    Task GetCategoryAsync(string id);
+    Task<Auction> GetAuctionAsync(string id);
 
     string GetExternalAuctionLink(string id);
   }
