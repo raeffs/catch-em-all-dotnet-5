@@ -20,7 +20,8 @@ namespace CatchEmAll.WebJobs
         services
           .AddDataAccess(context.Configuration.GetConnectionString("DataContext"))
           .AddDomain()
-          .AddRicardo();
+          .AddRicardo()
+          .AddNotifications();
       });
 
       hostBuilder.ConfigureLogging((context, loggingBuilder) =>

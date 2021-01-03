@@ -53,7 +53,7 @@ namespace CatchEmAll.Services
         catch (Exception exception)
         {
           this.logger.LogError(exception, "Failed to update auction with {id}", id);
-          await this.RelaseAuctionAsync(id);
+          await this.ReleaseAuctionAsync(id);
         }
       }
     }
@@ -98,7 +98,7 @@ namespace CatchEmAll.Services
       await context.SaveChangesAsync();
     }
 
-    private async Task RelaseAuctionAsync(string id)
+    private async Task ReleaseAuctionAsync(string id)
     {
       using var context = this.factory.GetContext();
 

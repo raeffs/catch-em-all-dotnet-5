@@ -16,13 +16,20 @@ namespace CatchEmAll.Services
     private readonly ILogger<SearchQueryUpdateService> logger;
     private readonly IDataContextFactory factory;
     private readonly IAuctionPlatform search;
+    private readonly INotifier notifier;
     private readonly SearchQueryUpdateOptions options;
 
-    public SearchQueryUpdateService(ILogger<SearchQueryUpdateService> logger, IDataContextFactory factory, IOptionsSnapshot<SearchQueryUpdateOptions> options, IAuctionPlatform search)
+    public SearchQueryUpdateService(
+      ILogger<SearchQueryUpdateService> logger,
+      IDataContextFactory factory,
+      IOptionsSnapshot<SearchQueryUpdateOptions> options,
+      IAuctionPlatform search,
+      INotifier notifier)
     {
       this.logger = logger;
       this.factory = factory;
       this.search = search;
+      this.notifier = notifier;
       this.options = options.Value;
     }
 
@@ -57,7 +64,7 @@ namespace CatchEmAll.Services
       catch (Exception exception)
       {
         this.logger.LogError(exception, "Failed to update search query with {id}", id.Value);
-        await this.RelaseSearchQueryAsync(id.Value);
+        await this.ReleaseSearchQueryAsync(id.Value);
       }
     }
 
@@ -145,6 +152,8 @@ namespace CatchEmAll.Services
         .Select(x => auctions.Select(y => y.Seller).First(y => y.Provider.Value == x))
         .ToList();
 
+      var newResults = new List<SearchResult>();
+
       foreach (var auction in auctions)
       {
         var existingAuction = existingAuctions.SingleOrDefault(x => x.ExternalId == auction.Provider.Value);
@@ -183,6 +192,10 @@ namespace CatchEmAll.Services
           {
             newResult.Delete();
           }
+          else
+          {
+            newResults.Add(newResult);
+          }
 
           entity.Results.Add(newResult);
         }
@@ -191,9 +204,11 @@ namespace CatchEmAll.Services
       entity.Release(true);
 
       await context.SaveChangesAsync();
+
+      await this.notifier.NotifyAboutNewResultsAsync(id, newResults.Select(x => x.Id));
     }
 
-    private async Task RelaseSearchQueryAsync(Guid id)
+    private async Task ReleaseSearchQueryAsync(Guid id)
     {
       using var context = this.factory.GetContext();
 
