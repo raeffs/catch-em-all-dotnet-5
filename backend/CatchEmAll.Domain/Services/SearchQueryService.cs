@@ -30,7 +30,11 @@ namespace CatchEmAll.Services
           WithAllTheseWords = options.SearchTerm
         },
         User = await this.data.GetOrCreateUserReferenceAsync(this.identity),
-        Priority = Priority.High
+        Settings = new SearchSettings
+        {
+          Priority = Priority.High,
+          AutoFilterDeletedDuplicates = true
+        }
       };
       this.data.SearchQueries.Add(query);
       await this.data.SaveChangesAsync();
@@ -73,7 +77,7 @@ namespace CatchEmAll.Services
         {
           Id = x.Id,
           Name = x.Name,
-          Priority = x.Priority,
+          Priority = x.Settings.Priority,
           Updated = x.Update.Updated,
           NumberOfAuctions = x.Results.Count
         });

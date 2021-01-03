@@ -70,7 +70,7 @@ namespace CatchEmAll.Services
 
       var entity = await context.SearchQueries.AsTracking()
           .Where(x => !x.Update.IsLocked)
-          .Where(x => x.Update.Updated <= lastUpdatedBefore && x.Priority == priority)
+          .Where(x => x.Update.Updated <= lastUpdatedBefore && x.Settings.Priority == priority)
           .OrderBy(x => x.Update.Updated)
           .FirstOrDefaultAsync();
 
@@ -105,6 +105,18 @@ namespace CatchEmAll.Services
         })
         .ToListAsync();
 
+      var nameCandidates = auctions.Select(x => x.Info.Name).ToList();
+      var sellerCandidates = auctions.Select(x => x.Seller.Provider.Value).ToList();
+      var deletedDuplicateCandidates = await context.SearchResults
+        .IgnoreQueryFilters()
+        .Where(x => x.QueryId == id && x.Lifetime.IsDeleted && nameCandidates.Contains(x.Auction.Info.Name) && sellerCandidates.Contains(x.Auction.Seller.Provider.Value))
+        .Select(x => new
+        {
+          Name = x.Auction.Info.Name,
+          ExternalSellerId = x.Auction.Seller.Provider.Value
+        })
+        .ToListAsync();
+
       var externalCategoryIds = auctions.Select(x => x.Category.Provider.Value).Distinct().ToList();
       var existingCategories = await context.Categories
         .Where(x => externalCategoryIds.Contains(x.Provider.Value))
@@ -136,7 +148,9 @@ namespace CatchEmAll.Services
       foreach (var auction in auctions)
       {
         var existingAuction = existingAuctions.SingleOrDefault(x => x.ExternalId == auction.Provider.Value);
+        var hasDeletedDuplicate = deletedDuplicateCandidates.Any(x => x.Name == auction.Info.Name && x.ExternalSellerId == auction.Seller.Provider.Value);
 
+        SearchResult? newResult = null;
         if (existingAuction == null)
         {
           var existingCategory = existingCategories.SingleOrDefault(x => x.ExternalId == auction.Category.Provider.Value);
@@ -144,23 +158,33 @@ namespace CatchEmAll.Services
           var existingSeller = existingSellers.SingleOrDefault(x => x.ExternalId == auction.Seller.Provider.Value);
           var newSeller = newSellers.SingleOrDefault(x => x.Provider.Value == auction.Seller.Provider.Value);
 
-          entity.Results.Add(new SearchResult
+          newResult = new SearchResult
           {
             Auction = auction with
             {
               Category = newCategory ?? null!,
               CategoryId = existingCategory?.Id ?? Guid.Empty,
               Seller = newSeller ?? null!,
-              SellerId = existingSeller?.Id ?? Guid.Empty
+              SellerId = existingSeller?.Id ?? Guid.Empty,
             }
-          });
+          };
         }
         else if (existingAuction.Result == null)
         {
-          entity.Results.Add(new SearchResult
+          newResult = new SearchResult
           {
             AuctionId = existingAuction.Id
-          });
+          };
+        }
+
+        if (newResult != null)
+        {
+          if (entity.Settings.AutoFilterDeletedDuplicates && hasDeletedDuplicate)
+          {
+            newResult.Delete();
+          }
+
+          entity.Results.Add(newResult);
         }
       }
 
