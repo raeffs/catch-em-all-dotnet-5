@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CatchEmAll
 {
-  internal class WebJobs
+  internal class NotificationWebJobs
   {
     [FunctionName("ProcessEmailNotifications")]
     public Task ProcessEmailNotifications([ServiceBusTrigger("%CatchEmAll:Notifications:TopicName%", "email", Connection = "NotificationsServiceBus")] Message rawMessage, ILogger logger)
