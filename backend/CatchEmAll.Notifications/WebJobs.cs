@@ -10,7 +10,7 @@ namespace CatchEmAll
   internal class WebJobs
   {
     [FunctionName("ProcessEmailNotifications")]
-    public Task ProcessEmailNotifications([ServiceBusTrigger("%CatchEmAll:Notifications:TopicName%", "email", Connection = "Notifications")] Message rawMessage, ILogger logger)
+    public Task ProcessEmailNotifications([ServiceBusTrigger("%CatchEmAll:Notifications:TopicName%", "email", Connection = "NotificationsServiceBus")] Message rawMessage, ILogger logger)
     {
       switch (rawMessage.ContentType)
       {

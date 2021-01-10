@@ -27,7 +27,7 @@ namespace CatchEmAll.WebJobs
           .AddDataAccess(context.Configuration.GetConnectionString("DataContext"))
           .AddDomain()
           .AddRicardo()
-          .AddNotifications(context.Configuration.GetConnectionString("Notifications"), enableWebJobs: true);
+          .AddNotifications(context.Configuration.GetConnectionString("NotificationsServiceBus"), enableWebJobs: true);
 
         services.AddSingleton<ITypeLocator, TypeLocator>();
         services.AddWebJobsFrom<AuctionUpdate>();
