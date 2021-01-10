@@ -89,7 +89,8 @@ namespace CatchEmAll.WebApi
       services
         .AddDataAccess(this.configuration.GetConnectionString("DataContext"))
         .AddDomain()
-        .AddRicardo();
+        .AddRicardo()
+        .AddNotifications("");
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

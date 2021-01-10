@@ -36,6 +36,7 @@ namespace CatchEmAll.WebApi
         .ConfigureWebHostDefaults(webBuilder =>
         {
           webBuilder.UseStartup<Startup>();
-        });
+        })
+        .ConfigureLogging();
   }
 }

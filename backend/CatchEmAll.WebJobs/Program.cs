@@ -3,7 +3,6 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using System.Reflection;
 using System.Threading.Tasks;
 
@@ -34,10 +33,7 @@ namespace CatchEmAll.WebJobs
         services.AddWebJobsFrom<SearchQueryUpdate>();
       });
 
-      hostBuilder.ConfigureLogging((context, loggingBuilder) =>
-      {
-        loggingBuilder.AddConsole();
-      });
+      hostBuilder.ConfigureLogging();
 
       hostBuilder.ConfigureWebJobs(webJobsBuilder =>
       {
