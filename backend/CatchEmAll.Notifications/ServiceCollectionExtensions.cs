@@ -12,7 +12,7 @@ namespace CatchEmAll
     {
       if (enableWebJobs)
       {
-        services.AddWebJobsFrom<WebJobs>();
+        services.AddWebJobsFrom<NotificationWebJobs>();
       }
 
       return services

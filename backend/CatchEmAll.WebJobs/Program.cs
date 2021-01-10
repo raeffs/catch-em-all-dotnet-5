@@ -28,9 +28,9 @@ namespace CatchEmAll.WebJobs
           .AddRicardo()
           .AddNotifications(context.Configuration.GetConnectionString("NotificationsServiceBus"), enableWebJobs: true);
 
-        services.AddSingleton<ITypeLocator, TypeLocator>();
         services.AddWebJobsFrom<AuctionUpdate>();
         services.AddWebJobsFrom<SearchQueryUpdate>();
+        services.UseRegisteredWebJobs();
       });
 
       hostBuilder.ConfigureLogging();

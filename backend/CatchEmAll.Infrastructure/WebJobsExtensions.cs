@@ -1,5 +1,6 @@
+using CatchEmAll.WebJobs;
+using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.DependencyInjection;
-using System;
 
 namespace CatchEmAll
 {
@@ -10,9 +11,9 @@ namespace CatchEmAll
       return services.AddSingleton(new WebJobType { WebJob = typeof(T) });
     }
 
-    public record WebJobType
+    public static IServiceCollection UseRegisteredWebJobs(this IServiceCollection services)
     {
-      public Type WebJob { get; init; } = null!;
+      return services.AddSingleton<ITypeLocator, TypeLocator>();
     }
   }
 }

@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CatchEmAll.Domain\CatchEmAll.Domain.csproj" />
+    <ProjectReference Include="..\CatchEmAll.Infrastructure\CatchEmAll.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

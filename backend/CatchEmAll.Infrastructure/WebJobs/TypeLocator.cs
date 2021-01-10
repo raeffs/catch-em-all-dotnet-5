@@ -3,13 +3,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace CatchEmAll
+namespace CatchEmAll.WebJobs
 {
-  public class TypeLocator : ITypeLocator
+  internal class TypeLocator : ITypeLocator
   {
-    private readonly IEnumerable<WebJobsExtensions.WebJobType> webJobTypes;
+    private readonly IEnumerable<WebJobType> webJobTypes;
 
-    public TypeLocator(IEnumerable<WebJobsExtensions.WebJobType> webJobTypes)
+    public TypeLocator(IEnumerable<WebJobType> webJobTypes)
     {
       this.webJobTypes = webJobTypes;
     }
