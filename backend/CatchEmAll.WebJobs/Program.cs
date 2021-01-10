@@ -1,6 +1,9 @@
+using CatchEmAll.Options;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace CatchEmAll.WebJobs
@@ -17,11 +20,13 @@ namespace CatchEmAll.WebJobs
 
       hostBuilder.ConfigureServices((context, services) =>
       {
+        services.AddOptions<NotificationOptions>().Bind(context.Configuration.GetSection("CatchEmAll:Notifications"));
+
         services
           .AddDataAccess(context.Configuration.GetConnectionString("DataContext"))
           .AddDomain()
           .AddRicardo()
-          .AddNotifications();
+          .AddNotifications(context.Configuration.GetConnectionString("Notifications"));
       });
 
       hostBuilder.ConfigureLogging((context, loggingBuilder) =>
@@ -41,7 +46,7 @@ namespace CatchEmAll.WebJobs
         configurationBuilder
           .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
 #if DEBUG
-          .AddJsonFile("appsettings.development.json", optional: true, reloadOnChange: true)
+          .AddUserSecrets(Assembly.GetExecutingAssembly(), optional: true)
 #endif
           .AddEnvironmentVariables();
       });

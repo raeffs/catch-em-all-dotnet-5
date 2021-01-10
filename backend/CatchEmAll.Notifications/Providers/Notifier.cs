@@ -1,25 +1,34 @@
-using Microsoft.Extensions.Logging;
+using CatchEmAll.Models;
+using Microsoft.Azure.ServiceBus;
 using System;
 using System.Collections.Generic;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace CatchEmAll.Providers
 {
   internal class Notifier : INotifier
   {
-    private readonly ILogger<Notifier> logger;
+    private readonly TopicClient client;
 
-
-    public Notifier(ILogger<Notifier> logger)
+    public Notifier(TopicClient client)
     {
-      this.logger = logger;
-
+      this.client = client;
     }
 
-    public Task NotifyAboutNewResultsAsync(Guid queryId, IEnumerable<Guid> resultIds)
+    public async Task NotifyAboutNewResultsAsync(Guid queryId, IEnumerable<Guid> resultIds)
     {
-      this.logger.LogInformation("New results for query with {queryId}", queryId);
-      return Task.CompletedTask;
+      var message = new NewResultsMessage
+      {
+        QueryId = queryId,
+        ResultIds = resultIds
+      };
+      var rawMessage = new Message
+      {
+        Body = JsonSerializer.SerializeToUtf8Bytes(message),
+        ContentType = NewResultsMessage.Type,
+      };
+      await this.client.SendAsync(rawMessage);
     }
   }
 }
