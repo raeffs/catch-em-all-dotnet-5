@@ -205,7 +205,10 @@ namespace CatchEmAll.Services
 
       await context.SaveChangesAsync();
 
-      await this.notifier.NotifyAboutNewResultsAsync(id, newResults.Select(x => x.Id));
+      if (newResults.Any())
+      {
+        await this.notifier.NotifyAboutNewResultsAsync(id, newResults.Select(x => x.Id));
+      }
     }
 
     private async Task ReleaseSearchQueryAsync(Guid id)

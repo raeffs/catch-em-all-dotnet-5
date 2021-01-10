@@ -1,4 +1,5 @@
 using CatchEmAll.Options;
+using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -26,7 +27,11 @@ namespace CatchEmAll.WebJobs
           .AddDataAccess(context.Configuration.GetConnectionString("DataContext"))
           .AddDomain()
           .AddRicardo()
-          .AddNotifications(context.Configuration.GetConnectionString("Notifications"));
+          .AddNotifications(context.Configuration.GetConnectionString("Notifications"), enableWebJobs: true);
+
+        services.AddSingleton<ITypeLocator, TypeLocator>();
+        services.AddWebJobsFrom<AuctionUpdate>();
+        services.AddWebJobsFrom<SearchQueryUpdate>();
       });
 
       hostBuilder.ConfigureLogging((context, loggingBuilder) =>
@@ -38,6 +43,9 @@ namespace CatchEmAll.WebJobs
       {
         webJobsBuilder.AddAzureStorageCoreServices();
         webJobsBuilder.AddTimers();
+        webJobsBuilder.AddServiceBus(config =>
+        {
+        });
       });
 
       hostBuilder.ConfigureAppConfiguration(configurationBuilder =>
@@ -59,3 +67,4 @@ namespace CatchEmAll.WebJobs
     }
   }
 }
+

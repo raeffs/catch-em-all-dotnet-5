@@ -8,8 +8,13 @@ namespace CatchEmAll
 {
   public static class ServiceCollectionExtensions
   {
-    public static IServiceCollection AddNotifications(this IServiceCollection services, string connectionString)
+    public static IServiceCollection AddNotifications(this IServiceCollection services, string connectionString, bool enableWebJobs = false)
     {
+      if (enableWebJobs)
+      {
+        services.AddWebJobsFrom<WebJobs>();
+      }
+
       return services
         .AddSingleton<INotifier, Notifier>()
         .AddSingleton<TopicClient>(serviceProvider =>

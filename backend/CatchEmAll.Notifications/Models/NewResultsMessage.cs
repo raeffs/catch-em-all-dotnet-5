@@ -5,7 +5,7 @@ namespace CatchEmAll.Models
 {
   internal record NewResultsMessage
   {
-    public static readonly string Type = "new-results";
+    public const string Type = "new-results";
 
     public Guid QueryId { get; init; }
 
