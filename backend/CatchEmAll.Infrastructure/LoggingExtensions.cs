@@ -3,8 +3,6 @@ using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Events;
 using Serilog.Exceptions;
-using Serilog.Sinks.Elasticsearch;
-using System;
 
 namespace CatchEmAll
 {
@@ -34,19 +32,12 @@ namespace CatchEmAll
             configuration.WriteTo.Console();
           }
 
-          var elasticSearchUrl = context.Configuration.GetValue<string>("CatchEmAll:Logging:ElasticSearchUrl");
+          var seqUrl = context.Configuration.GetValue<string>("CatchEmAll:Logging:SeqUrl");
+          var seqApiKey = context.Configuration.GetValue<string>("CatchEmAll:Logging:SeqApiKey");
 
-          if (!string.IsNullOrWhiteSpace(elasticSearchUrl))
+          if (!string.IsNullOrWhiteSpace(seqUrl) && !string.IsNullOrWhiteSpace(seqApiKey))
           {
-            configuration.WriteTo.Elasticsearch(
-              new ElasticsearchSinkOptions(new Uri(elasticSearchUrl))
-              {
-                AutoRegisterTemplate = true,
-                AutoRegisterTemplateVersion = AutoRegisterTemplateVersion.ESv7,
-                IndexFormat = "cea-logs-{0:yyyy.MM.dd}",
-                MinimumLogEventLevel = LogEventLevel.Debug
-              }
-            );
+            configuration.WriteTo.Seq(seqUrl, apiKey: seqApiKey);
           }
         });
     }

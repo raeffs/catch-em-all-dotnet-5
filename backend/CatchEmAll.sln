@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CatchEmAll.WebJobs", "Catch
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CatchEmAll.Notifications", "CatchEmAll.Notifications\CatchEmAll.Notifications.csproj", "{9C74E618-84F7-47C2-BEBB-64A7DA68B076}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CatchEmAll.Infrastructure", "CatchEmAll.Infrastructure\CatchEmAll.Infrastructure.csproj", "{516FAF17-EF79-4F90-8F66-6B8DA3342037}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CatchEmAll.Infrastructure", "CatchEmAll.Infrastructure\CatchEmAll.Infrastructure.csproj", "{516FAF17-EF79-4F90-8F66-6B8DA3342037}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
