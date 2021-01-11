@@ -86,7 +86,7 @@ namespace CatchEmAll.Models
     public string AccountType { get; init; } = string.Empty;
     public string Country { get; init; } = string.Empty;
     public int RatingsCount { get; init; }
-    public decimal Score { get; init; }
+    public decimal? Score { get; init; }
     public ArticlePageDataJson_SellerIdentification? Identification { get; init; }
   }
 
