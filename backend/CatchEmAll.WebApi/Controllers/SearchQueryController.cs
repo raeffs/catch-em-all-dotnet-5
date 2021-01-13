@@ -2,6 +2,7 @@ using CatchEmAll.Models;
 using CatchEmAll.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -14,16 +15,19 @@ namespace CatchEmAll.Controllers
   public class SearchQueryController : ControllerBase
   {
     private readonly ISearchQueryService queries;
+    private readonly ILogger<SearchQueryController> logger;
 
-    public SearchQueryController(ISearchQueryService queries)
+    public SearchQueryController(ISearchQueryService queries, ILogger<SearchQueryController> logger)
     {
       this.queries = queries;
+      this.logger = logger;
     }
 
     [HttpGet(Name = "GetAllSearchQueries")]
     [Produces(typeof(Page<SearchQuerySummary>))]
     public async Task<IActionResult> Get(int? pageNumber, int? pageSize, string? sortBy, SortOrder? sortDirection)
     {
+      this.logger.LogInformation("Getting all search queries...");
       var pageRequest = new PageRequest
       {
         PageNumber = pageNumber ?? 1,
