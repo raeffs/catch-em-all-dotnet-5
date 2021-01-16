@@ -142,13 +142,26 @@ namespace CatchEmAll.Providers
 
     private async Task<(T?, string?)> FetchAndParsePage<T>(string url)
     {
-      var document = await WebRequest.Create(url).GetHtmlDocumentAsync();
+      var request = (HttpWebRequest)WebRequest.Create(url);
+      // probably we should randomize that
+      request.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36";
+      var document = await request.GetHtmlDocumentAsync();
       // the HTML contains an inline script that contains the initial data for the page for SEO / prerendering purposes
       // so we get that script and extract the data JSON -> much easier than parsing the HTML
       // todo: the JSON also contains the Firebase settings, maybe it would be even easier to just connect to the Firebase database directly...
-      var scriptContent = document.DocumentNode.SelectSingleNode(".//script[contains(text(), 'window.ricardo=')]").InnerHtml;
-      // we just strip off all the non-JSON stuff
-      var jsonContent = scriptContent.Replace("window.ricardo=", string.Empty).TrimEnd(';');
+      // it seems the variable name varys depending on the user agent
+      var variableNamesToTry = new[] { "window.ricardo", "ricardo" };
+      var jsonContent = string.Empty;
+      foreach (var variableNameToTry in variableNamesToTry)
+      {
+        var scriptContent = document.DocumentNode.SelectSingleNode($".//script[contains(text(), '{variableNameToTry}=')]")?.InnerHtml;
+        if (scriptContent is not null)
+        {
+          // we just strip off all the non-JSON stuff
+          jsonContent = scriptContent.Replace($"{variableNameToTry}=", string.Empty).TrimEnd(';');
+          break;
+        }
+      }
       // and parse the JSON
       var options = new JsonSerializerOptions
       {
