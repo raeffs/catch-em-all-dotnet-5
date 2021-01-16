@@ -76,7 +76,7 @@ namespace CatchEmAll.Services
       var lastUpdatedBefore = now.Add(TimeSpan.FromMinutes(this.options.GetUpdateIntervalInMinutesFor(priority) * -1));
 
       var entity = await context.SearchQueries.AsTracking()
-          .Where(x => !x.Update.IsLocked)
+          .Where(x => !x.Update.IsLocked && x.Update.NumberOfFailures < 10)
           .Where(x => x.Update.Updated <= lastUpdatedBefore && x.Settings.Priority == priority)
           .OrderBy(x => x.Update.Updated)
           .FirstOrDefaultAsync();
