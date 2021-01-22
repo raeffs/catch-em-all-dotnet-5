@@ -13,10 +13,12 @@ namespace CatchEmAll.WebJobs
       this.service = service;
     }
 
+    /*
     public async Task UpdateAuctions([TimerTrigger("3/5 * * * * *", RunOnStartup = false)] TimerInfo timerInfo)
     {
       await this.service.UpdateAuctionsAsync();
     }
+    */
 
     public async Task ResetFailedAutionUpdates([TimerTrigger("* * 1 * * *", RunOnStartup = true)] TimerInfo timerInfo)
     {
