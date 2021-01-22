@@ -94,5 +94,13 @@ namespace CatchEmAll.Models
       this.Price = auctionPrice;
       this.Update = this.Update.MarkAsSuccessful();
     }
+
+    /// <summary>
+    /// Resets the update information of the auction.
+    /// </summary>
+    public void Reset()
+    {
+      this.Update = this.Update.Reset();
+    }
   }
 }

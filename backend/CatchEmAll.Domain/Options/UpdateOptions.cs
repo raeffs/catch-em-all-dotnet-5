@@ -9,7 +9,7 @@ namespace CatchEmAll.Options
     /// as well as the number of search pages queried in a single batch,
     /// and thus also affects the maximal number of search results.
     /// </summary>
-    public int BatchSize { get; init; } = 5;
+    public int BatchSize { get; init; } = 1;
 
     public int UpdateIntervalInHours { get; init; } = 1;
   }

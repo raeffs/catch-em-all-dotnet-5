@@ -66,5 +66,13 @@ namespace CatchEmAll.Models
         this.Update = this.Update.MarkAsFailed();
       }
     }
+
+    /// <summary>
+    /// Resets the update information of the search query.
+    /// </summary>
+    public void Reset()
+    {
+      this.Update = this.Update.Reset();
+    }
   }
 }

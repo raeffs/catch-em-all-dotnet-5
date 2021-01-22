@@ -5,6 +5,8 @@ namespace CatchEmAll.Services
 {
   public interface ISearchQueryUpdateService
   {
-    Task UpdateSearchQueries(Priority priority);
+    Task UpdateSearchQueriesAsync(Priority priority);
+
+    Task ResetFailedSearchQueryUpdatesAsync();
   }
 }

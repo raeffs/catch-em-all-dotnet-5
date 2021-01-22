@@ -26,11 +26,11 @@ namespace CatchEmAll.Services
       this.options = options.Value;
     }
 
-    public async Task UpdateAuctions()
+    public async Task UpdateAuctionsAsync()
     {
       try
       {
-        await this.InternalUpdate();
+        await this.InternalUpdateAsync();
       }
       catch (Exception exception)
       {
@@ -38,7 +38,7 @@ namespace CatchEmAll.Services
       }
     }
 
-    private async Task InternalUpdate()
+    private async Task InternalUpdateAsync()
     {
       var ids = await this.LoadOutdatedAuctionsAsync();
       foreach (var id in ids)
@@ -63,14 +63,15 @@ namespace CatchEmAll.Services
       using var context = this.factory.GetContext();
 
       var now = DateTimeOffset.Now;
-      var endsAfter = now.Add(TimeSpan.FromMinutes(-5));
+      var endsBefore = now.Add(TimeSpan.FromMinutes(-15));
+      var lastAttemptedBefore = now.Add(TimeSpan.FromMinutes(-15));
 
       var entities = await context.Auctions.AsTracking()
-          .Where(x => !x.Info.IsClosed && !x.Update.IsLocked && x.Update.NumberOfFailures < 10)
-          .Where(x => x.Info.Ends <= endsAfter)
-          .OrderBy(x => x.Update.Updated)
-          .Take(this.options.BatchSize)
-          .ToListAsync();
+        .Where(x => !x.Info.IsClosed && x.Info.Ends <= endsBefore)
+        .Where(x => !x.Update.IsLocked && x.Update.NumberOfFailures < 10 && x.Update.LastAttempted <= lastAttemptedBefore)
+        .OrderBy(x => x.Update.Updated)
+        .Take(this.options.BatchSize)
+        .ToListAsync();
 
       foreach (var entity in entities)
       {
@@ -106,6 +107,25 @@ namespace CatchEmAll.Services
           .SingleAsync(x => x.Provider.Value == id);
 
       entity.Release();
+
+      await context.SaveChangesAsync();
+    }
+
+    public async Task ResetFailedAuctionUpdatesAsync()
+    {
+      using var context = this.factory.GetContext();
+
+      var now = DateTimeOffset.Now;
+      var lastAttemptedBefore = now.Add(TimeSpan.FromHours(-1));
+
+      var entities = await context.Auctions.AsTracking()
+        .Where(x => x.Update.NumberOfFailures >= 10 && x.Update.LastAttempted <= lastAttemptedBefore)
+        .ToListAsync();
+
+      foreach (var entity in entities)
+      {
+        entity.Reset();
+      }
 
       await context.SaveChangesAsync();
     }

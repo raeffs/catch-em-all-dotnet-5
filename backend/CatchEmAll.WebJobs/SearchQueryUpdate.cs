@@ -17,17 +17,22 @@ namespace CatchEmAll.WebJobs
 
     public async Task UpdateSearchQueriesWithHighPriority([TimerTrigger("5,10,20,25,35,40,50,55 * * * * *", RunOnStartup = false)] TimerInfo timerInfo, ILogger logger)
     {
-      await this.service.UpdateSearchQueries(Priority.High);
+      await this.service.UpdateSearchQueriesAsync(Priority.High);
     }
 
     public async Task UpdateSearchQueriesWithMidPriority([TimerTrigger("15,30,45 * * * * *", RunOnStartup = false)] TimerInfo timerInfo, ILogger logger)
     {
-      await this.service.UpdateSearchQueries(Priority.Mid);
+      await this.service.UpdateSearchQueriesAsync(Priority.Mid);
     }
 
     public async Task UpdateSearchQueriesWithLowPriority([TimerTrigger("1 * * * * *", RunOnStartup = false)] TimerInfo timerInfo, ILogger logger)
     {
-      await this.service.UpdateSearchQueries(Priority.Low);
+      await this.service.UpdateSearchQueriesAsync(Priority.Low);
+    }
+
+    public async Task ResetFailedSearchQueries([TimerTrigger("* * 0 * * *", RunOnStartup = false)] TimerInfo timerInfo)
+    {
+      await this.service.ResetFailedSearchQueryUpdatesAsync();
     }
   }
 }

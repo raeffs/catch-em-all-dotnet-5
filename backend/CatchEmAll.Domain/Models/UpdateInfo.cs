@@ -10,7 +10,12 @@ namespace CatchEmAll.Models
     /// <summary>
     /// The point in time when the entity was last updated sucessfully.
     /// </summary>
-    public DateTimeOffset Updated { get; init; } = DateTimeOffset.Now.AddHours(-24);
+    public DateTimeOffset Updated { get; init; } = DateTimeOffset.MinValue;
+
+    /// <summary>
+    /// The point in time when the last attempt to update the entity was made.
+    /// </summary>
+    public DateTimeOffset LastAttempted { get; init; } = DateTimeOffset.MinValue;
 
     /// <summary>
     /// Whether the entity is being updated.
@@ -22,6 +27,11 @@ namespace CatchEmAll.Models
     /// </summary>
     public int NumberOfFailures { get; init; }
 
+    /// <summary>
+    /// The number of times the update information was reset.
+    /// </summary>
+    public int NumberOfResets { get; init; }
+
     public UpdateInfo Lock()
     {
       if (this.IsLocked)
@@ -30,7 +40,11 @@ namespace CatchEmAll.Models
         throw new Exception();
       }
 
-      return this with { IsLocked = true };
+      return this with
+      {
+        LastAttempted = DateTimeOffset.Now,
+        IsLocked = true
+      };
     }
 
     public UpdateInfo MarkAsSuccessful()
@@ -61,6 +75,16 @@ namespace CatchEmAll.Models
       {
         IsLocked = false,
         NumberOfFailures = this.NumberOfFailures + 1
+      };
+    }
+
+    public UpdateInfo Reset()
+    {
+      return this with
+      {
+        IsLocked = false,
+        NumberOfFailures = 0,
+        NumberOfResets = this.NumberOfResets + 1
       };
     }
   }

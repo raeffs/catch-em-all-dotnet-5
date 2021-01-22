@@ -4,6 +4,8 @@ namespace CatchEmAll.Services
 {
   public interface IAuctionUpdateService
   {
-    Task UpdateAuctions();
+    Task UpdateAuctionsAsync();
+
+    Task ResetFailedAuctionUpdatesAsync();
   }
 }
