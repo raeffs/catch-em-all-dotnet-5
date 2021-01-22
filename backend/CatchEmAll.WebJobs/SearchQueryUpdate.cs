@@ -30,7 +30,7 @@ namespace CatchEmAll.WebJobs
       await this.service.UpdateSearchQueriesAsync(Priority.Low);
     }
 
-    public async Task ResetFailedSearchQueries([TimerTrigger("* * 0 * * *", RunOnStartup = false)] TimerInfo timerInfo)
+    public async Task ResetFailedSearchQueryUpdates([TimerTrigger("* * 0 * * *", RunOnStartup = true)] TimerInfo timerInfo)
     {
       await this.service.ResetFailedSearchQueryUpdatesAsync();
     }

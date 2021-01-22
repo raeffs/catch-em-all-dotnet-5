@@ -18,7 +18,7 @@ namespace CatchEmAll.WebJobs
       await this.service.UpdateAuctionsAsync();
     }
 
-    public async Task ResetFailedAutions([TimerTrigger("* * 1 * * *", RunOnStartup = false)] TimerInfo timerInfo)
+    public async Task ResetFailedAutionUpdates([TimerTrigger("* * 1 * * *", RunOnStartup = true)] TimerInfo timerInfo)
     {
       await this.service.ResetFailedAuctionUpdatesAsync();
     }
